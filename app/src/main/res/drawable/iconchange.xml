@@ -3,10 +3,7 @@
     <item
         android:state_selected="true"
         android:color="@color/btmnavbg"/>
-
     <item
         android:state_selected="false"
         android:color="@color/white"/>
-
-
 </selector>
