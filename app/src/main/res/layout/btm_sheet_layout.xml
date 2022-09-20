@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/filters"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/btm_sheet_bg"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="FILTER Cuy"
+        android:textColor="@color/black"
+        android:textSize="50dp"
+        android:gravity="center"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Filter"
+        android:id="@+id/filterConfirm"/>
+</LinearLayout>

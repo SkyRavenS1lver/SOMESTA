@@ -3,6 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/btm_sheet_bg.xml" value="0.2265" />
+        <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/ic_bookmark_icon.xml" value="0.124" />
+        <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/ic_bookmark_icon_selected.xml" value="0.124" />
+        <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/iconchange.xml" value="0.2265" />
+        <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/item_iconchange.xml" value="0.2265" />
+        <entry key="..\:/Android Project/SOMESTA/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Android Project/SOMESTA/app/src/main/res/layout/btm_sheet_layout.xml" value="0.2076923076923077" />
+        <entry key="..\:/Android Project/SOMESTA/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidProject/SOMESTA3/app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.196" />
         <entry key="..\:/AndroidProject/SOMESTA3/app/src/main/res/drawable/iconchange.xml" value="0.195" />
         <entry key="..\:/AndroidProject/SOMESTA3/app/src/main/res/drawable/itembg.xml" value="0.195" />
