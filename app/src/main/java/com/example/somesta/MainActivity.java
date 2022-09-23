@@ -3,9 +3,7 @@ package com.example.somesta;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -14,12 +12,20 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.somesta.databinding.ActivityMainBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.sql.Array;
+import java.util.Arrays;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
 
     private ActivityMainBinding binding;
 
@@ -39,7 +45,25 @@ public class MainActivity extends AppCompatActivity {
                 BottomSheetDialog btmSheetDialog = new BottomSheetDialog(
                         MainActivity.this, R.style.BottomSheetDialogTheme);
                 View btmSheetView = LayoutInflater.from(getApplicationContext())
-                        .inflate(R.layout.activity_main2, (FrameLayout)findViewById(R.id.shiet));
+                        .inflate(R.layout.btm_sheet, (FrameLayout)findViewById(R.id.shiet));
+
+                // Creating the RV for group
+                RecyclerView recyclerView = btmSheetView.findViewById(R.id.rvGroup);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(btmSheetView.getContext(),
+                        LinearLayoutManager.HORIZONTAL, false);;
+                GroupAdapter groupAdapter;
+                List<String> listData = Arrays.asList(getResources().getStringArray(R.array.dataGroup));
+
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(btmSheetView.getContext(),
+                        (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateNoOfColumns());
+                recyclerView.setLayoutManager(gridLayoutManager);
+                recyclerView.addItemDecoration(new GridSpacing(
+                        (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateSpacing()));
+                groupAdapter = new GroupAdapter(btmSheetView.getContext(), listData);
+                recyclerView.setAdapter(groupAdapter);
+                groupAdapter.notifyDataSetChanged();
+
+
 
                 // Filter Button inside btm sheet dialog
 //                btmSheetView.findViewById(R.id.filterConfirm).setOnClickListener(new View.OnClickListener() {

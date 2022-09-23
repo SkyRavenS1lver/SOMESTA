@@ -8,7 +8,6 @@ android {
     dataBinding{
         enabled=true}
 
-
     defaultConfig {
         applicationId "com.example.somesta"
         minSdk 21
