@@ -13,6 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -39,7 +40,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity{
 
     private ActivityMainBinding binding;
     BottomNavigationView navView;
@@ -104,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 Toast.makeText(MainActivity.this, "Gagal Mendapatkan Data Terbaru", Toast.LENGTH_SHORT).show();
             }
         });
+
 
         // Pembuatan sheet dialog
         FloatingActionButton filter_btn = (FloatingActionButton) findViewById(R.id.filter);
@@ -209,12 +211,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
         });
 
+        //Define invisible FloatingAction Button
+        FloatingActionButton info_btn = (FloatingActionButton) findViewById(R.id.help);
+
         // Pembuatan BTM Navbar
 //        BottomNavigationView navView = findViewById(R.id.nav_view);
 //        navView = findViewById(R.id.nav_view);
 
         navView = (BottomNavigationView) findViewById(R.id.nav_view);
-        navView.setOnNavigationItemSelectedListener(this);
+
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -224,27 +229,20 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
 //        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+        //Selected Listener Navbar, Rule invisible untuk Button Filter & info
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if(destination.getId()==R.id.navigation_home){
+                info_btn.show();
+                filter_btn.show();
+            }else if(destination.getId()==R.id.navigation_notifications){
+                info_btn.hide();
+                filter_btn.hide();
+            }else if(destination.getId()==R.id.navigation_bookmark){
+                info_btn.hide();
+                filter_btn.hide();
+            }
+        });
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        int id = item.getItemId();
-        System.out.println(id);
-        switch(id){
-            case R.id.navigation_home:
-                Toast.makeText(this, "HOME", Toast.LENGTH_SHORT).show();
-                System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-                return true;
-            case R.id.navigation_notifications:
-                System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-                Toast.makeText(this, "NOTIF", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.navigation_bookmark:
-                System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-                Toast.makeText(this, "BOOKMARK", Toast.LENGTH_SHORT).show();
-                return true;
-        }
-        return false;
-    }
 }

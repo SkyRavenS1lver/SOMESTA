@@ -26,30 +26,32 @@
         android:id="@+id/filter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="112dp"
+        android:layout_marginBottom="100dp"
         android:backgroundTint="@color/white"
 
         android:elevation="100dp"
         android:src="@drawable/ic_baseline_filter_alt_24"
         app:fabSize="normal"
-        app:maxImageSize="35dp"
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:tint="@color/btmfloat" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="35dp"
+        app:tint="@color/btmfloat"
+        android:layout_marginRight="19dp"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/help"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="44dp"
+        android:layout_marginBottom="24dp"
         android:backgroundTint="@color/btmfloat"
         android:elevation="100dp"
         android:src="@drawable/ic_baseline_info_24"
-        app:maxImageSize="67dp"
         app:fabSize="normal"
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:tint="@color/white" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="67dp"
+        app:tint="@color/white"
+        android:layout_marginRight="19dp"/>
 
     <fragment
         android:id="@+id/nav_host_fragment_activity_main"
