@@ -28,7 +28,7 @@ public class Utility {
         }
         public int calculateSpacing() {
             int numberOfColumns = calculateNoOfColumns();
-            return remaining/(10*numberOfColumns);
+            return remaining/(5*numberOfColumns);
         }
     }
 }

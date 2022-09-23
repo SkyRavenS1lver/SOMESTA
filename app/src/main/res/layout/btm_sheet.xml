@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <FrameLayout
-        android:id="@+id/shiet"
+        android:id="@+id/sheets"
         android:layout_width="match_parent"
-        android:layout_height="1000dp"
+        android:layout_height="750dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         android:background="@drawable/btm_sheet_bg">
         <LinearLayout
@@ -52,7 +52,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="1000dp"
+                android:layout_height="match_parent"
                 android:scrollbarThumbVertical="@null"
                 android:scrollbarThumbHorizontal="@null">
                 <LinearLayout
@@ -71,7 +71,66 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:scrollbars="none"
                         android:id="@+id/rvGroup"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Status"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/txtSizeBtmSheet"
+                        android:layout_marginTop="@dimen/elemenY"
+                        />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:scrollbars="none"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rvStatus"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lokasi"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/txtSizeBtmSheet"
+                        android:layout_marginTop="@dimen/elemenY"
+                        />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:scrollbars="none"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rvLokasi"/>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Kebutuhan Per Bulan"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/txtSizeBtmSheet"
+                        android:layout_marginTop="@dimen/elemenY"
+                        />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:scrollbars="none"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rvKebutuhan"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Jenis Industri"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/txtSizeBtmSheet"
+                        android:layout_marginTop="@dimen/elemenY"
+                        />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:scrollbars="none"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rvJenis"/>
                 </LinearLayout>
             </ScrollView>
 

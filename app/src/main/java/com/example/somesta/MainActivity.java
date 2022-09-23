@@ -13,14 +13,15 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.somesta.databinding.ActivityMainBinding;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.sql.Array;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,34 +45,89 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 BottomSheetDialog btmSheetDialog = new BottomSheetDialog(
                         MainActivity.this, R.style.BottomSheetDialogTheme);
+
                 View btmSheetView = LayoutInflater.from(getApplicationContext())
-                        .inflate(R.layout.btm_sheet, (FrameLayout)findViewById(R.id.shiet));
+                        .inflate(R.layout.btm_sheet, (FrameLayout)findViewById(R.id.sheets));
+
+                FrameLayout btmView = (FrameLayout) btmSheetView.findViewById(R.id.sheets);
+
+                BottomSheetBehavior.from(btmView).setState(BottomSheetBehavior.STATE_EXPANDED);
 
                 // Creating the RV for group
-                RecyclerView recyclerView = btmSheetView.findViewById(R.id.rvGroup);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(btmSheetView.getContext(),
-                        LinearLayoutManager.HORIZONTAL, false);;
-                GroupAdapter groupAdapter;
-                List<String> listData = Arrays.asList(getResources().getStringArray(R.array.dataGroup));
-
-                GridLayoutManager gridLayoutManager = new GridLayoutManager(btmSheetView.getContext(),
+                RecyclerView recyclerViewGroup = btmSheetView.findViewById(R.id.rvGroup);
+                GroupAdapter groupAdapterGroup;
+                List<String> listDataGroup = Arrays.asList(getResources().getStringArray(R.array.dataGroup)); //Perlu Diganti dengan File Dari Database
+                GridLayoutManager gridLayoutManagerGroup = new GridLayoutManager(btmSheetView.getContext(),
                         (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateNoOfColumns());
-                recyclerView.setLayoutManager(gridLayoutManager);
-                recyclerView.addItemDecoration(new GridSpacing(
+                recyclerViewGroup.setLayoutManager(gridLayoutManagerGroup);
+                recyclerViewGroup.addItemDecoration(new GridSpacing(
                         (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateSpacing()));
-                groupAdapter = new GroupAdapter(btmSheetView.getContext(), listData);
-                recyclerView.setAdapter(groupAdapter);
-                groupAdapter.notifyDataSetChanged();
+                groupAdapterGroup = new GroupAdapter(btmSheetView.getContext(), listDataGroup);
+                recyclerViewGroup.setAdapter(groupAdapterGroup);
+                groupAdapterGroup.notifyDataSetChanged();
+
+                //Creating RV Status
+                RecyclerView recyclerViewStatus = btmSheetView.findViewById(R.id.rvStatus);
+                GroupAdapter groupAdapterStatus;
+                List<String> listDataStatus = Arrays.asList(getResources().getStringArray(R.array.dataStatus)); //Perlu Diganti dengan File Dari Database
+
+                GridLayoutManager gridLayoutManagerStatus = new GridLayoutManager(btmSheetView.getContext(),
+                        (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateNoOfColumns());
+
+                recyclerViewStatus.setLayoutManager(gridLayoutManagerStatus);
+                recyclerViewStatus.addItemDecoration(new GridSpacing(
+                        (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateSpacing()));
+                groupAdapterStatus = new GroupAdapter(btmSheetView.getContext(), listDataStatus);
+                recyclerViewStatus.setAdapter(groupAdapterStatus);
+                groupAdapterStatus.notifyDataSetChanged();
+
+                //Creating RV Lokasi
+                RecyclerView recyclerViewLokasi = btmSheetView.findViewById(R.id.rvLokasi);
+                GroupAdapter groupAdapterLokasi;
+                List<String> listDataLokasi = Arrays.asList(getResources().getStringArray(R.array.dataLokasi)); //Perlu Diganti dengan File Dari Database
+
+                GridLayoutManager gridLayoutManagerLokasi = new GridLayoutManager(btmSheetView.getContext(),
+                        (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateNoOfColumns());
+
+                recyclerViewLokasi.setLayoutManager(gridLayoutManagerLokasi);
+                recyclerViewLokasi.addItemDecoration(new GridSpacing(
+                        (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateSpacing()));
+                groupAdapterLokasi = new GroupAdapter(btmSheetView.getContext(), listDataLokasi);
+                recyclerViewLokasi.setAdapter(groupAdapterLokasi);
+                groupAdapterLokasi.notifyDataSetChanged();
+
+                //Creating RV Kebutuhan
+                RecyclerView recyclerViewKebutuhan = btmSheetView.findViewById(R.id.rvKebutuhan);
+                List<String> listDataKebutuhan = Arrays.asList(getResources().getStringArray(R.array.dataKebutuhan)); //Perlu Diganti dengan File Dari Database
+
+                GridLayoutManager gridLayoutManagerKebutuhan = new GridLayoutManager(btmSheetView.getContext(),
+                        (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateNoOfColumns());
+
+                recyclerViewKebutuhan.setLayoutManager(gridLayoutManagerKebutuhan);
+                recyclerViewKebutuhan.addItemDecoration(new GridSpacing(
+                        (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateSpacing()));
+
+                GroupAdapter groupAdapterKebutuhan = new GroupAdapter(btmSheetView.getContext(), listDataKebutuhan);
+                recyclerViewKebutuhan.setAdapter(groupAdapterKebutuhan);
+                groupAdapterKebutuhan.notifyDataSetChanged();
+
+                //Creating RV Jenis
+                RecyclerView recyclerViewJenis = btmSheetView.findViewById(R.id.rvJenis);
+                List<String> listDataJenis = Arrays.asList(getResources().getStringArray(R.array.dataJenis)); //Perlu Diganti dengan File Dari Database
+
+                GridLayoutManager gridLayoutManagerJenis = new GridLayoutManager(btmSheetView.getContext(),
+                        (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateNoOfColumns());
+
+                recyclerViewJenis.setLayoutManager(gridLayoutManagerJenis);
+                recyclerViewJenis.addItemDecoration(new GridSpacing(
+                        (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateSpacing()));
+
+                GroupAdapter groupAdapterJenis = new GroupAdapter(btmSheetView.getContext(), listDataJenis );
+                recyclerViewJenis.setAdapter(groupAdapterJenis);
+                groupAdapterJenis.notifyDataSetChanged();
 
 
 
-                // Filter Button inside btm sheet dialog
-//                btmSheetView.findViewById(R.id.filterConfirm).setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        btmSheetDialog.dismiss();
-//                    }
-//                });
                 btmSheetDialog.setContentView(btmSheetView);
                 btmSheetDialog.show();
             }

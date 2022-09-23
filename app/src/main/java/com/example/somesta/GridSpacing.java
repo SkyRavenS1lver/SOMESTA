@@ -17,7 +17,7 @@ public class GridSpacing extends RecyclerView.ItemDecoration {
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         outRect.left = spacing;
         outRect.right = spacing;
-        outRect.bottom = spacing;
-        outRect.top = spacing;
+        outRect.bottom = spacing/2;
+        outRect.top = spacing/2;
     }
 }
