@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -38,15 +39,15 @@ public class MainActivity extends AppCompatActivity {
                 BottomSheetDialog btmSheetDialog = new BottomSheetDialog(
                         MainActivity.this, R.style.BottomSheetDialogTheme);
                 View btmSheetView = LayoutInflater.from(getApplicationContext())
-                        .inflate(R.layout.btm_sheet_layout, (LinearLayout)findViewById(R.id.filters));
+                        .inflate(R.layout.activity_main2, (FrameLayout)findViewById(R.id.shiet));
 
                 // Filter Button inside btm sheet dialog
-                btmSheetView.findViewById(R.id.filterConfirm).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        btmSheetDialog.dismiss();
-                    }
-                });
+//                btmSheetView.findViewById(R.id.filterConfirm).setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        btmSheetDialog.dismiss();
+//                    }
+//                });
                 btmSheetDialog.setContentView(btmSheetView);
                 btmSheetDialog.show();
             }
