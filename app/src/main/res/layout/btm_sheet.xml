@@ -50,18 +50,29 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Group"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="@dimen/txtSizeBtmSheet"
-                />
-            <androidx.recyclerview.widget.RecyclerView
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/rvGroup"/>
+                android:layout_height="1000dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Group"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/txtSizeBtmSheet"
+                        android:layout_marginTop="@dimen/elemenY"
+                        />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rvGroup"/>
+                </LinearLayout>
+            </ScrollView>
+
         </LinearLayout>
         </LinearLayout>
     </FrameLayout>

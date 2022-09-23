@@ -2,4 +2,5 @@
 <resources>
     <dimen name="btmSheetX">30dp</dimen>
     <dimen name="txtSizeBtmSheet">25sp</dimen>
+    <dimen name="elemenY">10dp</dimen>
 </resources>
