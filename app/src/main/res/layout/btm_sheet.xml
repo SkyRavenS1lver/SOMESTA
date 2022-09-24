@@ -52,7 +52,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="365dp"
+                android:layout_height="600dp"
 
                 android:scrollbarThumbVertical="@null"
                 android:scrollbarThumbHorizontal="@null">
@@ -134,7 +134,6 @@
                         android:id="@+id/rvJenis" />
                 </LinearLayout>
             </ScrollView>
-        </LinearLayout>
             <Button
                 android:id="@+id/buttonTerapkan"
                 android:layout_marginLeft="@dimen/txtSizeBtmSheet"
@@ -143,6 +142,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/groupingshapeactive"
                 android:text="Terapkan Filter"/>
+        </LinearLayout>
         </LinearLayout>
 
     </FrameLayout>
