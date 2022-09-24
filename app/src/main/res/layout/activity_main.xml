@@ -28,7 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
         android:backgroundTint="@color/white"
-
         android:elevation="100dp"
         android:src="@drawable/ic_baseline_filter_alt_24"
         app:fabSize="normal"
@@ -37,6 +36,11 @@
         app:maxImageSize="35dp"
         app:tint="@color/btmfloat"
         android:layout_marginRight="19dp"/>
+
+
+
+
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/help"
@@ -64,5 +68,20 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/mobile_navigation"/>
+
+    <com.arlib.floatingsearchview.FloatingSearchView
+        android:id="@+id/floating_search_view"
+        android:background="@drawable/btm_sheet_bg"
+        android:focusable="auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:floatingSearch_searchBarMarginLeft="@dimen/search_view_inset"
+        app:floatingSearch_searchBarMarginTop="@dimen/search_view_inset"
+        app:floatingSearch_searchBarMarginRight="@dimen/search_view_inset"
+        app:floatingSearch_searchHint="Search..."
+        app:floatingSearch_suggestionsListAnimDuration="250"
+        app:floatingSearch_showSearchKey="false"
+        app:floatingSearch_leftActionMode="showSearch"
+        app:floatingSearch_close_search_on_keyboard_dismiss="true"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

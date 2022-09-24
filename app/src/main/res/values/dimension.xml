@@ -3,4 +3,5 @@
     <dimen name="btmSheetX">30dp</dimen>
     <dimen name="txtSizeBtmSheet">25sp</dimen>
     <dimen name="elemenY">10dp</dimen>
+    <dimen name="search_view_inset">50dp</dimen>
 </resources>

@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
@@ -122,12 +123,24 @@ public class MainActivity extends AppCompatActivity{
 
                 BottomSheetBehavior.from(btmView).setState(BottomSheetBehavior.STATE_EXPANDED);
 
+
+                // The Data Passed for Recycler View
+                List<String> FBgroupArray = new ArrayList<String>(FBgroupArraySET); //convert stringSet to ArrayList
+                List<String> listDataGroup = FBgroupArray; //Pass Group Data From Database To RecycleViewGroup
+                List<String> FBstatusArray = new ArrayList<String>(FBstatusArraySET); //convert stringSet to ArrayList
+                List<String> listDataStatus = FBstatusArray; //Pass Status Data From Database To RecycleViewGroup
+                List<String> FBlokasiArray = new ArrayList<String>(FBlokasiArraySET); //convert stringSet to ArrayList
+                List<String> listDataLokasi = FBlokasiArray; //Pass Lokasi Data From Database To RecycleViewGroup
+                List<String> FBkebutuhanArray = new ArrayList<String>(FBkebutuhanArraySET); //convert stringSet to ArrayList
+                List<String> listDataKebutuhan = FBkebutuhanArray; //Pass Kebutuhan Data From Database To RecycleViewGroup
+                List<String> FBjenisArray = new ArrayList<String>(FBjenisArraySET); //convert stringSet to ArrayList
+                List<String> listDataJenis = FBjenisArray; //Pass Jenis Data From Database To RecycleViewGroup
+
+
                 // Creating the RV for group
                 RecyclerView recyclerViewGroup = btmSheetView.findViewById(R.id.rvGroup);
                 GroupAdapter groupAdapterGroup;
 
-                List<String> FBgroupArray = new ArrayList<String>(FBgroupArraySET); //convert stringSet to ArrayList
-                List<String> listDataGroup = FBgroupArray; //Pass Group Data From Database To RecycleViewGroup
                 GridLayoutManager gridLayoutManagerGroup = new GridLayoutManager(btmSheetView.getContext(),
                         (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateNoOfColumns());
                 recyclerViewGroup.setLayoutManager(gridLayoutManagerGroup);
@@ -140,9 +153,6 @@ public class MainActivity extends AppCompatActivity{
                 //Creating RV Status
                 RecyclerView recyclerViewStatus = btmSheetView.findViewById(R.id.rvStatus);
                 GroupAdapter groupAdapterStatus;
-
-                List<String> FBstatusArray = new ArrayList<String>(FBstatusArraySET); //convert stringSet to ArrayList
-                List<String> listDataStatus = FBstatusArray; //Pass Status Data From Database To RecycleViewGroup
 
                 GridLayoutManager gridLayoutManagerStatus = new GridLayoutManager(btmSheetView.getContext(),
                         (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateNoOfColumns());
@@ -158,9 +168,6 @@ public class MainActivity extends AppCompatActivity{
                 RecyclerView recyclerViewLokasi = btmSheetView.findViewById(R.id.rvLokasi);
                 GroupAdapter groupAdapterLokasi;
 
-                List<String> FBlokasiArray = new ArrayList<String>(FBlokasiArraySET); //convert stringSet to ArrayList
-                List<String> listDataLokasi = FBlokasiArray; //Pass Lokasi Data From Database To RecycleViewGroup
-
                 GridLayoutManager gridLayoutManagerLokasi = new GridLayoutManager(btmSheetView.getContext(),
                         (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateNoOfColumns());
 
@@ -173,9 +180,6 @@ public class MainActivity extends AppCompatActivity{
 
                 //Creating RV Kebutuhan
                 RecyclerView recyclerViewKebutuhan = btmSheetView.findViewById(R.id.rvKebutuhan);
-
-                List<String> FBkebutuhanArray = new ArrayList<String>(FBkebutuhanArraySET); //convert stringSet to ArrayList
-                List<String> listDataKebutuhan = FBkebutuhanArray; //Pass Kebutuhan Data From Database To RecycleViewGroup
 
                 GridLayoutManager gridLayoutManagerKebutuhan = new GridLayoutManager(btmSheetView.getContext(),
                         (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateNoOfColumns());
@@ -190,8 +194,6 @@ public class MainActivity extends AppCompatActivity{
 
                 //Creating RV Jenis
                 RecyclerView recyclerViewJenis = btmSheetView.findViewById(R.id.rvJenis);
-                List<String> FBjenisArray = new ArrayList<String>(FBjenisArraySET); //convert stringSet to ArrayList
-                List<String> listDataJenis = FBjenisArray; //Pass Jenis Data From Database To RecycleViewGroup
 
                 GridLayoutManager gridLayoutManagerJenis = new GridLayoutManager(btmSheetView.getContext(),
                         (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateNoOfColumns());
@@ -235,12 +237,15 @@ public class MainActivity extends AppCompatActivity{
             if(destination.getId()==R.id.navigation_home){
                 info_btn.show();
                 filter_btn.show();
+
             }else if(destination.getId()==R.id.navigation_notifications){
                 info_btn.hide();
                 filter_btn.hide();
+
             }else if(destination.getId()==R.id.navigation_bookmark){
                 info_btn.hide();
                 filter_btn.hide();
+
             }
         });
     }
