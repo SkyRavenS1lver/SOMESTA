@@ -1,6 +1,8 @@
 package com.example.somesta;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,6 +54,9 @@ public class MainActivity extends AppCompatActivity{
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        Intent intent = new Intent(this,DEVELOP1.class);
+        startActivity(intent);
 
         //Firebase References and Data StringSets
         FirebaseDatabase firebaseDatabase;
@@ -245,9 +250,13 @@ public class MainActivity extends AppCompatActivity{
             }else if(destination.getId()==R.id.navigation_bookmark){
                 info_btn.hide();
                 filter_btn.hide();
-
             }
         });
+
+        //SPACE
+
+
+
     }
 
 }

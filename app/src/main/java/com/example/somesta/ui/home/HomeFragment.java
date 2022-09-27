@@ -40,9 +40,10 @@ public class HomeFragment extends Fragment {
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
         IMapController mapController = map.getController();
-        mapController.setZoom(9.5);
+        mapController.setZoom(17);
         GeoPoint startPoint = new GeoPoint(48.8583, 2.2944);
-        mapController.setCenter(startPoint);
+        GeoPoint startPointHY = new GeoPoint(-7.7754437868397845, 110.374227043735);
+        mapController.setCenter(startPointHY);
         return root;
     }
 
