@@ -1,4 +1,4 @@
-package com.example.somesta;
+package com.example.somesta.utility;
 
 import android.graphics.Rect;
 import android.view.View;

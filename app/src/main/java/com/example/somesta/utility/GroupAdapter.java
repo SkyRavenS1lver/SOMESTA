@@ -1,4 +1,4 @@
-package com.example.somesta;
+package com.example.somesta.utility;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.somesta.R;
 
 import java.util.List;
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.HolderData> {
@@ -43,8 +45,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.HolderData> 
         public HolderData(@NonNull View itemView) {
             super(itemView);
             group = itemView.findViewById(R.id.group);
-
-
         }
     }
 }

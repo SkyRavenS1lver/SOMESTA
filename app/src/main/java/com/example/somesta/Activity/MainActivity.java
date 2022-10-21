@@ -1,28 +1,28 @@
-package com.example.somesta;
+package com.example.somesta.Activity;
 
+import android.content.Context;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.Switch;
 import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.somesta.Marker.ClickableInfo;
+import com.example.somesta.Marker.Perusahaan;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.somesta.R;
 import com.example.somesta.databinding.ActivityMainBinding;
+import com.example.somesta.utility.GridSpacing;
+import com.example.somesta.utility.GroupAdapter;
+import com.example.somesta.utility.Utility;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -33,17 +33,36 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
+import org.osmdroid.api.IMapController;
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.infowindow.InfoWindow;
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity{
 
     private ActivityMainBinding binding;
-    BottomNavigationView navView;
+    public static  MapView map = null;
+    LocationManager locationManager;
+    public static ArrayList<Marker> markers = new ArrayList<>();
+    ArrayList<OverlayItem> overlayItemArrayList = new ArrayList<>();
+
+    Set<String>  FBjenisArraySET;
+    Set<String>  FBstatusArraySET;
+    Set<String>  FBlokasiArraySET;
+    Set<String>  FBkebutuhanArraySET;
+    Set<String>  FBgroupArraySET;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -51,15 +70,41 @@ public class MainActivity extends AppCompatActivity{
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        Context ctx = this;
+        Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
+        map = findViewById(R.id.map);
+        map.setTileSource(TileSourceFactory.MAPNIK);
+
+
+        map.setBuiltInZoomControls(true);
+        map.setMultiTouchControls(true);
+        map.setClickable(true);
+
+
+
+
+        //mylocation maker
+        MyLocationNewOverlay mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(ctx),map);
+        mLocationOverlay.enableMyLocation();
+        map.getOverlays().add(mLocationOverlay);
+
+        IMapController mapController = map.getController();
+        mapController.setZoom(10);
+        GeoPoint startPoint = new GeoPoint(48.8583, 2.2944);
+        mapController.setCenter(startPoint);
+
+
+
+
 
         //Firebase References and Data StringSets
         FirebaseDatabase firebaseDatabase;
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("dbCustomer");
-        Set<String>  FBgroupArraySET = new HashSet<String>(); //removes duplicated strings
-        Set<String>  FBstatusArraySET = new HashSet<String>(); //removes duplicated strings
-        Set<String>  FBlokasiArraySET = new HashSet<String>(); //removes duplicated strings
-        Set<String>  FBkebutuhanArraySET = new HashSet<String>(); //removes duplicated strings
-        Set<String>  FBjenisArraySET = new HashSet<String>(); //removes duplicated strings
+        FBgroupArraySET = new HashSet<String>(); //removes duplicated strings
+        FBstatusArraySET = new HashSet<String>(); //removes duplicated strings
+        FBlokasiArraySET = new HashSet<String>(); //removes duplicated strings
+        FBkebutuhanArraySET = new HashSet<String>(); //removes duplicated strings
+        FBjenisArraySET = new HashSet<String>(); //removes duplicated strings
 
         //Firebase Database Data Grabber
         reference.addValueEventListener(new ValueEventListener() {
@@ -93,12 +138,47 @@ public class MainActivity extends AppCompatActivity{
                     String data = FBdata.child("kebutuhan").getValue().toString();
                     FBkebutuhanArraySET.add(data);
                 }
-                //grab kebutuhan data
+                //grab jenis data
                 for (DataSnapshot FBdata : snapshot.getChildren()){
                     String data = FBdata.child("jenis").getValue().toString();
                     FBjenisArraySET.add(data);
                 }
+
+                //Make Markers
+                for (DataSnapshot FBdata : snapshot.getChildren()){
+                    String dilayani = FBdata.child("dilayani").getValue().toString();
+                    String group = FBdata.child("group").getValue().toString();
+                    String jenis = FBdata.child("jenis").getValue().toString();
+                    String kebutuhan = FBdata.child("kebutuhan").getValue().toString();
+                    Float lang = Float.parseFloat(FBdata.child("koor_latitude").getValue().toString());
+                    Float longi =Float.parseFloat(FBdata.child("koor_longitude").getValue().toString());
+                    GeoPoint point = new GeoPoint(lang,longi);
+                    String lokasi = FBdata.child("lokasi").getValue().toString();
+                    String nama = FBdata.child("nama").getValue().toString();
+                    String pelayanan = FBdata.child("pelayanan").getValue().toString();
+                    String penyalur = FBdata.child("penyalur").getValue().toString();
+                    String status = FBdata.child("status").getValue().toString();
+                    String tipeCustomer = FBdata.child("tipe_customer").getValue().toString();
+                    createMarker(new Perusahaan(dilayani,group,jenis,kebutuhan,point,lokasi,nama,pelayanan,penyalur,status,tipeCustomer));
+                }
+                for (int i=0;i < markers.size();i++){
+                    map.getOverlays().add(markers.get(i));
+                }
+
+
+
             }
+            private void createMarker(Perusahaan perusahaan){
+                Marker marker = new Marker(map);
+                marker.setPosition(perusahaan.getLocation());
+                InfoWindow infoWindow = new ClickableInfo(R.layout.clickable_bubble, map,perusahaan);
+                marker.setInfoWindow(infoWindow);
+                marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
+                marker.setIcon(getResources().getDrawable(R.drawable.ic_baseline_location_on_24));
+                markers.add(marker);
+            }
+
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -211,38 +291,7 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        //Define invisible FloatingAction Button
-        FloatingActionButton info_btn = (FloatingActionButton) findViewById(R.id.help);
-
-        // Pembuatan BTM Navbar
-//        BottomNavigationView navView = findViewById(R.id.nav_view);
-//        navView = findViewById(R.id.nav_view);
-
-        navView = (BottomNavigationView) findViewById(R.id.nav_view);
 
 
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_notifications, R.id.navigation_bookmark)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navView, navController);
 
-        //Selected Listener Navbar, Rule invisible untuk Button Filter & info
-        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if(destination.getId()==R.id.navigation_home){
-                info_btn.show();
-                filter_btn.show();
-            }else if(destination.getId()==R.id.navigation_notifications){
-                info_btn.hide();
-                filter_btn.hide();
-            }else if(destination.getId()==R.id.navigation_bookmark){
-                info_btn.hide();
-                filter_btn.hide();
-            }
-        });
-    }
-
-}
+}}

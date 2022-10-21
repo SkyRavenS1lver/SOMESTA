@@ -1,4 +1,4 @@
-package com.example.somesta;
+package com.example.somesta.utility;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
