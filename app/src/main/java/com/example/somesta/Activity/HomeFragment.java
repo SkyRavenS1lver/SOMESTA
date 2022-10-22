@@ -74,7 +74,7 @@ public class HomeFragment extends Fragment implements MapEventsReceiver {
 
         IMapController mapController = map.getController();
         mapController.setZoom(10);
-        GeoPoint startPoint = new GeoPoint(48.8583, 2.2944);
+        GeoPoint startPoint = new GeoPoint(-7.795425625273463, 110.36488798392885);
         mapController.setCenter(startPoint);
 
 

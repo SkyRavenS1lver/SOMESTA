@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.somesta.Marker.ClickableInfo;
@@ -16,9 +18,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.somesta.R;
+import com.example.somesta.SearchRecyclerView.SearchAdapter;
 import com.example.somesta.databinding.ActivityMainBinding;
 import com.example.somesta.utility.GridSpacing;
 import com.example.somesta.utility.GroupAdapter;
@@ -63,6 +67,11 @@ public class MainActivity extends AppCompatActivity{
     Set<String>  FBkebutuhanArraySET;
     Set<String>  FBgroupArraySET;
 
+    //Semua data perusahaan disimpan di array ini
+    private ArrayList<Perusahaan> perusahaanArrayList = new ArrayList<>();
+    //Array untuk menyimpan data yang ter-filter untuk searchView
+    private ArrayList<Perusahaan> perusahaanArrayListFiltered = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -75,12 +84,9 @@ public class MainActivity extends AppCompatActivity{
         map = findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);
 
-
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
         map.setClickable(true);
-
-
 
 
         //mylocation maker
@@ -89,13 +95,9 @@ public class MainActivity extends AppCompatActivity{
         map.getOverlays().add(mLocationOverlay);
 
         IMapController mapController = map.getController();
-        mapController.setZoom(10);
-        GeoPoint startPoint = new GeoPoint(48.8583, 2.2944);
+        mapController.setZoom(17);
+        GeoPoint startPoint = new GeoPoint(-7.795425625273463, 110.36488798392885);
         mapController.setCenter(startPoint);
-
-
-
-
 
         //Firebase References and Data StringSets
         FirebaseDatabase firebaseDatabase;
@@ -105,6 +107,37 @@ public class MainActivity extends AppCompatActivity{
         FBlokasiArraySET = new HashSet<String>(); //removes duplicated strings
         FBkebutuhanArraySET = new HashSet<String>(); //removes duplicated strings
         FBjenisArraySET = new HashSet<String>(); //removes duplicated strings
+
+        //Search Recyclerview
+        SearchAdapter searchAdapter;
+        RecyclerView searchRecyclerView = findViewById(R.id.searchRecyclerView);
+        searchAdapter = new SearchAdapter(this,perusahaanArrayListFiltered);
+        searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        searchRecyclerView.setAdapter(searchAdapter);
+
+        //Search Bar
+        SearchView searchView = findViewById(R.id.searchView);
+        searchView.setIconified(false);
+        searchView.clearFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                searchAdapter.notifyDataSetChanged();
+                String searchWord = s;
+                perusahaanArrayListFiltered.clear();
+                for (Perusahaan perusahaan : perusahaanArrayList){
+                    if(searchWord.equals(perusahaan.getNama())){
+                        perusahaanArrayListFiltered.add(perusahaan);
+                    }
+                }
+                return false;
+            }
+        });
 
         //Firebase Database Data Grabber
         reference.addValueEventListener(new ValueEventListener() {
@@ -144,7 +177,7 @@ public class MainActivity extends AppCompatActivity{
                     FBjenisArraySET.add(data);
                 }
 
-                //Make Markers
+                //Grab data to perusahaanArrayList
                 for (DataSnapshot FBdata : snapshot.getChildren()){
                     String dilayani = FBdata.child("dilayani").getValue().toString();
                     String group = FBdata.child("group").getValue().toString();
@@ -159,33 +192,29 @@ public class MainActivity extends AppCompatActivity{
                     String penyalur = FBdata.child("penyalur").getValue().toString();
                     String status = FBdata.child("status").getValue().toString();
                     String tipeCustomer = FBdata.child("tipe_customer").getValue().toString();
-                    createMarker(new Perusahaan(dilayani,group,jenis,kebutuhan,point,lokasi,nama,pelayanan,penyalur,status,tipeCustomer));
+                    perusahaanArrayList.add(new Perusahaan(dilayani,group,jenis,kebutuhan,point,lokasi,nama,pelayanan,penyalur,status,tipeCustomer));
                 }
+
+                //Create Markers
+                for (Perusahaan perusahaan : perusahaanArrayList){
+                    createMarker(perusahaan);
+                }
+
                 for (int i=0;i < markers.size();i++){
                     map.getOverlays().add(markers.get(i));
                 }
 
-
-
+                //Notify adapter, onDataChange works asynchronously
+                if(searchAdapter != null){
+                    searchAdapter.notifyDataSetChanged();
+                }
             }
-            private void createMarker(Perusahaan perusahaan){
-                Marker marker = new Marker(map);
-                marker.setPosition(perusahaan.getLocation());
-                InfoWindow infoWindow = new ClickableInfo(R.layout.clickable_bubble, map,perusahaan);
-                marker.setInfoWindow(infoWindow);
-                marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
-                marker.setIcon(getResources().getDrawable(R.drawable.ic_baseline_location_on_24));
-                markers.add(marker);
-            }
-
-
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(MainActivity.this, "Gagal Mendapatkan Data Terbaru", Toast.LENGTH_SHORT).show();
             }
         });
-
 
         // Pembuatan sheet dialog
         FloatingActionButton filter_btn = (FloatingActionButton) findViewById(R.id.filter);
@@ -292,6 +321,15 @@ public class MainActivity extends AppCompatActivity{
         });
 
 
+    }
 
-
-}}
+    private void createMarker(Perusahaan perusahaan){
+        Marker marker = new Marker(map);
+        marker.setPosition(perusahaan.getLocation());
+        InfoWindow infoWindow = new ClickableInfo(R.layout.clickable_bubble, map,perusahaan);
+        marker.setInfoWindow(infoWindow);
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
+        marker.setIcon(getResources().getDrawable(R.drawable.ic_baseline_location_on_24));
+        markers.add(marker);
+    }
+}
