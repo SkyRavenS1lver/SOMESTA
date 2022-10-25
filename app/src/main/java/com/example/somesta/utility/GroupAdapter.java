@@ -4,11 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.somesta.Activity.MainActivity;
 import com.example.somesta.R;
 
 import java.util.List;
@@ -20,7 +22,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.HolderData> 
         this.listData = listData;
         this.inflater = LayoutInflater.from(context);
     }
-
     @NonNull
     @Override
     public GroupAdapter.HolderData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -33,6 +34,15 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.HolderData> 
         holder.group.setText(listData.get(position));
         holder.group.setTextOff(listData.get(position));
         holder.group.setTextOn(listData.get(position));
+        String name = holder.group.getText().toString();
+        if (MainActivity.clickedList.contains(name)){holder.group.setChecked(true);}
+        holder.group.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){MainActivity.clickedList.add(name);}
+                else {MainActivity.clickedList.remove(name);}
+            }
+        });
     }
 
     @Override
