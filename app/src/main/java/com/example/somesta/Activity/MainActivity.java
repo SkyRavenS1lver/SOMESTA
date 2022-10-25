@@ -56,9 +56,11 @@ import java.util.Set;
 
 public class MainActivity extends AppCompatActivity{
 
+
     private ActivityMainBinding binding;
     public static  MapView map = null;
     LocationManager locationManager;
+    public static ArrayList<String> clickedList = new ArrayList<>();
     public static ArrayList<Marker> markers = new ArrayList<>();
     ArrayList<OverlayItem> overlayItemArrayList = new ArrayList<>();
 
