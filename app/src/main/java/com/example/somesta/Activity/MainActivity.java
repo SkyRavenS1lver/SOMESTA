@@ -139,7 +139,6 @@ public class MainActivity extends AppCompatActivity{
                 return false;
             }
         });
-
         //Firebase Database Data Grabber
         reference.addValueEventListener(new ValueEventListener() {
             @Override
