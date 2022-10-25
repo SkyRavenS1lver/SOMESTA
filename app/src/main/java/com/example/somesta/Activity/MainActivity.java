@@ -51,6 +51,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity{
@@ -131,7 +132,7 @@ public class MainActivity extends AppCompatActivity{
                 String searchWord = s;
                 perusahaanArrayListFiltered.clear();
                 for (Perusahaan perusahaan : perusahaanArrayList){
-                    if(perusahaan.getNama().contains(searchWord)){
+                    if(perusahaan.getNama().toLowerCase(Locale.ROOT).contains(searchWord.toLowerCase(Locale.ROOT))){
                         perusahaanArrayListFiltered.add(perusahaan);
                     }
                 }
