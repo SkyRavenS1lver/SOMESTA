@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity{
                 String searchWord = s;
                 perusahaanArrayListFiltered.clear();
                 for (Perusahaan perusahaan : perusahaanArrayList){
-                    if(searchWord.equals(perusahaan.getNama())){
+                    if(perusahaan.getNama().contains(searchWord)){
                         perusahaanArrayListFiltered.add(perusahaan);
                     }
                 }
@@ -194,6 +194,7 @@ public class MainActivity extends AppCompatActivity{
                     String tipeCustomer = FBdata.child("tipe_customer").getValue().toString();
                     perusahaanArrayList.add(new Perusahaan(dilayani,group,jenis,kebutuhan,point,lokasi,nama,pelayanan,penyalur,status,tipeCustomer));
                 }
+                map.getOverlays().clear();
 
                 //Create Markers
                 for (Perusahaan perusahaan : perusahaanArrayList){
