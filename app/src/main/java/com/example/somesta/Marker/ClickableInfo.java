@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.example.somesta.Activity.MainActivity;
 import com.example.somesta.R;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -57,8 +58,8 @@ public class ClickableInfo extends InfoWindow {
         TextView tv11 = btmView.findViewById(R.id.txtTipe);
         tv11.setText(perusahaan.tipeCustomer);
 
-
         BottomSheetBehavior.from(btmView).setState(BottomSheetBehavior.STATE_EXPANDED);
+        MainActivity.map.getController().setZoom(19);
         btmSheetDialog.setContentView(btmSheetView);
         btmSheetDialog.show();
     }

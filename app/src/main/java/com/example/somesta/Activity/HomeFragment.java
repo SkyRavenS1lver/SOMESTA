@@ -61,10 +61,10 @@ public class HomeFragment extends Fragment implements MapEventsReceiver {
         map.setMultiTouchControls(true);
         map.setClickable(true);
 
-        //Create Overlay
-        overlayItemArrayList = new ArrayList<>(overlayItemArrayList);
-        MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this.getContext(), this);
-        map.getOverlays().add(0, mapEventsOverlay);
+//        //Create Overlay
+//        overlayItemArrayList = new ArrayList<>(overlayItemArrayList);
+//        MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this.getContext(), this);
+//        map.getOverlays().add(0, mapEventsOverlay);
 
 
         //mylocation maker
@@ -73,7 +73,7 @@ public class HomeFragment extends Fragment implements MapEventsReceiver {
         map.getOverlays().add(mLocationOverlay);
 
         IMapController mapController = map.getController();
-        mapController.setZoom(10);
+        mapController.setZoom(15);
         GeoPoint startPoint = new GeoPoint(-7.795425625273463, 110.36488798392885);
         mapController.setCenter(startPoint);
 

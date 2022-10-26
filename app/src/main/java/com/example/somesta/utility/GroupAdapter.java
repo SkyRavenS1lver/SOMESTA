@@ -13,12 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.somesta.Activity.MainActivity;
 import com.example.somesta.R;
 
+import java.util.ArrayList;
 import java.util.List;
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.HolderData> {
     List<String> listData;
     LayoutInflater inflater;
+    String tipe;
 
-    public GroupAdapter(Context context, List<String> listData) {
+
+    public GroupAdapter(Context context, List<String> listData, String tipe) {
+        this.tipe = tipe;
         this.listData = listData;
         this.inflater = LayoutInflater.from(context);
     }
@@ -35,12 +39,32 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.HolderData> 
         holder.group.setTextOff(listData.get(position));
         holder.group.setTextOn(listData.get(position));
         String name = holder.group.getText().toString();
-        if (MainActivity.clickedList.contains(name)){holder.group.setChecked(true);}
+        if (
+        MainActivity.groupClicked.contains(name) ||
+        MainActivity.statusClicked.contains(name) ||
+        MainActivity.lokasiClicked.contains(name) ||
+        MainActivity.kebutuhanClicked.contains(name) ||
+        MainActivity.jenisClicked.contains(name)
+        )
+        {holder.group.setChecked(true);}
+//        if (this.tipe.contains(name)){holder.group.setChecked(true);}
         holder.group.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b){MainActivity.clickedList.add(name);}
-                else {MainActivity.clickedList.remove(name);}
+                if (b){
+                    if (tipe.equals("group")){MainActivity.groupClicked.add(name);}
+                    else if (tipe.equals("status")){MainActivity.statusClicked.add(name);}
+                    else if (tipe.equals("lokasi")){MainActivity.lokasiClicked.add(name);}
+                    else if (tipe.equals("kebutuhan")){MainActivity.kebutuhanClicked.add(name);}
+                    else if (tipe.equals("jenis")){MainActivity.jenisClicked.add(name);}
+                }
+                else {
+                    if (tipe.equals("group")){MainActivity.groupClicked.remove(name);}
+                    else if (tipe.equals("status")){MainActivity.statusClicked.remove(name);}
+                    else if (tipe.equals("lokasi")){MainActivity.lokasiClicked.remove(name);}
+                    else if (tipe.equals("kebutuhan")){MainActivity.kebutuhanClicked.remove(name);}
+                    else if (tipe.equals("jenis")){MainActivity.jenisClicked.remove(name);}
+                }
             }
         });
     }

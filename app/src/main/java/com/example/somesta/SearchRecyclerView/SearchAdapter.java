@@ -35,7 +35,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     @NonNull
     @Override
     public SearchAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= inflater.inflate(R.layout.item_search, parent, false);
+        View view = inflater.inflate(R.layout.item_search, parent, false);
         return new ViewHolder(view);
     }
 
@@ -52,6 +52,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 IMapController mapController = MainActivity.map.getController();
                 GeoPoint jogja = new GeoPoint(dataPerusahaan.getLocation());
                 mapController.setCenter(jogja);
+                mapController.setZoom(19);
+                clearData();
             }
         });
     }
@@ -70,5 +72,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             textViewNamaPerusahaan = itemView.findViewById(R.id.textViewNamaPerusahaan);
             textViewLokasiPerusahaan = itemView.findViewById(R.id.textViewLokasiPerusahaan);
         }
+    }
+    public void clearData() {
+        values.clear();
+        notifyDataSetChanged();
     }
 }
