@@ -12,6 +12,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.arlib.floatingsearchview.FloatingSearchView;
 import com.example.somesta.Marker.ClickableInfo;
 import com.example.somesta.Marker.Perusahaan;
 
@@ -126,34 +127,57 @@ public class MainActivity extends AppCompatActivity{
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         searchRecyclerView.setAdapter(searchAdapter);
 
-        //Search Bar
-        SearchView searchView = findViewById(R.id.searchView);
-        searchView.setIconified(false);
-        searchView.clearFocus();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
+        
 
+        //Search Bar
+        FloatingSearchView searchView = findViewById(R.id.searchView);
+//        searchView.setIconified(false);
+//        searchView.clearFocus();
+        searchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
             @Override
-            public boolean onQueryTextChange(String s) {
+            public void onSearchTextChanged(String oldQuery, String newQuery) {
                 searchAdapter.notifyDataSetChanged();
-                String searchWord = s;
+                String searchWord = newQuery;
                 perusahaanArrayListFiltered.clear();
                 for (Perusahaan perusahaan : perusahaanArrayList){
                     if(perusahaan.getNama().toLowerCase(Locale.ROOT).contains(searchWord.toLowerCase(Locale.ROOT))
-                    && (groupClicked.size()==0 || groupClicked.contains(perusahaan.getGroup()))
-                    && (statusClicked.size()==0 || statusClicked.contains(perusahaan.getStatus()))
-                    && (lokasiClicked.size()==0 || lokasiClicked.contains(perusahaan.getTempat()))
-                    && (kebutuhanClicked.size()==0 || kebutuhanClicked.contains(perusahaan.getKebutuhan()))
-                    && (jenisClicked.size()==0 || jenisClicked.contains(perusahaan.getJenis()))){
+                            && (groupClicked.size()==0 || groupClicked.contains(perusahaan.getGroup()))
+                            && (statusClicked.size()==0 || statusClicked.contains(perusahaan.getStatus()))
+                            && (lokasiClicked.size()==0 || lokasiClicked.contains(perusahaan.getTempat()))
+                            && (kebutuhanClicked.size()==0 || kebutuhanClicked.contains(perusahaan.getKebutuhan()))
+                            && (jenisClicked.size()==0 || jenisClicked.contains(perusahaan.getJenis()))){
                         perusahaanArrayListFiltered.add(perusahaan);
                     }
                 }
-                return false;
             }
         });
+
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String s) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String s) {
+//                searchAdapter.notifyDataSetChanged();
+//                String searchWord = s;
+//                perusahaanArrayListFiltered.clear();
+//                for (Perusahaan perusahaan : perusahaanArrayList){
+//                    if(perusahaan.getNama().toLowerCase(Locale.ROOT).contains(searchWord.toLowerCase(Locale.ROOT))
+//                    && (groupClicked.size()==0 || groupClicked.contains(perusahaan.getGroup()))
+//                    && (statusClicked.size()==0 || statusClicked.contains(perusahaan.getStatus()))
+//                    && (lokasiClicked.size()==0 || lokasiClicked.contains(perusahaan.getTempat()))
+//                    && (kebutuhanClicked.size()==0 || kebutuhanClicked.contains(perusahaan.getKebutuhan()))
+//                    && (jenisClicked.size()==0 || jenisClicked.contains(perusahaan.getJenis()))){
+//                        perusahaanArrayListFiltered.add(perusahaan);
+//                    }
+//                }
+//                return false;
+//            }
+//        });
+
+
 //        searchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 //            @Override
 //            public void onFocusChange(View view, boolean b) {
