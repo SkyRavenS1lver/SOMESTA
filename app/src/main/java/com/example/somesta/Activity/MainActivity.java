@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity{
     ArrayList<RecyclerView> recyclerViews = new ArrayList<>();
     ArrayList<RecyclerView.ItemDecoration> itemDecorations = new ArrayList<>();
     RecyclerView searchRecyclerView;
-    String searchWord = "";
 
     Set<String>  FBjenisArraySET;
     Set<String>  FBstatusArraySET;
@@ -146,8 +145,18 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public boolean onQueryTextChange(String s) {
                 searchAdapter.notifyDataSetChanged();
-                searchWord = s;
-                makeSuggestion();
+                String searchWord = s;
+                perusahaanArrayListFiltered.clear();
+                for (Perusahaan perusahaan : perusahaanArrayList){
+                    if(perusahaan.getNama().toLowerCase(Locale.ROOT).contains(searchWord.toLowerCase(Locale.ROOT))
+                    && (groupClicked.size()==0 || groupClicked.contains(perusahaan.getGroup()))
+                    && (statusClicked.size()==0 || statusClicked.contains(perusahaan.getStatus()))
+                    && (lokasiClicked.size()==0 || lokasiClicked.contains(perusahaan.getTempat()))
+                    && (kebutuhanClicked.size()==0 || kebutuhanClicked.contains(perusahaan.getKebutuhan()))
+                    && (jenisClicked.size()==0 || jenisClicked.contains(perusahaan.getJenis()))){
+                        perusahaanArrayListFiltered.add(perusahaan);
+                    }
+                }
                 searchRecyclerView.setVisibility(View.VISIBLE);
                 return false;
             }
@@ -340,8 +349,6 @@ public class MainActivity extends AppCompatActivity{
                     public void onClick(View view) {
                         addData();
                         btmSheetDialog.dismiss();
-                        searchAdapter.notifyDataSetChanged();
-                        makeSuggestion();
                     }
                 });
                 //making the reset click
@@ -378,11 +385,9 @@ public class MainActivity extends AppCompatActivity{
                     @Override
                     public void onVisibilityChanged(boolean isOpen) {
                         // some code depending on keyboard visiblity status
-                        searchAdapter.notifyDataSetChanged();
-                        makeSuggestion();
-                        if (isOpen){searchRecyclerView.setVisibility(View.VISIBLE);
+                        if (!isOpen){
+                            searchRecyclerView.setVisibility(View.INVISIBLE);
                         }
-                        else {searchRecyclerView.setVisibility(View.INVISIBLE);}
                     }
                 });
 
@@ -444,7 +449,6 @@ public class MainActivity extends AppCompatActivity{
                 (new Utility.ColumnQty(view.getContext(),layout)).calculateNoOfColumns());
 
         recyclerView.setLayoutManager(gridLayoutManager);
-        //Dihapus biar bagus
         RecyclerView.ItemDecoration itemDecoration = new GridSpacing(
                 (new Utility.ColumnQty(view.getContext(),layout)).calculateSpacing());
         recyclerView.addItemDecoration(itemDecoration);
@@ -456,19 +460,5 @@ public class MainActivity extends AppCompatActivity{
         recyclerViews.add(recyclerView);
         System.out.println(itemDecorations.size());
         System.out.println(recyclerViews.size());
-    }
-
-    public void makeSuggestion(){
-        perusahaanArrayListFiltered.clear();
-        for (Perusahaan perusahaan : perusahaanArrayList){
-            if(perusahaan.getNama().toLowerCase(Locale.ROOT).contains(searchWord.toLowerCase(Locale.ROOT))
-                    && (groupClicked.size()==0 || groupClicked.contains(perusahaan.getGroup()))
-                    && (statusClicked.size()==0 || statusClicked.contains(perusahaan.getStatus()))
-                    && (lokasiClicked.size()==0 || lokasiClicked.contains(perusahaan.getTempat()))
-                    && (kebutuhanClicked.size()==0 || kebutuhanClicked.contains(perusahaan.getKebutuhan()))
-                    && (jenisClicked.size()==0 || jenisClicked.contains(perusahaan.getJenis()))){
-                perusahaanArrayListFiltered.add(perusahaan);
-            }
-        }
     }
 }
