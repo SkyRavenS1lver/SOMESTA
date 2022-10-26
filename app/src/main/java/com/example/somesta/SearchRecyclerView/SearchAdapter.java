@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.somesta.Activity.MainActivity;
 import com.example.somesta.Marker.Perusahaan;
 import com.example.somesta.R;
+import com.j256.ormlite.stmt.query.In;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.util.GeoPoint;

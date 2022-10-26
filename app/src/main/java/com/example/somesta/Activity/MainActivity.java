@@ -1,5 +1,6 @@
 package com.example.somesta.Activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.widget.FrameLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 import com.example.somesta.Marker.ClickableInfo;
 import com.example.somesta.Marker.Perusahaan;
@@ -71,6 +74,7 @@ public class MainActivity extends AppCompatActivity{
     ArrayList<RecyclerView> recyclerViews = new ArrayList<>();
     ArrayList<RecyclerView.ItemDecoration> itemDecorations = new ArrayList<>();
     RecyclerView searchRecyclerView;
+    String searchWord = "";
 
     Set<String>  FBjenisArraySET;
     Set<String>  FBstatusArraySET;
@@ -98,6 +102,9 @@ public class MainActivity extends AppCompatActivity{
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
         map.setClickable(true);
+
+
+
 
 
         //mylocation maker
@@ -139,18 +146,9 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public boolean onQueryTextChange(String s) {
                 searchAdapter.notifyDataSetChanged();
-                String searchWord = s;
-                perusahaanArrayListFiltered.clear();
-                for (Perusahaan perusahaan : perusahaanArrayList){
-                    if(perusahaan.getNama().toLowerCase(Locale.ROOT).contains(searchWord.toLowerCase(Locale.ROOT))
-                    && (groupClicked.size()==0 || groupClicked.contains(perusahaan.getGroup()))
-                    && (statusClicked.size()==0 || statusClicked.contains(perusahaan.getStatus()))
-                    && (lokasiClicked.size()==0 || lokasiClicked.contains(perusahaan.getTempat()))
-                    && (kebutuhanClicked.size()==0 || kebutuhanClicked.contains(perusahaan.getKebutuhan()))
-                    && (jenisClicked.size()==0 || jenisClicked.contains(perusahaan.getJenis()))){
-                        perusahaanArrayListFiltered.add(perusahaan);
-                    }
-                }
+                searchWord = s;
+                makeSuggestion();
+                searchRecyclerView.setVisibility(View.VISIBLE);
                 return false;
             }
         });
@@ -342,6 +340,8 @@ public class MainActivity extends AppCompatActivity{
                     public void onClick(View view) {
                         addData();
                         btmSheetDialog.dismiss();
+                        searchAdapter.notifyDataSetChanged();
+                        makeSuggestion();
                     }
                 });
                 //making the reset click
@@ -372,6 +372,19 @@ public class MainActivity extends AppCompatActivity{
                 btmSheetDialog.show();
             }
         });
+        KeyboardVisibilityEvent.setEventListener(
+                MainActivity.this,
+                new KeyboardVisibilityEventListener() {
+                    @Override
+                    public void onVisibilityChanged(boolean isOpen) {
+                        // some code depending on keyboard visiblity status
+                        searchAdapter.notifyDataSetChanged();
+                        makeSuggestion();
+                        if (isOpen){searchRecyclerView.setVisibility(View.VISIBLE);
+                        }
+                        else {searchRecyclerView.setVisibility(View.INVISIBLE);}
+                    }
+                });
 
 
     }
@@ -443,5 +456,19 @@ public class MainActivity extends AppCompatActivity{
         recyclerViews.add(recyclerView);
         System.out.println(itemDecorations.size());
         System.out.println(recyclerViews.size());
+    }
+
+    public void makeSuggestion(){
+        perusahaanArrayListFiltered.clear();
+        for (Perusahaan perusahaan : perusahaanArrayList){
+            if(perusahaan.getNama().toLowerCase(Locale.ROOT).contains(searchWord.toLowerCase(Locale.ROOT))
+                    && (groupClicked.size()==0 || groupClicked.contains(perusahaan.getGroup()))
+                    && (statusClicked.size()==0 || statusClicked.contains(perusahaan.getStatus()))
+                    && (lokasiClicked.size()==0 || lokasiClicked.contains(perusahaan.getTempat()))
+                    && (kebutuhanClicked.size()==0 || kebutuhanClicked.contains(perusahaan.getKebutuhan()))
+                    && (jenisClicked.size()==0 || jenisClicked.contains(perusahaan.getJenis()))){
+                perusahaanArrayListFiltered.add(perusahaan);
+            }
+        }
     }
 }
