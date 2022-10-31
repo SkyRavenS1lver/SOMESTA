@@ -18,11 +18,11 @@ import java.util.List;
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.HolderData> {
     List<String> listData;
     LayoutInflater inflater;
-    String tipe;
+    ArrayList<String> grouped;
 
 
-    public GroupAdapter(Context context, List<String> listData, String tipe) {
-        this.tipe = tipe;
+    public GroupAdapter(Context context, List<String> listData, ArrayList<String> grouped) {
+        this.grouped = grouped;
         this.listData = listData;
         this.inflater = LayoutInflater.from(context);
     }
@@ -52,18 +52,10 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.HolderData> 
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    if (tipe.equals("group")){MainActivity.groupClicked.add(name);}
-                    else if (tipe.equals("status")){MainActivity.statusClicked.add(name);}
-                    else if (tipe.equals("lokasi")){MainActivity.lokasiClicked.add(name);}
-                    else if (tipe.equals("kebutuhan")){MainActivity.kebutuhanClicked.add(name);}
-                    else if (tipe.equals("jenis")){MainActivity.jenisClicked.add(name);}
+                    grouped.add(name);
                 }
                 else {
-                    if (tipe.equals("group")){MainActivity.groupClicked.remove(name);}
-                    else if (tipe.equals("status")){MainActivity.statusClicked.remove(name);}
-                    else if (tipe.equals("lokasi")){MainActivity.lokasiClicked.remove(name);}
-                    else if (tipe.equals("kebutuhan")){MainActivity.kebutuhanClicked.remove(name);}
-                    else if (tipe.equals("jenis")){MainActivity.jenisClicked.remove(name);}
+                    grouped.remove(name);
                 }
             }
         });
@@ -75,7 +67,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.HolderData> 
     }
 
     public class HolderData extends RecyclerView.ViewHolder{
-        ToggleButton group;
+        public ToggleButton group;
         public HolderData(@NonNull View itemView) {
             super(itemView);
             group = itemView.findViewById(R.id.group);

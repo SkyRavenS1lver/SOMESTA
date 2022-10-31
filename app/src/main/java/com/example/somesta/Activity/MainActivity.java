@@ -53,6 +53,7 @@ import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -72,15 +73,12 @@ public class MainActivity extends AppCompatActivity{
     public static ArrayList<Marker> markers = new ArrayList<>();
     ArrayList<OverlayItem> overlayItemArrayList = new ArrayList<>();
     ArrayList<RecyclerView> recyclerViews = new ArrayList<>();
-    ArrayList<RecyclerView.ItemDecoration> itemDecorations = new ArrayList<>();
     RecyclerView searchRecyclerView;
-
     Set<String>  FBjenisArraySET;
     Set<String>  FBstatusArraySET;
     Set<String>  FBlokasiArraySET;
     Set<String>  FBkebutuhanArraySET;
     Set<String>  FBgroupArraySET;
-
     //Semua data perusahaan disimpan di array ini
     private ArrayList<Perusahaan> perusahaanArrayList = new ArrayList<>();
     //Array untuk menyimpan data yang ter-filter untuk searchView
@@ -177,36 +175,8 @@ public class MainActivity extends AppCompatActivity{
                 FBlokasiArraySET.clear();
                 FBkebutuhanArraySET.clear();
                 FBjenisArraySET.clear();
-
-                //grab group data
-                for (DataSnapshot FBdata : snapshot.getChildren()){
-                    String data = FBdata.child("group").getValue().toString();
-                    FBgroupArraySET.add(data);
-                }
-
-                //grab status data
-                for (DataSnapshot FBdata : snapshot.getChildren()){
-                    String data = FBdata.child("status").getValue().toString();
-                    FBstatusArraySET.add(data);
-                }
-                //grab lokasi data
-                for (DataSnapshot FBdata : snapshot.getChildren()){
-                    String data = FBdata.child("lokasi").getValue().toString();
-                    FBlokasiArraySET.add(data);
-                }
-                //grab kebutuhan data
-                for (DataSnapshot FBdata : snapshot.getChildren()){
-                    String data = FBdata.child("kebutuhan").getValue().toString();
-                    FBkebutuhanArraySET.add(data);
-                }
-                //grab jenis data
-                for (DataSnapshot FBdata : snapshot.getChildren()){
-                    String data = FBdata.child("jenis").getValue().toString();
-                    FBjenisArraySET.add(data);
-                }
-
-                //Grab data to perusahaanArrayList
                 perusahaanArrayList.clear();
+                //Grab data
                 for (DataSnapshot FBdata : snapshot.getChildren()){
                     String dilayani = FBdata.child("dilayani").getValue().toString();
                     String group = FBdata.child("group").getValue().toString();
@@ -221,7 +191,37 @@ public class MainActivity extends AppCompatActivity{
                     String penyalur = FBdata.child("penyalur").getValue().toString();
                     String status = FBdata.child("status").getValue().toString();
                     String tipeCustomer = FBdata.child("tipe_customer").getValue().toString();
+                    FBgroupArraySET.add(group);
+                    FBstatusArraySET.add(status);
+                    FBlokasiArraySET.add(lokasi);
+                    FBkebutuhanArraySET.add(kebutuhan);
+                    FBjenisArraySET.add(jenis);
                     perusahaanArrayList.add(new Perusahaan(dilayani,group,jenis,kebutuhan,point,lokasi,nama,pelayanan,penyalur,status,tipeCustomer));
+//                    //grab group data
+//                    for (DataSnapshot FBdata : snapshot.getChildren()){
+//                        String data = FBdata.child("group").getValue().toString();
+//
+//                    }
+//
+//                    //grab status data
+//                    for (DataSnapshot FBdata : snapshot.getChildren()){
+//                        String data = FBdata.child("status").getValue().toString();
+//
+//                    }
+//                    //grab lokasi data
+//                    for (DataSnapshot FBdata : snapshot.getChildren()){
+//                        String data = FBdata.child("lokasi").getValue().toString();
+//
+//                    }
+//                    //grab kebutuhan data
+//                    for (DataSnapshot FBdata : snapshot.getChildren()){
+//                        String data = FBdata.child("kebutuhan").getValue().toString();
+//
+//                    }
+//                    //grab jenis data
+//                    for (DataSnapshot FBdata : snapshot.getChildren()){
+//                        String data = FBdata.child("jenis").getValue().toString();
+//                    }
                 }
                 //Adding marker
                 addData();
@@ -252,9 +252,8 @@ public class MainActivity extends AppCompatActivity{
 
                 BottomSheetBehavior.from(btmView).setState(BottomSheetBehavior.STATE_EXPANDED);
                 recyclerViews.clear();
-                itemDecorations.clear();
 
-                createRV(btmSheetView,R.id.rvGroup,FBgroupArraySET,R.layout.filter_data,"group");
+                createRV(btmSheetView,R.id.rvGroup,FBgroupArraySET,R.layout.filter_data,groupClicked);
 
 //                // Creating the RV for group
 //                RecyclerView recyclerViewGroup = btmSheetView.findViewById(R.id.rvGroup);
@@ -270,7 +269,7 @@ public class MainActivity extends AppCompatActivity{
 //                groupAdapterGroup = new GroupAdapter(btmSheetView.getContext(), listDataGroup, "group");
 //                recyclerViewGroup.setAdapter(groupAdapterGroup);
 //                groupAdapterGroup.notifyDataSetChanged();
-                createRV(btmSheetView,R.id.rvStatus,FBstatusArraySET,R.layout.filter_data,"status");
+                createRV(btmSheetView,R.id.rvStatus,FBstatusArraySET,R.layout.filter_data,statusClicked);
 //
 //                //Creating RV Status
 //                RecyclerView recyclerViewStatus = btmSheetView.findViewById(R.id.rvStatus);
@@ -288,7 +287,7 @@ public class MainActivity extends AppCompatActivity{
 //                groupAdapterStatus = new GroupAdapter(btmSheetView.getContext(), listDataStatus, "status");
 //                recyclerViewStatus.setAdapter(groupAdapterStatus);
 //                groupAdapterStatus.notifyDataSetChanged();
-                createRV(btmSheetView,R.id.rvLokasi,FBlokasiArraySET,R.layout.filter_data,"lokasi");
+                createRV(btmSheetView,R.id.rvLokasi,FBlokasiArraySET,R.layout.filter_data,lokasiClicked);
 
 //                //Creating RV Lokasi
 //                RecyclerView recyclerViewLokasi = btmSheetView.findViewById(R.id.rvLokasi);
@@ -307,7 +306,7 @@ public class MainActivity extends AppCompatActivity{
 //                recyclerViewLokasi.setAdapter(groupAdapterLokasi);
 //                groupAdapterLokasi.notifyDataSetChanged();
 
-                createRV(btmSheetView,R.id.rvKebutuhan,FBkebutuhanArraySET,R.layout.filter_data,"kebutuhan");
+                createRV(btmSheetView,R.id.rvKebutuhan,FBkebutuhanArraySET,R.layout.filter_data,kebutuhanClicked);
 //                //Creating RV Kebutuhan
 //                RecyclerView recyclerViewKebutuhan = btmSheetView.findViewById(R.id.rvKebutuhan);
 //
@@ -325,7 +324,7 @@ public class MainActivity extends AppCompatActivity{
 //                recyclerViewKebutuhan.setAdapter(groupAdapterKebutuhan);
 //                groupAdapterKebutuhan.notifyDataSetChanged();
 
-                createRV(btmSheetView,R.id.rvJenis,FBjenisArraySET,R.layout.filter_data,"jenis");
+                createRV(btmSheetView,R.id.rvJenis,FBjenisArraySET,R.layout.filter_data,jenisClicked);
 //                //Creating RV Jenis
 //                RecyclerView recyclerViewJenis = btmSheetView.findViewById(R.id.rvJenis);
 //                List<String> FBjenisArray = new ArrayList<String>(FBjenisArraySET); //convert stringSet to ArrayList
@@ -361,17 +360,14 @@ public class MainActivity extends AppCompatActivity{
                         jenisClicked.clear();
                         kebutuhanClicked.clear();
                         lokasiClicked.clear();
-                        for (int i=0;i<recyclerViews.size();i++) {
-                            recyclerViews.get(i).removeItemDecoration(itemDecorations.get(i));
+                        for (int i = 0; i< recyclerViews.size();i++){
+                            RecyclerView recyclerView = recyclerViews.get(i);
+                            for (int k = 0; k < recyclerView.getChildCount(); k++) {
+                                GroupAdapter.HolderData holder = (GroupAdapter.HolderData) recyclerView.findViewHolderForAdapterPosition(k);
+                                holder.group.setChecked(false);
+                            }
                         }
-                        recyclerViews.clear();
-                        itemDecorations.clear();
 
-                        createRV(btmSheetView,R.id.rvGroup,FBgroupArraySET,R.layout.filter_data,"group");
-                        createRV(btmSheetView,R.id.rvStatus,FBstatusArraySET,R.layout.filter_data,"status");
-                        createRV(btmSheetView,R.id.rvLokasi,FBlokasiArraySET,R.layout.filter_data,"lokasi");
-                        createRV(btmSheetView,R.id.rvKebutuhan,FBkebutuhanArraySET,R.layout.filter_data,"kebutuhan");
-                        createRV(btmSheetView,R.id.rvJenis,FBjenisArraySET,R.layout.filter_data,"jenis");
                     }
                 });
 
@@ -411,19 +407,6 @@ public class MainActivity extends AppCompatActivity{
                 ){
                     createMarker(perusahaan);
                 }
-//                if (statusClicked.size()>0 && !statusClicked.contains(perusahaan.getGroup())){
-//                    continue;
-//                }
-//                if (lokasiClicked.size()>0 && !lokasiClicked.contains(perusahaan.getGroup())){
-//                    continue;
-//                }
-//                if (kebutuhanClicked.size()>0 && !kebutuhanClicked.contains(perusahaan.getGroup())){
-//                    continue;
-//                }
-//                if (jenisClicked.size()>0 && !jenisClicked.contains(perusahaan.getGroup())){
-//                    continue;
-//                }
-//                createMarker(perusahaan);
             }
         }
         for (int i=0;i < markers.size();i++){
@@ -440,11 +423,32 @@ public class MainActivity extends AppCompatActivity{
         marker.setIcon(getResources().getDrawable(R.drawable.ic_baseline_location_on_24));
         markers.add(marker);
     }
-    private void createRV(View view, int id, Set<String> set, int layout, String tipe){
+    private void createRV(View view, int id, Set<String> set, int layout, ArrayList<String> grouped){
         RecyclerView recyclerView = view.findViewById(id);
-        List<String> FBArray = new ArrayList<String>(set); //convert stringSet to ArrayList
-        List<String> listData = FBArray; //Pass Kebutuhan Data From Database To RecycleViewGroup
+        ArrayList<String> ListPerusahaan = new ArrayList<>(set);
 
+        ArrayList<String> tempData = new ArrayList<>();
+        tempData.addAll(grouped);
+        tempData.addAll(new ArrayList<>(set));
+//        int batas1 = grouped.size();
+//        int batas2 = ListPerusahaan.size();
+//        if (batas1 > 8){
+//            batas1 = 8;
+//        }
+//        else if (batas1+batas2 > 8){
+//            batas2 = 8 - batas1;
+//        }
+//        for (int i = 0; i<batas1;i++) {
+//            tempData.add(grouped.get(i));
+//        }
+//        if (batas2 > 0){
+//            for (int k = 0; k<batas2;k++) {
+//                tempData.add(ListPerusahaan.get(k));
+//            }
+//        }
+        List<String> listData = new ArrayList<String>(new HashSet<String>(tempData));
+//        List<String> FBArray = new ArrayList<String>(set); //convert stringSet to ArrayList
+//        List<String> listData = FBArray; //Pass Kebutuhan Data From Database To RecycleViewGroup
         GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(),
                 (new Utility.ColumnQty(view.getContext(),layout)).calculateNoOfColumns());
 
@@ -452,13 +456,11 @@ public class MainActivity extends AppCompatActivity{
         RecyclerView.ItemDecoration itemDecoration = new GridSpacing(
                 (new Utility.ColumnQty(view.getContext(),layout)).calculateSpacing());
         recyclerView.addItemDecoration(itemDecoration);
-        itemDecorations.add(itemDecoration);
 
-        GroupAdapter groupAdapter = new GroupAdapter(view.getContext(), listData, tipe);
+        GroupAdapter groupAdapter = new GroupAdapter(view.getContext(), listData, grouped);
         recyclerView.setAdapter(groupAdapter);
         groupAdapter.notifyDataSetChanged();
         recyclerViews.add(recyclerView);
-        System.out.println(itemDecorations.size());
-        System.out.println(recyclerViews.size());
     }
+
 }
