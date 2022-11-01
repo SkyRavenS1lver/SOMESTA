@@ -1,6 +1,5 @@
 package com.example.somesta.Activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -28,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.somesta.R;
 import com.example.somesta.SearchRecyclerView.SearchAdapter;
 import com.example.somesta.databinding.ActivityMainBinding;
+import com.example.somesta.seeAll.allAdapter;
 import com.example.somesta.utility.GridSpacing;
 import com.example.somesta.utility.GroupAdapter;
 import com.example.somesta.utility.Utility;
@@ -60,7 +60,12 @@ import java.util.Locale;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity{
-
+    //Lihat Semua Button
+    TextView allGroup;
+    TextView allStatus;
+    TextView allLokasi;
+    TextView allKebutuhan;
+    TextView allJenis;
 
     private ActivityMainBinding binding;
     public static  MapView map = null;
@@ -72,7 +77,9 @@ public class MainActivity extends AppCompatActivity{
     public static ArrayList<String> lokasiClicked = new ArrayList<>();
     public static ArrayList<Marker> markers = new ArrayList<>();
     ArrayList<OverlayItem> overlayItemArrayList = new ArrayList<>();
+
     ArrayList<RecyclerView> recyclerViews = new ArrayList<>();
+    FloatingActionButton filter_btn;
     RecyclerView searchRecyclerView;
     Set<String>  FBjenisArraySET;
     Set<String>  FBstatusArraySET;
@@ -88,6 +95,19 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        // BottomSheetDialog
+        BottomSheetDialog btmSheetDialog = new BottomSheetDialog(
+                MainActivity.this, R.style.BottomSheetDialogTheme);
+
+        View btmSheetView = LayoutInflater.from(getApplicationContext())
+                .inflate(R.layout.btm_sheet, (FrameLayout)findViewById(R.id.sheets));
+
+        FrameLayout btmView = (FrameLayout) btmSheetView.findViewById(R.id.sheets);
+
+        BottomSheetBehavior.from(btmView).setState(BottomSheetBehavior.STATE_EXPANDED);
+
+
+
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -153,6 +173,9 @@ public class MainActivity extends AppCompatActivity{
                     && (kebutuhanClicked.size()==0 || kebutuhanClicked.contains(perusahaan.getKebutuhan()))
                     && (jenisClicked.size()==0 || jenisClicked.contains(perusahaan.getJenis()))){
                         perusahaanArrayListFiltered.add(perusahaan);
+                    }
+                    if (perusahaanArrayListFiltered.size() == 5){
+                        break;
                     }
                 }
                 searchRecyclerView.setVisibility(View.VISIBLE);
@@ -238,22 +261,28 @@ public class MainActivity extends AppCompatActivity{
         });
 
         // Pembuatan sheet dialog
-        FloatingActionButton filter_btn = (FloatingActionButton) findViewById(R.id.filter);
+        filter_btn = (FloatingActionButton) findViewById(R.id.filter);
         filter_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetDialog btmSheetDialog = new BottomSheetDialog(
-                        MainActivity.this, R.style.BottomSheetDialogTheme);
+                //Creating 5 RV
+                RecyclerView recyclerView;
+                recyclerView = btmSheetView.findViewById(R.id.rvGroup);
+                recyclerViews.add(recyclerView);
 
-                View btmSheetView = LayoutInflater.from(getApplicationContext())
-                        .inflate(R.layout.btm_sheet, (FrameLayout)findViewById(R.id.sheets));
+                recyclerView = btmSheetView.findViewById(R.id.rvStatus);
+                recyclerViews.add(recyclerView);
 
-                FrameLayout btmView = (FrameLayout) btmSheetView.findViewById(R.id.sheets);
+                recyclerView = btmSheetView.findViewById(R.id.rvLokasi);
+                recyclerViews.add(recyclerView);
 
-                BottomSheetBehavior.from(btmView).setState(BottomSheetBehavior.STATE_EXPANDED);
-                recyclerViews.clear();
+                recyclerView = btmSheetView.findViewById(R.id.rvKebutuhan);
+                recyclerViews.add(recyclerView);
 
-                createRV(btmSheetView,R.id.rvGroup,FBgroupArraySET,R.layout.filter_data,groupClicked);
+                recyclerView = btmSheetView.findViewById(R.id.rvJenis);
+                recyclerViews.add(recyclerView);
+
+                createRV(btmSheetView,FBgroupArraySET,groupClicked,0);
 
 //                // Creating the RV for group
 //                RecyclerView recyclerViewGroup = btmSheetView.findViewById(R.id.rvGroup);
@@ -269,7 +298,7 @@ public class MainActivity extends AppCompatActivity{
 //                groupAdapterGroup = new GroupAdapter(btmSheetView.getContext(), listDataGroup, "group");
 //                recyclerViewGroup.setAdapter(groupAdapterGroup);
 //                groupAdapterGroup.notifyDataSetChanged();
-                createRV(btmSheetView,R.id.rvStatus,FBstatusArraySET,R.layout.filter_data,statusClicked);
+                createRV(btmSheetView,FBstatusArraySET,statusClicked,1);
 //
 //                //Creating RV Status
 //                RecyclerView recyclerViewStatus = btmSheetView.findViewById(R.id.rvStatus);
@@ -287,7 +316,7 @@ public class MainActivity extends AppCompatActivity{
 //                groupAdapterStatus = new GroupAdapter(btmSheetView.getContext(), listDataStatus, "status");
 //                recyclerViewStatus.setAdapter(groupAdapterStatus);
 //                groupAdapterStatus.notifyDataSetChanged();
-                createRV(btmSheetView,R.id.rvLokasi,FBlokasiArraySET,R.layout.filter_data,lokasiClicked);
+                createRV(btmSheetView,FBlokasiArraySET,lokasiClicked,2);
 
 //                //Creating RV Lokasi
 //                RecyclerView recyclerViewLokasi = btmSheetView.findViewById(R.id.rvLokasi);
@@ -306,7 +335,7 @@ public class MainActivity extends AppCompatActivity{
 //                recyclerViewLokasi.setAdapter(groupAdapterLokasi);
 //                groupAdapterLokasi.notifyDataSetChanged();
 
-                createRV(btmSheetView,R.id.rvKebutuhan,FBkebutuhanArraySET,R.layout.filter_data,kebutuhanClicked);
+                createRV(btmSheetView,FBkebutuhanArraySET,kebutuhanClicked,3);
 //                //Creating RV Kebutuhan
 //                RecyclerView recyclerViewKebutuhan = btmSheetView.findViewById(R.id.rvKebutuhan);
 //
@@ -324,7 +353,7 @@ public class MainActivity extends AppCompatActivity{
 //                recyclerViewKebutuhan.setAdapter(groupAdapterKebutuhan);
 //                groupAdapterKebutuhan.notifyDataSetChanged();
 
-                createRV(btmSheetView,R.id.rvJenis,FBjenisArraySET,R.layout.filter_data,jenisClicked);
+                createRV(btmSheetView,FBjenisArraySET,jenisClicked, 4);
 //                //Creating RV Jenis
 //                RecyclerView recyclerViewJenis = btmSheetView.findViewById(R.id.rvJenis);
 //                List<String> FBjenisArray = new ArrayList<String>(FBjenisArraySET); //convert stringSet to ArrayList
@@ -350,6 +379,49 @@ public class MainActivity extends AppCompatActivity{
                         btmSheetDialog.dismiss();
                     }
                 });
+
+                //seeAll logic
+                allGroup = btmSheetView.findViewById(R.id.allGroup);
+                allJenis = btmSheetView.findViewById(R.id.allJenis);
+                allKebutuhan = btmSheetView.findViewById(R.id.allKebutuhan);
+                allLokasi = btmSheetView.findViewById(R.id.allLokasi);
+                allStatus = btmSheetView.findViewById(R.id.allStatus);
+
+                allGroup.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        checkBoxes(btmSheetView,FBgroupArraySET,groupClicked, "Group");
+                    }
+                });
+                allJenis.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        checkBoxes(btmSheetView,FBjenisArraySET,jenisClicked, "Jenis");
+                    }
+                });
+                allKebutuhan.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        checkBoxes(btmSheetView,FBkebutuhanArraySET,kebutuhanClicked, "Kebutuhan");
+                    }
+                });
+                allLokasi.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        checkBoxes(btmSheetView,FBlokasiArraySET,lokasiClicked, "Lokasi");
+                    }
+                });
+                allStatus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        checkBoxes(btmSheetView,FBstatusArraySET,statusClicked, "Status");
+                    }
+                });
+
+
+
+
+
                 //making the reset click
                 TextView reset = btmSheetView.findViewById(R.id.filterReset);
                 reset.setOnClickListener(new View.OnClickListener() {
@@ -367,7 +439,6 @@ public class MainActivity extends AppCompatActivity{
                                 holder.group.setChecked(false);
                             }
                         }
-
                     }
                 });
 
@@ -423,44 +494,107 @@ public class MainActivity extends AppCompatActivity{
         marker.setIcon(getResources().getDrawable(R.drawable.ic_baseline_location_on_24));
         markers.add(marker);
     }
-    private void createRV(View view, int id, Set<String> set, int layout, ArrayList<String> grouped){
-        RecyclerView recyclerView = view.findViewById(id);
-        ArrayList<String> ListPerusahaan = new ArrayList<>(set);
-
-        ArrayList<String> tempData = new ArrayList<>();
-        tempData.addAll(grouped);
-        tempData.addAll(new ArrayList<>(set));
-//        int batas1 = grouped.size();
-//        int batas2 = ListPerusahaan.size();
-//        if (batas1 > 8){
-//            batas1 = 8;
-//        }
-//        else if (batas1+batas2 > 8){
-//            batas2 = 8 - batas1;
-//        }
-//        for (int i = 0; i<batas1;i++) {
-//            tempData.add(grouped.get(i));
-//        }
-//        if (batas2 > 0){
-//            for (int k = 0; k<batas2;k++) {
-//                tempData.add(ListPerusahaan.get(k));
-//            }
-//        }
-        List<String> listData = new ArrayList<String>(new HashSet<String>(tempData));
+    private void createRV(View view, Set<String> set, ArrayList<String> grouped, int urutan){
+        List<String> listData = new ArrayList<>();
+        RecyclerView recyclerView = recyclerViews.get(urutan);
+        int batas = grouped.size();
+        if (batas > 8){
+            listData.addAll(grouped);
+        }
+        else {
+            ArrayList<String> tempData = new ArrayList<>();
+            tempData.addAll(grouped);
+            tempData.addAll(new ArrayList<>(set));
+            List<String> temporaryHash = new ArrayList<>(new HashSet<String>(tempData));
+            batas = temporaryHash.size();
+            if (batas > 8){batas = 8;}
+            for (int i = 0; i < batas; i++){
+                listData.add(temporaryHash.get(i));
+            }}
 //        List<String> FBArray = new ArrayList<String>(set); //convert stringSet to ArrayList
 //        List<String> listData = FBArray; //Pass Kebutuhan Data From Database To RecycleViewGroup
+//        tempData.addAll(grouped);
+//        tempData.addAll(new ArrayList<>(set));
+//        List<String> temporaryHash = new ArrayList<>(new HashSet<String>(tempData));
+//        int batas = temporaryHash.size();
+//        List<String> listData = new ArrayList<>();
+//        if (batas > 8){
+//            batas = 8;
+//            for (int i = 0; i < batas; i++){
+//                listData.add(temporaryHash.get(i));
+//            }
+//        }
         GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(),
-                (new Utility.ColumnQty(view.getContext(),layout)).calculateNoOfColumns());
+                (new Utility.ColumnQty(view.getContext(),R.layout.filter_data)).calculateNoOfColumns());
 
         recyclerView.setLayoutManager(gridLayoutManager);
-        RecyclerView.ItemDecoration itemDecoration = new GridSpacing(
-                (new Utility.ColumnQty(view.getContext(),layout)).calculateSpacing());
-        recyclerView.addItemDecoration(itemDecoration);
+//        RecyclerView.ItemDecoration itemDecoration = new GridSpacing(
+//                (new Utility.ColumnQty(view.getContext(),R.layout.filter_data)).calculateSpacing());
+//        recyclerView.addItemDecoration(itemDecoration);
 
         GroupAdapter groupAdapter = new GroupAdapter(view.getContext(), listData, grouped);
-        recyclerView.setAdapter(groupAdapter);
+//        recyclerView.setAdapter(groupAdapter);
+        recyclerViews.get(urutan).setAdapter(groupAdapter);
         groupAdapter.notifyDataSetChanged();
-        recyclerViews.add(recyclerView);
+
+    }
+
+    //See all checkboxes
+    public void checkBoxes(View views, Set<String> set, ArrayList<String> grouped, String nama){
+        BottomSheetDialog btmSheetDialogs = new BottomSheetDialog(
+                MainActivity.this, R.style.BottomSheetDialogTheme);
+
+        View btmSheetView = LayoutInflater.from(getApplicationContext())
+                .inflate(R.layout.see_all_layout, (FrameLayout)findViewById(R.id.sheets));
+        TextView namaFilter = btmSheetView.findViewById(R.id.nama);
+        ArrayList<String> temporary = new ArrayList<>(grouped);
+        namaFilter.setText(nama);
+
+
+        FrameLayout btmView = (FrameLayout) btmSheetView.findViewById(R.id.sheets);
+        BottomSheetBehavior.from(btmView).setState(BottomSheetBehavior.STATE_EXPANDED);
+        btmSheetDialogs.setContentView(btmSheetView);
+        Button btnFilter = btmSheetView.findViewById(R.id.buttonFiltering);
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (nama.equals("Group")) {groupClicked = new ArrayList<>(temporary); createRV(views, set, groupClicked,0);}
+                else if (nama.equals("Status")) {statusClicked = new ArrayList<>(temporary); createRV(views, set, statusClicked,1);}
+                else if (nama.equals("Lokasi")) {lokasiClicked = new ArrayList<>(temporary); createRV(views, set, lokasiClicked,2);}
+                else if (nama.equals("Kebutuhan")) {kebutuhanClicked = new ArrayList<>(temporary); createRV(views, set, kebutuhanClicked,3);}
+                else if (nama.equals("Jenis")) {jenisClicked = new ArrayList<>(temporary); createRV(views, set, jenisClicked,4);}
+                btmSheetDialogs.dismiss();
+//                for (int j = 0; j < rvGroup.getChildCount(); j++) {
+//                    GroupAdapter.HolderData holder = (GroupAdapter.HolderData) rvGroup.findViewHolderForAdapterPosition(j);
+//                    if (){holder.group.setChecked(false);}
+
+                }
+
+        });
+
+
+
+
+        RecyclerView recyclerView = btmSheetView.findViewById(R.id.allRv);
+        List<String> listData = new ArrayList<>(set);
+        recyclerView.setLayoutManager(new LinearLayoutManager(btmSheetView.getContext()));
+        allAdapter allAdapter = new allAdapter(btmSheetView.getContext(), listData, temporary, nama);
+        recyclerView.setAdapter(allAdapter);
+        allAdapter.notifyDataSetChanged();
+        TextView resets = btmSheetView.findViewById(R.id.filterReset);
+        resets.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                temporary.clear();
+                for (int k = 0; k < recyclerView.getChildCount(); k++) {
+                    allAdapter.HolderData holder = (com.example.somesta.seeAll.allAdapter.HolderData) recyclerView.findViewHolderForAdapterPosition(k);
+                    holder.group.setChecked(false);
+                }
+            }
+        }
+        );
+        btmSheetDialogs.show();
+
     }
 
 }

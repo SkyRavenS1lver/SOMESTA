@@ -61,43 +61,94 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Group"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/txtSizeBtmSheet"
-                        android:layout_marginTop="@dimen/elemenY"
-                        />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Group"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/txtSizeBtmSheet"
+                            android:layout_marginTop="@dimen/elemenY"
+                            android:layout_weight="1"
+                            />
+                        <TextView
+                            android:id="@+id/allGroup"
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Lihat Semua"
+                            android:textColor="@android:color/holo_red_dark"
+                            android:textSize="@dimen/txtSizeBtmSheet"
+                            android:layout_marginTop="@dimen/elemenY"
+                            android:gravity="end"
+                            />
+                    </LinearLayout>
                     <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:scrollbars="none"
                         android:id="@+id/rvGroup"/>
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Status"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/txtSizeBtmSheet"
-                        android:layout_marginTop="@dimen/elemenY"
-                        />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Status"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/txtSizeBtmSheet"
+                            android:layout_marginTop="@dimen/elemenY"
+                            android:layout_weight="1"
+                            />
+                        <TextView
+                            android:id="@+id/allStatus"
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Lihat Semua"
+                            android:textColor="@android:color/holo_red_dark"
+                            android:textSize="@dimen/txtSizeBtmSheet"
+                            android:layout_marginTop="@dimen/elemenY"
+                            android:gravity="end"
+                            />
+                    </LinearLayout>
                     <androidx.recyclerview.widget.RecyclerView
                         android:scrollbars="none"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/rvStatus"/>
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Lokasi"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/txtSizeBtmSheet"
-                        android:layout_marginTop="@dimen/elemenY"
-                        />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Lokasi"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/txtSizeBtmSheet"
+                            android:layout_marginTop="@dimen/elemenY"
+                            android:layout_weight="1"
+                            />
+                        <TextView
+                            android:id="@+id/allLokasi"
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Lihat Semua"
+                            android:textColor="@android:color/holo_red_dark"
+                            android:textSize="@dimen/txtSizeBtmSheet"
+                            android:layout_marginTop="@dimen/elemenY"
+                            android:gravity="end"
+                            />
+                    </LinearLayout>
                     <androidx.recyclerview.widget.RecyclerView
                         android:scrollbars="none"
                         android:layout_width="match_parent"
@@ -105,29 +156,63 @@
                         android:id="@+id/rvLokasi"/>
 
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Kebutuhan Per Bulan"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/txtSizeBtmSheet"
-                        android:layout_marginTop="@dimen/elemenY"
-                        />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Kebutuhan per bulan"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/txtSizeBtmSheet"
+                            android:layout_marginTop="@dimen/elemenY"
+                            android:layout_weight="1"
+                            />
+                        <TextView
+                            android:id="@+id/allKebutuhan"
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Lihat Semua"
+                            android:textColor="@android:color/holo_red_dark"
+                            android:textSize="@dimen/txtSizeBtmSheet"
+                            android:layout_marginTop="@dimen/elemenY"
+                            android:gravity="end"
+                            />
+                    </LinearLayout>
                     <androidx.recyclerview.widget.RecyclerView
                         android:scrollbars="none"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/rvKebutuhan"/>
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Jenis Industri"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/txtSizeBtmSheet"
-                        android:layout_marginTop="@dimen/elemenY"
-                        />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Jenis Industri"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/txtSizeBtmSheet"
+                            android:layout_marginTop="@dimen/elemenY"
+                            android:layout_weight="1"
+                            />
+                        <TextView
+                            android:id="@+id/allJenis"
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Lihat Semua"
+                            android:textColor="@android:color/holo_red_dark"
+                            android:textSize="@dimen/txtSizeBtmSheet"
+                            android:layout_marginTop="@dimen/elemenY"
+                            android:gravity="end"
+                            />
+                    </LinearLayout>
                     <androidx.recyclerview.widget.RecyclerView
                         android:scrollbars="none"
                         android:layout_width="match_parent"
@@ -142,7 +227,7 @@
                 android:id="@+id/buttonFiltering"
                 style="@style/filterBTN"
                 android:layout_weight="5"
-                android:text="Filter"
+                android:text="Terapkan Filter"
                 android:layout_marginHorizontal="50dp"
                 android:layout_marginVertical="10dp"/>
         </LinearLayout>

@@ -8,4 +8,5 @@
         android:paddingLeft="3dp"
         android:paddingRight="3dp"
         style="@style/ToggleStyle"
+        android:layout_margin="5dp"
         />
