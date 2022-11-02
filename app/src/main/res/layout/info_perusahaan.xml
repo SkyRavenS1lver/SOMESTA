@@ -26,21 +26,21 @@
                 android:orientation="vertical"
                 android:layout_marginLeft="@dimen/btmSheetX"
                 android:layout_marginRight="@dimen/btmSheetX">
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginVertical="20dp">
 
                     <TextView
-                        android:id="@+id/namaPerusahaan"
+                        android:id="@+id/textDeskripsiCustomer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nama Perusahaan"
+                        android:text="Deskripsi Customer"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/txtSizeBtmSheet"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:textSize="@dimen/description"
+                        android:textStyle="bold" />
+                </LinearLayout>
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -53,14 +53,34 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Nama Perusahaan:"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/description"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/namaPerusahaan"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Sample"
+                                android:textColor="@color/pert_gray"
+                                android:textSize="@dimen/description"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Dilayani: "
                                 android:textColor="@color/black"
                                 android:textStyle="bold"
-                                android:textSize="@dimen/txtSizeBtmSheet"
+                                android:textSize="@dimen/description"
                                 android:layout_marginTop="@dimen/elemenY"
                                 android:layout_weight="2"
                                 />
@@ -69,24 +89,22 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Sample"
-                                android:textColor="@color/black"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/txtSizeBtmSheet"
-                                android:layout_marginTop="@dimen/elemenY"
+                                android:textColor="@color/pert_gray"
+                                android:textSize="@dimen/description"
                                 android:layout_weight="1"
                                 />
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Group: "
                                 android:textColor="@color/black"
                                 android:textStyle="bold"
-                                android:textSize="@dimen/txtSizeBtmSheet"
+                                android:textSize="@dimen/description"
                                 android:layout_marginTop="@dimen/elemenY"
                                 android:layout_weight="2"
                                 />
@@ -95,24 +113,23 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Sample"
-                                android:textColor="@color/black"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/txtSizeBtmSheet"
-                                android:layout_marginTop="@dimen/elemenY"
+                                android:textColor="@color/pert_gray"
+                                android:textSize="@dimen/description"
+
                                 android:layout_weight="1"
                                 />
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Jenis: "
                                 android:textColor="@color/black"
                                 android:textStyle="bold"
-                                android:textSize="@dimen/txtSizeBtmSheet"
+                                android:textSize="@dimen/description"
                                 android:layout_marginTop="@dimen/elemenY"
                                 android:layout_weight="2"
                                 />
@@ -121,24 +138,22 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Sample"
-                                android:textColor="@color/black"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/txtSizeBtmSheet"
-                                android:layout_marginTop="@dimen/elemenY"
+                                android:textColor="@color/pert_gray"
+                                android:textSize="@dimen/description"
                                 android:layout_weight="1"
                                 />
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Kebutuhan: "
                                 android:textColor="@color/black"
                                 android:textStyle="bold"
-                                android:textSize="22sp"
+                                android:textSize="@dimen/description"
                                 android:layout_marginTop="@dimen/elemenY"
                                 android:layout_weight="2"
                                 />
@@ -147,24 +162,22 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Sample"
-                                android:textColor="@color/black"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/txtSizeBtmSheet"
-                                android:layout_marginTop="@dimen/elemenY"
+                                android:textColor="@color/pert_gray"
+                                android:textSize="@dimen/description"
                                 android:layout_weight="1"
                                 />
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Koordinat: "
                                 android:textColor="@color/black"
                                 android:textStyle="bold"
-                                android:textSize="@dimen/txtSizeBtmSheet"
+                                android:textSize="@dimen/description"
                                 android:layout_marginTop="@dimen/elemenY"
                                 android:layout_weight="2"
                                 />
@@ -173,24 +186,22 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Sample"
-                                android:textColor="@color/black"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/txtSizeBtmSheet"
-                                android:layout_marginTop="@dimen/elemenY"
+                                android:textColor="@color/pert_gray"
+                                android:textSize="@dimen/description"
                                 android:layout_weight="1"
                                 />
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Lokasi: "
                                 android:textColor="@color/black"
                                 android:textStyle="bold"
-                                android:textSize="@dimen/txtSizeBtmSheet"
+                                android:textSize="@dimen/description"
                                 android:layout_marginTop="@dimen/elemenY"
                                 android:layout_weight="2"
                                 />
@@ -199,24 +210,22 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Sample"
-                                android:textColor="@color/black"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/txtSizeBtmSheet"
-                                android:layout_marginTop="@dimen/elemenY"
+                                android:textColor="@color/pert_gray"
+                                android:textSize="@dimen/description"
                                 android:layout_weight="1"
                                 />
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Pelayanan: "
                                 android:textColor="@color/black"
                                 android:textStyle="bold"
-                                android:textSize="23sp"
+                                android:textSize="@dimen/description"
                                 android:layout_marginTop="@dimen/elemenY"
                                 android:layout_weight="2"
                                 />
@@ -225,24 +234,22 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Sample"
-                                android:textColor="@color/black"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/txtSizeBtmSheet"
-                                android:layout_marginTop="@dimen/elemenY"
+                                android:textColor="@color/pert_gray"
+                                android:textSize="@dimen/description"
                                 android:layout_weight="1"
                                 />
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Penyalur: "
                                 android:textColor="@color/black"
                                 android:textStyle="bold"
-                                android:textSize="@dimen/txtSizeBtmSheet"
+                                android:textSize="@dimen/description"
                                 android:layout_marginTop="@dimen/elemenY"
                                 android:layout_weight="2"
                                 />
@@ -251,10 +258,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Sample"
-                                android:textColor="@color/black"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/txtSizeBtmSheet"
-                                android:layout_marginTop="@dimen/elemenY"
+                                android:textColor="@color/pert_gray"
+                                android:textSize="@dimen/description"
                                 android:layout_weight="1"
                                 />
                         </LinearLayout>
@@ -262,14 +267,14 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Status: "
                                 android:textColor="@color/black"
                                 android:textStyle="bold"
-                                android:textSize="@dimen/txtSizeBtmSheet"
+                                android:textSize="@dimen/description"
                                 android:layout_marginTop="@dimen/elemenY"
                                 android:layout_weight="2"
                                 />
@@ -278,17 +283,15 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Sample"
-                                android:textColor="@color/black"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/txtSizeBtmSheet"
-                                android:layout_marginTop="@dimen/elemenY"
+                                android:textColor="@color/pert_gray"
+                                android:textSize="@dimen/description"
                                 android:layout_weight="1"
                                 />
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -304,10 +307,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Sample"
-                                android:textColor="@color/black"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/txtSizeBtmSheet"
-                                android:layout_marginTop="@dimen/elemenY"
+                                android:textColor="@color/pert_gray"
+                                android:textSize="@dimen/description"
                                 android:layout_weight="1"
                                 />
                         </LinearLayout>

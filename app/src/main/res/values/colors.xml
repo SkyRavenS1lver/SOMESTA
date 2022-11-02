@@ -4,5 +4,13 @@
 
     <color name="white">#FFFFFFFF</color>
     <color name="btmnavbg">#C62828</color>
-    <color name="btmfloat">#B71C1C</color>
+
+    <!--Pertamina Colors/pert-->
+    <color name="btmfloat">#101410</color>
+    <color name="pert_dark">#101410</color>
+    <color name="pert_gray">#868686</color>
+    <color name="pert_gray_incative">#ECECEC</color>
+    <color name="pert_green">#ADC52D</color>
+    <color name="pert_blue_light">#3E85E9</color>
+    <color name="pert_red_light">#DF2230</color>
 </resources>
