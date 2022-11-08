@@ -29,9 +29,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.somesta.R;
 import com.example.somesta.SearchRecyclerView.SearchAdapter;
 import com.example.somesta.databinding.ActivityMainBinding;
+import com.example.somesta.seeAll.allAdapter;
 import com.example.somesta.utility.GridSpacing;
 import com.example.somesta.utility.GroupAdapter;
 import com.example.somesta.utility.Utility;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -60,22 +64,22 @@ import java.util.Locale;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity{
+    private String penanda;
 
 
     private ActivityMainBinding binding;
     public static  MapView map = null;
     LocationManager locationManager;
-    public static ArrayList<String> groupClicked = new ArrayList<>();
-    public static ArrayList<String> statusClicked = new ArrayList<>();
-    public static ArrayList<String> jenisClicked = new ArrayList<>();
-    public static ArrayList<String> kebutuhanClicked = new ArrayList<>();
-    public static ArrayList<String> lokasiClicked = new ArrayList<>();
+    public HashSet<String> groupClicked = new HashSet<>();
+    public static HashSet<String> temp = new HashSet<>();
+    public HashSet<String> statusClicked = new HashSet<>();
+    public HashSet<String> jenisClicked = new HashSet<>();
+    public HashSet<String> kebutuhanClicked = new HashSet<>();
+    public HashSet<String> lokasiClicked = new HashSet<>();
     public static ArrayList<Marker> markers = new ArrayList<>();
     ArrayList<OverlayItem> overlayItemArrayList = new ArrayList<>();
     ArrayList<RecyclerView> recyclerViews = new ArrayList<>();
-    ArrayList<RecyclerView.ItemDecoration> itemDecorations = new ArrayList<>();
     RecyclerView searchRecyclerView;
-
     Set<String>  FBjenisArraySET;
     Set<String>  FBstatusArraySET;
     Set<String>  FBlokasiArraySET;
@@ -91,6 +95,154 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        // BottomSheetDialog
+        BottomSheetDialog btmSheetDialog = new BottomSheetDialog(
+                MainActivity.this, R.style.BottomSheetDialogTheme);
+
+        View btmSheetView = LayoutInflater.from(getApplicationContext())
+                .inflate(R.layout.btm_sheet, (FrameLayout)findViewById(R.id.sheets));
+
+        FrameLayout btmView = (FrameLayout) btmSheetView.findViewById(R.id.sheets);
+
+        BottomSheetBehavior.from(btmView).setState(BottomSheetBehavior.STATE_EXPANDED);
+        btmSheetDialog.setContentView(btmSheetView);
+        //Creating 5 RV
+        createRV(btmSheetView,R.id.rvGroup,groupClicked);
+        createRV(btmSheetView,R.id.rvStatus,statusClicked);
+        createRV(btmSheetView,R.id.rvLokasi,lokasiClicked);
+        createRV(btmSheetView,R.id.rvKebutuhan,kebutuhanClicked);
+        createRV(btmSheetView,R.id.rvJenis,jenisClicked);
+        TextView reset = btmSheetView.findViewById(R.id.filterReset);
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                groupClicked.clear();
+                statusClicked.clear();
+                jenisClicked.clear();
+                kebutuhanClicked.clear();
+                lokasiClicked.clear();
+                for (int i = 0; i< recyclerViews.size();i++){
+                    RecyclerView recyclerView = recyclerViews.get(i);
+                    for (int k = 0; k < recyclerView.getChildCount(); k++) {
+                        GroupAdapter.HolderData holder = (GroupAdapter.HolderData) recyclerView.findViewHolderForAdapterPosition(k);
+                        holder.group.setChecked(false);
+                    }
+                }
+            }
+        });
+        //Making the filter button
+//        Button filteringBtn = btmSheetView.findViewById(R.id.buttonFiltering);
+        btmSheetView.findViewById(R.id.buttonFiltering).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addData();
+                btmSheetDialog.dismiss();
+            }
+        });
+
+
+        //onprogress
+        BottomSheetDialog btmSheetDialogGroup = new BottomSheetDialog(
+                MainActivity.this, R.style.BottomSheetDialogTheme);
+        View btmSheetViewGroup = LayoutInflater.from(getApplicationContext())
+                .inflate(R.layout.see_all_layout, (FrameLayout) findViewById(R.id.sheets2));
+
+        FrameLayout btmViewGroup = (FrameLayout) btmSheetViewGroup.findViewById(R.id.sheets2);
+        BottomSheetBehavior.from(btmViewGroup).setState(BottomSheetBehavior.STATE_EXPANDED);
+        btmSheetDialogGroup.setContentView(btmSheetViewGroup);
+        RecyclerView recyclerViewGroup = btmSheetViewGroup.findViewById(R.id.allRv);
+        recyclerViewGroup.setLayoutManager(new LinearLayoutManager(btmSheetViewGroup.getContext()));
+        allAdapter allAdapterGroup = new allAdapter(btmSheetViewGroup.getContext(), new ArrayList<>(), temp);
+        recyclerViewGroup.setAdapter(allAdapterGroup);
+
+        btmSheetViewGroup.findViewById(R.id.filterReset).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                temp.clear();
+                for (int k = 0; k < recyclerViewGroup.getChildCount(); k++) {
+                    allAdapter.HolderData holder = (com.example.somesta.seeAll.allAdapter.HolderData) recyclerViewGroup.findViewHolderForAdapterPosition(k);
+                    holder.group.setChecked(false);
+                }
+            }
+        });
+
+        btmSheetViewGroup.findViewById(R.id.buttonFiltering).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (penanda){
+                    case "Group":
+                        groupClicked.clear();
+                        groupClicked.addAll(new HashSet<>(temp));
+                        addingData((GroupAdapter) recyclerViews.get(0).getAdapter(),FBgroupArraySET,groupClicked);
+                        break;
+                    case "Status":
+                        statusClicked.clear();
+                        statusClicked.addAll(new HashSet<>(temp));
+                        addingData((GroupAdapter) recyclerViews.get(1).getAdapter(),FBstatusArraySET,statusClicked);
+                        break;
+                    case "Lokasi":
+                        lokasiClicked.clear();
+                        lokasiClicked.addAll(new HashSet<>(temp));
+                        addingData((GroupAdapter) recyclerViews.get(2).getAdapter(),FBlokasiArraySET,lokasiClicked);
+                        break;
+                    case "Kebutuhan":
+                        kebutuhanClicked.clear();
+                        kebutuhanClicked.addAll(new HashSet<>(temp));
+                        addingData((GroupAdapter) recyclerViews.get(3).getAdapter(),FBkebutuhanArraySET,kebutuhanClicked);
+                        break;
+                    case "Jenis":
+                        jenisClicked.clear();
+                        jenisClicked.addAll(new HashSet<>(temp));
+                        addingData((GroupAdapter) recyclerViews.get(4).getAdapter(),FBjenisArraySET,jenisClicked);
+                        break;
+                }
+
+                btmSheetDialogGroup.dismiss();
+            }
+
+        });
+
+        //See all on click
+        btmSheetView.findViewById(R.id.allGroup).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                penanda = "Group";
+                updateSeeAll(btmSheetViewGroup,allAdapterGroup,penanda,FBgroupArraySET,groupClicked);
+                btmSheetDialogGroup.show();
+            }
+        });
+        btmSheetView.findViewById(R.id.allStatus).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                penanda = "Status";
+                updateSeeAll(btmSheetViewGroup,allAdapterGroup,penanda,FBstatusArraySET,statusClicked);
+                btmSheetDialogGroup.show();
+            }
+        });
+        btmSheetView.findViewById(R.id.allLokasi).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                penanda = "Lokasi";
+                updateSeeAll(btmSheetViewGroup,allAdapterGroup,penanda,FBlokasiArraySET,lokasiClicked);
+                btmSheetDialogGroup.show();
+            }
+        });
+        btmSheetView.findViewById(R.id.allKebutuhan).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                penanda = "Kebutuhan";
+                updateSeeAll(btmSheetViewGroup,allAdapterGroup,penanda,FBkebutuhanArraySET,kebutuhanClicked);
+                btmSheetDialogGroup.show();
+            }
+        });
+        btmSheetView.findViewById(R.id.allJenis).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                penanda = "Jenis";
+                updateSeeAll(btmSheetViewGroup,allAdapterGroup,penanda,FBjenisArraySET,jenisClicked);
+                btmSheetDialogGroup.show();
+            }
+        });
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -102,8 +254,6 @@ public class MainActivity extends AppCompatActivity{
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
         map.setClickable(true);
-
-
 
 
 
@@ -153,6 +303,7 @@ public class MainActivity extends AppCompatActivity{
                             && (jenisClicked.size()==0 || jenisClicked.contains(perusahaan.getJenis()))){
                         perusahaanArrayListFiltered.add(perusahaan);
                     }
+                    if(perusahaanArrayListFiltered.size() == 5){break;}
                 }
                 searchRecyclerView.setVisibility(View.VISIBLE);
             }
@@ -210,36 +361,8 @@ public class MainActivity extends AppCompatActivity{
                 FBlokasiArraySET.clear();
                 FBkebutuhanArraySET.clear();
                 FBjenisArraySET.clear();
-
-                //grab group data
-                for (DataSnapshot FBdata : snapshot.getChildren()){
-                    String data = FBdata.child("group").getValue().toString();
-                    FBgroupArraySET.add(data);
-                }
-
-                //grab status data
-                for (DataSnapshot FBdata : snapshot.getChildren()){
-                    String data = FBdata.child("status").getValue().toString();
-                    FBstatusArraySET.add(data);
-                }
-                //grab lokasi data
-                for (DataSnapshot FBdata : snapshot.getChildren()){
-                    String data = FBdata.child("lokasi").getValue().toString();
-                    FBlokasiArraySET.add(data);
-                }
-                //grab kebutuhan data
-                for (DataSnapshot FBdata : snapshot.getChildren()){
-                    String data = FBdata.child("kebutuhan").getValue().toString();
-                    FBkebutuhanArraySET.add(data);
-                }
-                //grab jenis data
-                for (DataSnapshot FBdata : snapshot.getChildren()){
-                    String data = FBdata.child("jenis").getValue().toString();
-                    FBjenisArraySET.add(data);
-                }
-
-                //Grab data to perusahaanArrayList
                 perusahaanArrayList.clear();
+                //Grab data
                 for (DataSnapshot FBdata : snapshot.getChildren()){
                     String dilayani = FBdata.child("dilayani").getValue().toString();
                     String group = FBdata.child("group").getValue().toString();
@@ -254,8 +377,20 @@ public class MainActivity extends AppCompatActivity{
                     String penyalur = FBdata.child("penyalur").getValue().toString();
                     String status = FBdata.child("status").getValue().toString();
                     String tipeCustomer = FBdata.child("tipe_customer").getValue().toString();
+                    FBgroupArraySET.add(group);
+                    FBstatusArraySET.add(status);
+                    FBlokasiArraySET.add(lokasi);
+                    FBkebutuhanArraySET.add(kebutuhan);
+                    FBjenisArraySET.add(jenis);
                     perusahaanArrayList.add(new Perusahaan(dilayani,group,jenis,kebutuhan,point,lokasi,nama,pelayanan,penyalur,status,tipeCustomer));
                 }
+                //Adding Data to List Data
+                addingData((GroupAdapter) recyclerViews.get(0).getAdapter(),FBgroupArraySET,groupClicked);
+                addingData((GroupAdapter) recyclerViews.get(1).getAdapter(),FBstatusArraySET,statusClicked);
+                addingData((GroupAdapter) recyclerViews.get(2).getAdapter(),FBlokasiArraySET,lokasiClicked);
+                addingData((GroupAdapter) recyclerViews.get(3).getAdapter(),FBkebutuhanArraySET,kebutuhanClicked);
+                addingData((GroupAdapter) recyclerViews.get(4).getAdapter(),FBjenisArraySET,jenisClicked);
+
                 //Adding marker
                 addData();
                 //Notify adapter, onDataChange works asynchronously
@@ -275,140 +410,6 @@ public class MainActivity extends AppCompatActivity{
         filter_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetDialog btmSheetDialog = new BottomSheetDialog(
-                        MainActivity.this, R.style.BottomSheetDialogTheme);
-
-                View btmSheetView = LayoutInflater.from(getApplicationContext())
-                        .inflate(R.layout.btm_sheet, (FrameLayout)findViewById(R.id.sheets));
-
-                FrameLayout btmView = (FrameLayout) btmSheetView.findViewById(R.id.sheets);
-
-                BottomSheetBehavior.from(btmView).setState(BottomSheetBehavior.STATE_EXPANDED);
-                recyclerViews.clear();
-                itemDecorations.clear();
-
-                createRV(btmSheetView,R.id.rvGroup,FBgroupArraySET,R.layout.filter_data,"group");
-
-//                // Creating the RV for group
-//                RecyclerView recyclerViewGroup = btmSheetView.findViewById(R.id.rvGroup);
-//                GroupAdapter groupAdapterGroup;
-//
-//                List<String> FBgroupArray = new ArrayList<String>(FBgroupArraySET); //convert stringSet to ArrayList
-//                List<String> listDataGroup = FBgroupArray; //Pass Group Data From Database To RecycleViewGroup
-//                GridLayoutManager gridLayoutManagerGroup = new GridLayoutManager(btmSheetView.getContext(),
-//                        (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateNoOfColumns());
-//                recyclerViewGroup.setLayoutManager(gridLayoutManagerGroup);
-//                recyclerViewGroup.addItemDecoration(new GridSpacing(
-//                        (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateSpacing()));
-//                groupAdapterGroup = new GroupAdapter(btmSheetView.getContext(), listDataGroup, "group");
-//                recyclerViewGroup.setAdapter(groupAdapterGroup);
-//                groupAdapterGroup.notifyDataSetChanged();
-                createRV(btmSheetView,R.id.rvStatus,FBstatusArraySET,R.layout.filter_data,"status");
-//
-//                //Creating RV Status
-//                RecyclerView recyclerViewStatus = btmSheetView.findViewById(R.id.rvStatus);
-//                GroupAdapter groupAdapterStatus;
-//
-//                List<String> FBstatusArray = new ArrayList<String>(FBstatusArraySET); //convert stringSet to ArrayList
-//                List<String> listDataStatus = FBstatusArray; //Pass Status Data From Database To RecycleViewGroup
-//
-//                GridLayoutManager gridLayoutManagerStatus = new GridLayoutManager(btmSheetView.getContext(),
-//                        (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateNoOfColumns());
-//
-//                recyclerViewStatus.setLayoutManager(gridLayoutManagerStatus);
-//                recyclerViewStatus.addItemDecoration(new GridSpacing(
-//                        (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateSpacing()));
-//                groupAdapterStatus = new GroupAdapter(btmSheetView.getContext(), listDataStatus, "status");
-//                recyclerViewStatus.setAdapter(groupAdapterStatus);
-//                groupAdapterStatus.notifyDataSetChanged();
-                createRV(btmSheetView,R.id.rvLokasi,FBlokasiArraySET,R.layout.filter_data,"lokasi");
-
-//                //Creating RV Lokasi
-//                RecyclerView recyclerViewLokasi = btmSheetView.findViewById(R.id.rvLokasi);
-//                GroupAdapter groupAdapterLokasi;
-//
-//                List<String> FBlokasiArray = new ArrayList<String>(FBlokasiArraySET); //convert stringSet to ArrayList
-//                List<String> listDataLokasi = FBlokasiArray; //Pass Lokasi Data From Database To RecycleViewGroup
-//
-//                GridLayoutManager gridLayoutManagerLokasi = new GridLayoutManager(btmSheetView.getContext(),
-//                        (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateNoOfColumns());
-//
-//                recyclerViewLokasi.setLayoutManager(gridLayoutManagerLokasi);
-//                recyclerViewLokasi.addItemDecoration(new GridSpacing(
-//                        (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateSpacing()));
-//                groupAdapterLokasi = new GroupAdapter(btmSheetView.getContext(), listDataLokasi, "lokasi");
-//                recyclerViewLokasi.setAdapter(groupAdapterLokasi);
-//                groupAdapterLokasi.notifyDataSetChanged();
-
-                createRV(btmSheetView,R.id.rvKebutuhan,FBkebutuhanArraySET,R.layout.filter_data,"kebutuhan");
-//                //Creating RV Kebutuhan
-//                RecyclerView recyclerViewKebutuhan = btmSheetView.findViewById(R.id.rvKebutuhan);
-//
-//                List<String> FBkebutuhanArray = new ArrayList<String>(FBkebutuhanArraySET); //convert stringSet to ArrayList
-//                List<String> listDataKebutuhan = FBkebutuhanArray; //Pass Kebutuhan Data From Database To RecycleViewGroup
-//
-//                GridLayoutManager gridLayoutManagerKebutuhan = new GridLayoutManager(btmSheetView.getContext(),
-//                        (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateNoOfColumns());
-//
-//                recyclerViewKebutuhan.setLayoutManager(gridLayoutManagerKebutuhan);
-//                recyclerViewKebutuhan.addItemDecoration(new GridSpacing(
-//                        (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateSpacing()));
-//
-//                GroupAdapter groupAdapterKebutuhan = new GroupAdapter(btmSheetView.getContext(), listDataKebutuhan, "kebutuhan");
-//                recyclerViewKebutuhan.setAdapter(groupAdapterKebutuhan);
-//                groupAdapterKebutuhan.notifyDataSetChanged();
-
-                createRV(btmSheetView,R.id.rvJenis,FBjenisArraySET,R.layout.filter_data,"jenis");
-//                //Creating RV Jenis
-//                RecyclerView recyclerViewJenis = btmSheetView.findViewById(R.id.rvJenis);
-//                List<String> FBjenisArray = new ArrayList<String>(FBjenisArraySET); //convert stringSet to ArrayList
-//                List<String> listDataJenis = FBjenisArray; //Pass Jenis Data From Database To RecycleViewGroup
-//
-//                GridLayoutManager gridLayoutManagerJenis = new GridLayoutManager(btmSheetView.getContext(),
-//                        (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateNoOfColumns());
-//
-//                recyclerViewJenis.setLayoutManager(gridLayoutManagerJenis);
-//                recyclerViewJenis.addItemDecoration(new GridSpacing(
-//                        (new Utility.ColumnQty(btmSheetView.getContext(),R.layout.filter_data)).calculateSpacing()));
-//
-//                GroupAdapter groupAdapterJenis = new GroupAdapter(btmSheetView.getContext(), listDataJenis, "jenis");
-//                recyclerViewJenis.setAdapter(groupAdapterJenis);
-//                groupAdapterJenis.notifyDataSetChanged();
-
-                //Making the filter button
-                Button filter_btn = btmSheetView.findViewById(R.id.buttonFiltering);
-                filter_btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        addData();
-                        btmSheetDialog.dismiss();
-                    }
-                });
-                //making the reset click
-                TextView reset = btmSheetView.findViewById(R.id.filterReset);
-                reset.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        groupClicked.clear();
-                        statusClicked.clear();
-                        jenisClicked.clear();
-                        kebutuhanClicked.clear();
-                        lokasiClicked.clear();
-                        for (int i=0;i<recyclerViews.size();i++) {
-                            recyclerViews.get(i).removeItemDecoration(itemDecorations.get(i));
-                        }
-                        recyclerViews.clear();
-                        itemDecorations.clear();
-
-                        createRV(btmSheetView,R.id.rvGroup,FBgroupArraySET,R.layout.filter_data,"group");
-                        createRV(btmSheetView,R.id.rvStatus,FBstatusArraySET,R.layout.filter_data,"status");
-                        createRV(btmSheetView,R.id.rvLokasi,FBlokasiArraySET,R.layout.filter_data,"lokasi");
-                        createRV(btmSheetView,R.id.rvKebutuhan,FBkebutuhanArraySET,R.layout.filter_data,"kebutuhan");
-                        createRV(btmSheetView,R.id.rvJenis,FBjenisArraySET,R.layout.filter_data,"jenis");
-                    }
-                });
-
-                btmSheetDialog.setContentView(btmSheetView);
                 btmSheetDialog.show();
             }
         });
@@ -431,32 +432,19 @@ public class MainActivity extends AppCompatActivity{
         markers.clear();
         if (groupClicked.size()+jenisClicked.size()+statusClicked.size()
                 +lokasiClicked.size()+kebutuhanClicked.size() == 0){
-        for (Perusahaan perusahaan : perusahaanArrayList){
-            createMarker(perusahaan);}
+            for (Perusahaan perusahaan : perusahaanArrayList){
+                createMarker(perusahaan);}
         }
         else {
             for (Perusahaan perusahaan : perusahaanArrayList){
                 if ((groupClicked.size()==0 || groupClicked.contains(perusahaan.getGroup())) &&
-                    (statusClicked.size()==0 || statusClicked.contains(perusahaan.getStatus())) &&
-                    (lokasiClicked.size()==0 || lokasiClicked.contains(perusahaan.getTempat())) &&
-                    (kebutuhanClicked.size()==0 || kebutuhanClicked.contains(perusahaan.getKebutuhan())) &&
-                    (jenisClicked.size()==0 || jenisClicked.contains(perusahaan.getJenis()))
+                        (statusClicked.size()==0 || statusClicked.contains(perusahaan.getStatus())) &&
+                        (lokasiClicked.size()==0 || lokasiClicked.contains(perusahaan.getTempat())) &&
+                        (kebutuhanClicked.size()==0 || kebutuhanClicked.contains(perusahaan.getKebutuhan())) &&
+                        (jenisClicked.size()==0 || jenisClicked.contains(perusahaan.getJenis()))
                 ){
                     createMarker(perusahaan);
                 }
-//                if (statusClicked.size()>0 && !statusClicked.contains(perusahaan.getGroup())){
-//                    continue;
-//                }
-//                if (lokasiClicked.size()>0 && !lokasiClicked.contains(perusahaan.getGroup())){
-//                    continue;
-//                }
-//                if (kebutuhanClicked.size()>0 && !kebutuhanClicked.contains(perusahaan.getGroup())){
-//                    continue;
-//                }
-//                if (jenisClicked.size()>0 && !jenisClicked.contains(perusahaan.getGroup())){
-//                    continue;
-//                }
-//                createMarker(perusahaan);
             }
         }
         for (int i=0;i < markers.size();i++){
@@ -473,25 +461,45 @@ public class MainActivity extends AppCompatActivity{
         marker.setIcon(getResources().getDrawable(R.drawable.ic_baseline_location_on_24));
         markers.add(marker);
     }
-    private void createRV(View view, int id, Set<String> set, int layout, String tipe){
+    public void createRV(View view, int id, HashSet<String> group){
         RecyclerView recyclerView = view.findViewById(id);
-        List<String> FBArray = new ArrayList<String>(set); //convert stringSet to ArrayList
-        List<String> listData = FBArray; //Pass Kebutuhan Data From Database To RecycleViewGroup
-
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(),
-                (new Utility.ColumnQty(view.getContext(),layout)).calculateNoOfColumns());
-
-        recyclerView.setLayoutManager(gridLayoutManager);
-        RecyclerView.ItemDecoration itemDecoration = new GridSpacing(
-                (new Utility.ColumnQty(view.getContext(),layout)).calculateSpacing());
-        recyclerView.addItemDecoration(itemDecoration);
-        itemDecorations.add(itemDecoration);
-
-        GroupAdapter groupAdapter = new GroupAdapter(view.getContext(), listData, tipe);
+        GroupAdapter groupAdapter = new GroupAdapter(recyclerView.getContext(), new ArrayList<>(), group);
         recyclerView.setAdapter(groupAdapter);
-        groupAdapter.notifyDataSetChanged();
+        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(recyclerView.getContext());
+        layoutManager.setFlexDirection(FlexDirection.ROW);
+        layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+        recyclerView.setLayoutManager(layoutManager);
         recyclerViews.add(recyclerView);
-        System.out.println(itemDecorations.size());
-        System.out.println(recyclerViews.size());
+    }
+    public void updateSeeAll(View btmSheetViewGroup,allAdapter allAdapterGroup, String penanda, Set<String> set, HashSet<String> grouped){
+        temp.clear();
+        temp.addAll(grouped);
+        TextView namaFilter = btmSheetViewGroup.findViewById(R.id.nama);
+        namaFilter.setText(penanda);
+        allAdapterGroup.setListData(new ArrayList<>(set));
+        allAdapterGroup.notifyDataSetChanged();
+    }
+    private void addingData(GroupAdapter groupAdapters, Set<String> set, HashSet<String> grouped){
+        List<String> listData = new ArrayList<>();
+        int batas = grouped.size();
+        final int batasan = 4;
+        if (batas >= batasan){
+            listData.addAll(grouped);
+        }
+        else {
+            listData.addAll(grouped);
+            ArrayList<String> tempData = new ArrayList<>(set);
+            int i = 0 ;
+            while (listData.size() < 4){
+                if (i == tempData.size()){
+                    break;
+                }
+                if (!listData.contains(tempData.get(i))){
+                    listData.add(tempData.get(i));}
+                i++;
+            }
+        }
+        groupAdapters.setListData(listData);
+        groupAdapters.notifyDataSetChanged();
     }
 }

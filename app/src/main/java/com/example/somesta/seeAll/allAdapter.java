@@ -1,50 +1,50 @@
-package com.example.somesta.utility;
+package com.example.somesta.seeAll;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.ToggleButton;
+import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
-
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.somesta.R;
-
-
 import java.util.HashSet;
 import java.util.List;
-public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.HolderData> {
+
+
+public class allAdapter extends RecyclerView.Adapter<allAdapter.HolderData> {
     List<String> listData;
     LayoutInflater inflater;
     HashSet<String> grouped;
 
 
+    public void setListData(List<String> listData) {
+        this.listData = listData;
+    }
 
-    public GroupAdapter(Context context, List<String> listData, HashSet<String> grouped) {
-        this.grouped = grouped;
+    public allAdapter(@NonNull Context context, List<String> listData, HashSet<String> grouped) {
         this.listData = listData;
         this.inflater = LayoutInflater.from(context);
+        this.grouped = grouped;
+
     }
+
     @NonNull
     @Override
-    public GroupAdapter.HolderData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.filter_data, parent, false);
-        return new HolderData(view);
+    public HolderData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = inflater.inflate(R.layout.see_all_item, parent, false);
+        return new allAdapter.HolderData(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull HolderData holder, int position) {
         holder.group.setText(listData.get(position));
-        holder.group.setTextOff(listData.get(position));
-        holder.group.setTextOn(listData.get(position));
         String name = holder.group.getText().toString();
-        if (grouped.contains(name)
-        )
-        {holder.group.setChecked(true);}
-        else {holder.group.setChecked(false);}
-//        if (this.tipe.contains(name)){holder.group.setChecked(true);}
+        System.out.println(name);
+        System.out.println(grouped.contains(name));
+        holder.group.setChecked(grouped.contains(name));
         holder.group.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,9 +54,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.HolderData> 
                 else {grouped.remove(name);}
             }
         });
-    }
-    public void setListData(List<String> listData) {
-        this.listData = listData;
+
     }
 
     @Override
@@ -65,7 +63,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.HolderData> 
     }
 
     public class HolderData extends RecyclerView.ViewHolder{
-        public ToggleButton group;
+        public CheckBox group;
         public HolderData(@NonNull View itemView) {
             super(itemView);
             group = itemView.findViewById(R.id.group);
