@@ -8,23 +8,34 @@ import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.somesta.Activity.MainActivity;
 import com.example.somesta.R;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.HolderData> {
     List<String> listData;
     LayoutInflater inflater;
-    ArrayList<String> grouped;
+    HashSet<String> grouped;
 
 
-    public GroupAdapter(Context context, List<String> listData, ArrayList<String> grouped) {
+
+    public GroupAdapter(Context context, List<String> listData, HashSet<String> grouped) {
         this.grouped = grouped;
         this.listData = listData;
         this.inflater = LayoutInflater.from(context);
+    }
+    public void updateListData(List<String> listDataBaru) {
+        final GroupDiffCallBack diffCallback = new GroupDiffCallBack(this.listData, listDataBaru);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+
+        this.listData.clear();
+        this.listData.addAll(listDataBaru);
+        diffResult.dispatchUpdatesTo(this);
     }
     @NonNull
     @Override
@@ -34,32 +45,52 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.HolderData> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull GroupAdapter.HolderData holder, int position) {
+    public void onBindViewHolder(@NonNull HolderData holder, int position) {
         holder.group.setText(listData.get(position));
         holder.group.setTextOff(listData.get(position));
         holder.group.setTextOn(listData.get(position));
         String name = holder.group.getText().toString();
         if (grouped.contains(name)
-//        MainActivity.groupClicked.contains(name) ||
-//        MainActivity.statusClicked.contains(name) ||
-//        MainActivity.lokasiClicked.contains(name) ||
-//        MainActivity.kebutuhanClicked.contains(name) ||
-//        MainActivity.jenisClicked.contains(name)
         )
         {holder.group.setChecked(true);}
+        else {holder.group.setChecked(false);}
 //        if (this.tipe.contains(name)){holder.group.setChecked(true);}
-        holder.group.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.group.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b){
+            public void onClick(View view) {
+                if (holder.group.isChecked()){
                     grouped.add(name);
                 }
-                else {
-                    grouped.remove(name);
-                }
+                else {grouped.remove(name);}
             }
         });
     }
+    public void setListData(List<String> listData) {
+        this.listData = listData;
+    }
+//    @Override
+//    public void onBindViewHolder(@NonNull GroupAdapter.HolderData holder, int position, List<Object> payloads) {
+//        holder.group.setText(listData.get(position));
+//        holder.group.setTextOff(listData.get(position));
+//        holder.group.setTextOn(listData.get(position));
+//        String name = holder.group.getText().toString();
+//        if (grouped.contains(name) || !payloads.isEmpty()
+//        )
+//        {holder.group.setChecked(true);}
+//        else {holder.group.setChecked(false);}
+////        if (this.tipe.contains(name)){holder.group.setChecked(true);}
+//        holder.group.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                if (b){
+//                    grouped.add(name);
+//                }
+//                else {
+//                    grouped.remove(name);
+//                }
+//            }
+//        });
+//    }
 
     @Override
     public int getItemCount() {

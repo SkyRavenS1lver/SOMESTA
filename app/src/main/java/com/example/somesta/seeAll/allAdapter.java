@@ -10,29 +10,43 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.somesta.R;
 import com.example.somesta.utility.GroupAdapter;
+import com.example.somesta.utility.GroupDiffCallBack;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 
 public class allAdapter extends RecyclerView.Adapter<allAdapter.HolderData> {
     List<String> listData;
     LayoutInflater inflater;
-    ArrayList<String> grouped;
-    String namaFilter;
-    ArrayList<String> temporary;
+    HashSet<String> grouped;
 
-    public allAdapter(@NonNull Context context, List<String> listData, ArrayList<String> grouped, String nama) {
+
+    public void setListData(List<String> listData) {
+        this.listData = listData;
+    }
+
+    public allAdapter(@NonNull Context context, List<String> listData, HashSet<String> grouped) {
         this.listData = listData;
         this.inflater = LayoutInflater.from(context);
         this.grouped = grouped;
-        this.namaFilter = nama;
+
+    }
+    public void updateListData(List<String> listDataBaru) {
+        final GroupDiffCallBack diffCallback = new GroupDiffCallBack(this.listData, listDataBaru);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+
+        this.listData.clear();
+        this.listData.addAll(listDataBaru);
+        diffResult.dispatchUpdatesTo(this);
     }
 
     @NonNull
@@ -46,17 +60,30 @@ public class allAdapter extends RecyclerView.Adapter<allAdapter.HolderData> {
     public void onBindViewHolder(@NonNull HolderData holder, int position) {
         holder.group.setText(listData.get(position));
         String name = holder.group.getText().toString();
-        if (grouped.contains(name))
-        {holder.group.setChecked(true);}
-        holder.group.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        System.out.println(name);
+        System.out.println(grouped.contains(name));
+        holder.group.setChecked(grouped.contains(name));
+//        holder.group.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (holder.group.isChecked()){
+//                    grouped.add(name);
+//                    System.out.println(grouped);
+//                    System.out.println("+++");
+//                }
+//                else {grouped.remove(name);
+//                    System.out.println(grouped);
+//                    System.out.println("+++");
+//                }
+//            }
+//        });
+        holder.group.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b){
+            public void onClick(View view) {
+                if (holder.group.isChecked()){
                     grouped.add(name);
                 }
-                else {
-                    grouped.remove(name);
-                }
+                else {grouped.remove(name);}
             }
         });
 
