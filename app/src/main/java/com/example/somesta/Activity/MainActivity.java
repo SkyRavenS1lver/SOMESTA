@@ -283,7 +283,8 @@ public class MainActivity extends AppCompatActivity{
                 System.out.println(temp);
                 System.out.println(groupClicked);
                 System.out.println("########");
-                allAdapterGroup.updateListData(new ArrayList<>(FBgroupArraySET));
+//                allAdapterGroup.updateListData(new ArrayList<>(FBgroupArraySET));
+                allAdapterGroup.setListData(new ArrayList<>(FBgroupArraySET));
                 allAdapterGroup.notifyDataSetChanged();
                 btmSheetDialogGroup.show();
 //                checkBoxes(btmSheetView,FBgroupArraySET,groupClicked, "Group");
@@ -524,10 +525,10 @@ public class MainActivity extends AppCompatActivity{
 //            if (batas > batasan){batas = batasan;}
 //            for (int i = 0; i < batas; i++){
 //                listData.add(temporaryHash.get(i));}
-        groupAdapters.updateListData(listData);
-        groupAdapters.notifyDataSetChanged();
-//        groupAdapters.setListData(listData);
+//        groupAdapters.updateListData(listData);
 //        groupAdapters.notifyDataSetChanged();
+        groupAdapters.setListData(listData);
+        groupAdapters.notifyDataSetChanged();
     }
 
     //See all checkboxes
