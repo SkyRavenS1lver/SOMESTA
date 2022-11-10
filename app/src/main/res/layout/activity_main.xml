@@ -26,14 +26,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/pert_blue_light"
         android:elevation="100dp"
-        android:src="@drawable/ic_baseline_filter_alt_24"
+        android:src="@drawable/ic_baseline_my_location_24"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="35dp"
-        app:tint="@color/btmfloat"
         android:layout_marginBottom="100dp"/>
 
 

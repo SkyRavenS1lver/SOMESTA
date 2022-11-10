@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
 
         FrameLayout btmView = (FrameLayout) btmSheetView.findViewById(R.id.sheets);
 
-        BottomSheetBehavior.from(btmView).setState(BottomSheetBehavior.STATE_EXPANDED);
+//        BottomSheetBehavior.from(btmView).setState(BottomSheetBehavior.STATE_COLLAPSED);
         btmSheetDialog.setContentView(btmSheetView);
         //Creating 5 RV
         createRV(btmSheetView, R.id.rvGroup, groupClicked);
@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
                 .inflate(R.layout.see_all_layout, (FrameLayout) findViewById(R.id.sheets2));
 
         FrameLayout btmViewGroup = (FrameLayout) btmSheetViewGroup.findViewById(R.id.sheets2);
-        BottomSheetBehavior.from(btmViewGroup).setState(BottomSheetBehavior.STATE_EXPANDED);
+//        BottomSheetBehavior.from(btmViewGroup).setState(BottomSheetBehavior.STATE_EXPANDED);
         btmSheetDialogGroup.setContentView(btmSheetViewGroup);
         RecyclerView recyclerViewGroup = btmSheetViewGroup.findViewById(R.id.allRv);
         recyclerViewGroup.setLayoutManager(new LinearLayoutManager(btmSheetViewGroup.getContext()));
