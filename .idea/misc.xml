@@ -50,8 +50,17 @@
         <entry key="..\:/AndroidProject/HasilCloning/SOMESTA/app/src/main/res/layout/fragment_bookmark.xml" value="0.18802083333333333" />
         <entry key="..\:/AndroidProject/HasilCloning/SOMESTA/app/src/main/res/layout/fragment_home.xml" value="0.18802083333333333" />
         <entry key="..\:/AndroidProject/HasilCloning/SOMESTA/app/src/main/res/layout/fragment_notifications.xml" value="0.18802083333333333" />
-        <entry key="..\:/AndroidProject/SOMESTA/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
+        <entry key="..\:/AndroidProject/SOMESTA/app/src/main/res/drawable/btm_sheet_bg.xml" value="0.196" />
+        <entry key="..\:/AndroidProject/SOMESTA/app/src/main/res/drawable/filter_btn.xml" value="0.196" />
+        <entry key="..\:/AndroidProject/SOMESTA/app/src/main/res/drawable/groupingbg.xml" value="0.196" />
+        <entry key="..\:/AndroidProject/SOMESTA/app/src/main/res/drawable/groupingshapeactive.xml" value="0.196" />
+        <entry key="..\:/AndroidProject/SOMESTA/app/src/main/res/drawable/groupingshapenot.xml" value="0.196" />
+        <entry key="..\:/AndroidProject/SOMESTA/app/src/main/res/drawable/ic_baseline_filter_alt_24.xml" value="0.196" />
+        <entry key="..\:/AndroidProject/SOMESTA/app/src/main/res/drawable/result_bg.xml" value="0.2455" />
+        <entry key="..\:/AndroidProject/SOMESTA/app/src/main/res/layout/activity_main.xml" value="0.18" />
         <entry key="..\:/AndroidProject/SOMESTA/app/src/main/res/layout/btm_sheet.xml" value="0.33" />
+        <entry key="..\:/AndroidProject/SOMESTA/app/src/main/res/layout/filter_result.xml" value="0.33" />
+        <entry key="..\:/AndroidProject/SOMESTA/app/src/main/res/layout/result_data.xml" value="0.33" />
         <entry key="..\:/AndroidProject/SOMESTA/app/src/main/res/layout/see_all_layout.xml" value="0.1" />
         <entry key="..\:/AndroidProject/SOMESTA3/app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.196" />
         <entry key="..\:/AndroidProject/SOMESTA3/app/src/main/res/drawable/iconchange.xml" value="0.195" />
