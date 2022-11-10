@@ -7,15 +7,11 @@
         <entry key="..\:/Android Project/Hasil Clone/New/SOMESTA/app/src/main/res/layout/activity_main.xml" value="0.12360688956433637" />
         <entry key="..\:/Android Project/Hasil Clone/New/SOMESTA/app/src/main/res/menu/bottom_nav_menu.xml" value="0.23333333333333334" />
         <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/btm_sheet_bg.xml" value="0.2265" />
-        <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/btm_sheet_bg_2.xml" value="0.1375" />
-        <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/filter_btn.xml" value="0.1375" />
         <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/ic_bookmark_icon.xml" value="0.124" />
         <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/ic_bookmark_icon_selected.xml" value="0.124" />
         <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/iconchange.xml" value="0.2265" />
         <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/item_iconchange.xml" value="0.2265" />
         <entry key="..\:/Android Project/SOMESTA/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Android Project/SOMESTA/app/src/main/res/layout/btm_sheet.xml" value="0.16" />
-        <entry key="..\:/Android Project/SOMESTA/app/src/main/res/layout/btm_sheet_bg_2.xml" value="0.144" />
         <entry key="..\:/Android Project/SOMESTA/app/src/main/res/layout/btm_sheet_layout.xml" value="0.2076923076923077" />
         <entry key="..\:/Android Project/SOMESTA/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Android Project/clone8-11/SOMESTA/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
@@ -33,12 +29,6 @@
         <entry key="..\:/AndroidProject/BKP_Somesta/SOMESTA/app/src/main/res/layout/fragment_home.xml" value="0.35280797101449274" />
         <entry key="..\:/AndroidProject/BKP_Somesta/SOMESTA/app/src/main/res/layout/info_perusahaan.xml" value="0.1893121091529278" />
         <entry key="..\:/AndroidProject/BKP_Somesta/SOMESTA/app/src/main/res/menu/bottom_nav_menu.xml" value="0.18541666666666667" />
-        <entry key="..\:/AndroidProject/Clone Lanjutkan Fix/SOMESTA/app/src/main/res/drawable/current_loc_marker.xml" value="0.2175" />
-        <entry key="..\:/AndroidProject/Clone Lanjutkan Fix/SOMESTA/app/src/main/res/drawable/ic_baseline_location_on_24.xml" value="0.2175" />
-        <entry key="..\:/AndroidProject/Clone Lanjutkan Fix/SOMESTA/app/src/main/res/drawable/location_off.xml" value="0.2175" />
-        <entry key="..\:/AndroidProject/Clone Lanjutkan Fix/SOMESTA/app/src/main/res/layout/activity_main.xml" value="0.17831813576494426" />
-        <entry key="..\:/AndroidProject/Clone Lanjutkan Fix/SOMESTA/app/src/main/res/layout/clickable_bubble.xml" value="0.18802083333333333" />
-        <entry key="..\:/AndroidProject/Clone Lanjutkan Fix/SOMESTA/app/src/main/res/layout/info_perusahaan.xml" value="0.18802083333333333" />
         <entry key="..\:/AndroidProject/HasilCloning/Clone 25-10/SOMESTA/app/src/main/res/drawable/filter_btn.xml" value="0.1925" />
         <entry key="..\:/AndroidProject/HasilCloning/Clone 25-10/SOMESTA/app/src/main/res/layout/activity_main.xml" value="0.18541666666666667" />
         <entry key="..\:/AndroidProject/HasilCloning/Clone 25-10/SOMESTA/app/src/main/res/layout/btm_sheet.xml" value="0.18541666666666667" />
@@ -60,20 +50,25 @@
         <entry key="..\:/AndroidProject/HasilCloning/SOMESTA/app/src/main/res/layout/fragment_bookmark.xml" value="0.18802083333333333" />
         <entry key="..\:/AndroidProject/HasilCloning/SOMESTA/app/src/main/res/layout/fragment_home.xml" value="0.18802083333333333" />
         <entry key="..\:/AndroidProject/HasilCloning/SOMESTA/app/src/main/res/layout/fragment_notifications.xml" value="0.18802083333333333" />
+        <entry key="..\:/AndroidProject/SOMESTA/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
+        <entry key="..\:/AndroidProject/SOMESTA/app/src/main/res/layout/btm_sheet.xml" value="0.33" />
+        <entry key="..\:/AndroidProject/SOMESTA/app/src/main/res/layout/see_all_layout.xml" value="0.1" />
         <entry key="..\:/AndroidProject/SOMESTA3/app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.196" />
         <entry key="..\:/AndroidProject/SOMESTA3/app/src/main/res/drawable/iconchange.xml" value="0.195" />
         <entry key="..\:/AndroidProject/SOMESTA3/app/src/main/res/drawable/itembg.xml" value="0.195" />
         <entry key="..\:/AndroidProject/SOMESTA3/app/src/main/res/layout/activity_main.xml" value="0.3574074074074074" />
         <entry key="..\:/AndroidProject/SOMESTA3/app/src/main/res/layout/fragment_home.xml" value="0.18802083333333333" />
         <entry key="..\:/AndroidProject/SOMESTA3/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36666666666666664" />
-        <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/drawable-v24/bg_style.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/drawable-v24/bg_style_floatingsearchview.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/layout/activity_main.xml" value="0.176" />
         <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/layout/btm_sheet.xml" value="0.1685185185185185" />
         <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/layout/filter_data.xml" value="0.1685185185185185" />
         <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/layout/fragment_bookmark.xml" value="0.28888888888888886" />
         <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/layout/fragment_home.xml" value="0.28888888888888886" />
         <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/layout/fragment_notifications.xml" value="0.2462962962962963" />
         <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/layout/info_perusahaan.xml" value="0.264" />
-        <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/layout/item_search.xml" value="0.36512820512820515" />
+        <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/layout/item_search.xml" value="0.25333333333333335" />
         <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/menu/bottom_nav_menu.xml" value="0.28888888888888886" />
       </map>
     </option>
