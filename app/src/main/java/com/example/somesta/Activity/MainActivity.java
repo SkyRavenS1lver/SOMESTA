@@ -1,7 +1,10 @@
 package com.example.somesta.Activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -12,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
@@ -21,6 +25,7 @@ import com.example.somesta.Marker.Perusahaan;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,12 +37,16 @@ import com.example.somesta.databinding.ActivityMainBinding;
 import com.example.somesta.seeAll.allAdapter;
 import com.example.somesta.utility.GridSpacing;
 import com.example.somesta.utility.GroupAdapter;
+import com.example.somesta.utility.ResultAdapter;
 import com.example.somesta.utility.Utility;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -58,18 +67,25 @@ import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
+    public static IMapController mapController;
+    public static BottomSheetDialog viewListDialog;
+    Marker markerCurrent;
+    ExtendedFloatingActionButton viewList;
     private String penanda;
+    protected LocationManager locationManager;
+    protected LocationListener locationListener;
+    private double currentLatitude,currentLongitude;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    private final static int REQUEST_CODE = 1000;
 
-
-    private ActivityMainBinding binding;
-    public static  MapView map = null;
-    LocationManager locationManager;
+    public static MapView map = null;
     public HashSet<String> groupClicked = new HashSet<>();
     public static HashSet<String> temp = new HashSet<>();
     public HashSet<String> statusClicked = new HashSet<>();
@@ -80,11 +96,15 @@ public class MainActivity extends AppCompatActivity{
     ArrayList<OverlayItem> overlayItemArrayList = new ArrayList<>();
     ArrayList<RecyclerView> recyclerViews = new ArrayList<>();
     RecyclerView searchRecyclerView;
-    Set<String>  FBjenisArraySET;
-    Set<String>  FBstatusArraySET;
-    Set<String>  FBlokasiArraySET;
-    Set<String>  FBkebutuhanArraySET;
-    Set<String>  FBgroupArraySET;
+    Set<String> FBjenisArraySET;
+    Set<String> FBstatusArraySET;
+    Set<String> FBlokasiArraySET;
+    Set<String> FBkebutuhanArraySET;
+    Set<String> FBgroupArraySET;
+    public static BottomSheetDialog dialogPerusahaan;
+    public static View ViewPerusahaan;
+    public static FrameLayout btmView;
+
 
     //Semua data perusahaan disimpan di array ini
     private ArrayList<Perusahaan> perusahaanArrayList = new ArrayList<>();
@@ -93,25 +113,79 @@ public class MainActivity extends AppCompatActivity{
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        viewList = findViewById(R.id.viewList);
+        viewList.setVisibility(View.INVISIBLE);
+
+        //Marker Onclick sheet dialog
+        dialogPerusahaan = new BottomSheetDialog(
+                this, R.style.BottomSheetDialogTheme);
+        ViewPerusahaan = LayoutInflater.from(this)
+                .inflate(R.layout.info_perusahaan, (FrameLayout) dialogPerusahaan.findViewById(R.id.sheets2));
+        btmView = (FrameLayout) ViewPerusahaan.findViewById(R.id.sheets2);
+        Context ctx = this;
+
+        //Creating Current Location
+        Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
+        map = findViewById(R.id.map);
+        map.setTileSource(TileSourceFactory.MAPNIK);
+        map.setBuiltInZoomControls(true);
+        map.setMultiTouchControls(true);
+        map.setClickable(true);
+        mapController = map.getController();
+        mapController.setZoom(17);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        getLocation(this);
+        markerCurrent = new Marker(map);
+        markerCurrent.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
+        markerCurrent.setIcon(getResources().getDrawable(R.drawable.current_loc_marker));
+        markerCurrent.setInfoWindow(new InfoWindow(R.layout.clickable_bubble,map) {
+            @Override
+            public void onOpen(Object item) {
+            }
+            @Override
+            public void onClose() {
+            }
+        });
         // BottomSheetDialog
         BottomSheetDialog btmSheetDialog = new BottomSheetDialog(
                 MainActivity.this, R.style.BottomSheetDialogTheme);
 
         View btmSheetView = LayoutInflater.from(getApplicationContext())
-                .inflate(R.layout.btm_sheet, (FrameLayout)findViewById(R.id.sheets));
+                .inflate(R.layout.btm_sheet, (FrameLayout) findViewById(R.id.sheets));
 
         FrameLayout btmView = (FrameLayout) btmSheetView.findViewById(R.id.sheets);
 
-        BottomSheetBehavior.from(btmView).setState(BottomSheetBehavior.STATE_EXPANDED);
+//        BottomSheetBehavior.from(btmView).setState(BottomSheetBehavior.STATE_COLLAPSED);
         btmSheetDialog.setContentView(btmSheetView);
+
+        //ViewListDialog
+        viewListDialog = new BottomSheetDialog(
+                MainActivity.this, R.style.BottomSheetDialogTheme);
+        View viewListDialogView = LayoutInflater.from(getApplicationContext())
+                .inflate(R.layout.filter_result, (FrameLayout) findViewById(R.id.sheets2));
+        viewListDialog.setContentView(viewListDialogView);
+        RecyclerView recyclerViewResult = viewListDialogView.findViewById(R.id.filterResult);
+        recyclerViewResult.setLayoutManager(new LinearLayoutManager(btmSheetDialog.getContext()));
+        ResultAdapter adapterResult = new ResultAdapter(this,new ArrayList<Perusahaan>());
+        recyclerViewResult.setAdapter(adapterResult);
+        viewList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewListDialog.show();
+            }
+        });
+
         //Creating 5 RV
-        createRV(btmSheetView,R.id.rvGroup,groupClicked);
-        createRV(btmSheetView,R.id.rvStatus,statusClicked);
-        createRV(btmSheetView,R.id.rvLokasi,lokasiClicked);
-        createRV(btmSheetView,R.id.rvKebutuhan,kebutuhanClicked);
-        createRV(btmSheetView,R.id.rvJenis,jenisClicked);
+        createRV(btmSheetView, R.id.rvGroup, groupClicked);
+        createRV(btmSheetView, R.id.rvStatus, statusClicked);
+        createRV(btmSheetView, R.id.rvLokasi, lokasiClicked);
+        createRV(btmSheetView, R.id.rvKebutuhan, kebutuhanClicked);
+        createRV(btmSheetView, R.id.rvJenis, jenisClicked);
         TextView reset = btmSheetView.findViewById(R.id.filterReset);
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +195,7 @@ public class MainActivity extends AppCompatActivity{
                 jenisClicked.clear();
                 kebutuhanClicked.clear();
                 lokasiClicked.clear();
-                for (int i = 0; i< recyclerViews.size();i++){
+                for (int i = 0; i < recyclerViews.size(); i++) {
                     RecyclerView recyclerView = recyclerViews.get(i);
                     for (int k = 0; k < recyclerView.getChildCount(); k++) {
                         GroupAdapter.HolderData holder = (GroupAdapter.HolderData) recyclerView.findViewHolderForAdapterPosition(k);
@@ -135,20 +209,29 @@ public class MainActivity extends AppCompatActivity{
         btmSheetView.findViewById(R.id.buttonFiltering).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addData();
+                updateMarker();
+                //View List
+                if(perusahaanArrayListFiltered.size() == 0){
+                    ((TextView)viewListDialogView.findViewById(R.id.Response)).setText("Mohon Maaf tidak ada Perusahaan yang sesuai");
+                }
+                else {((TextView)viewListDialogView.findViewById(R.id.Response)).setText("");}
+                if(groupClicked.size()+statusClicked.size()+lokasiClicked.size()+kebutuhanClicked.size()+jenisClicked.size()!=0){viewList.setVisibility(View.VISIBLE);}
+                else {viewList.setVisibility(View.INVISIBLE);}
+                adapterResult.setListData(perusahaanArrayListFiltered);
+                adapterResult.notifyDataSetChanged();
                 btmSheetDialog.dismiss();
             }
         });
 
 
-        //onprogress
+        //BottomSheetialog for see All
         BottomSheetDialog btmSheetDialogGroup = new BottomSheetDialog(
                 MainActivity.this, R.style.BottomSheetDialogTheme);
         View btmSheetViewGroup = LayoutInflater.from(getApplicationContext())
                 .inflate(R.layout.see_all_layout, (FrameLayout) findViewById(R.id.sheets2));
 
         FrameLayout btmViewGroup = (FrameLayout) btmSheetViewGroup.findViewById(R.id.sheets2);
-        BottomSheetBehavior.from(btmViewGroup).setState(BottomSheetBehavior.STATE_EXPANDED);
+//        BottomSheetBehavior.from(btmViewGroup).setState(BottomSheetBehavior.STATE_EXPANDED);
         btmSheetDialogGroup.setContentView(btmSheetViewGroup);
         RecyclerView recyclerViewGroup = btmSheetViewGroup.findViewById(R.id.allRv);
         recyclerViewGroup.setLayoutManager(new LinearLayoutManager(btmSheetViewGroup.getContext()));
@@ -169,31 +252,31 @@ public class MainActivity extends AppCompatActivity{
         btmSheetViewGroup.findViewById(R.id.buttonFiltering).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (penanda){
+                switch (penanda) {
                     case "Group":
                         groupClicked.clear();
                         groupClicked.addAll(new HashSet<>(temp));
-                        addingData((GroupAdapter) recyclerViews.get(0).getAdapter(),FBgroupArraySET,groupClicked);
+                        addingData((GroupAdapter) recyclerViews.get(0).getAdapter(), FBgroupArraySET, groupClicked);
                         break;
                     case "Status":
                         statusClicked.clear();
                         statusClicked.addAll(new HashSet<>(temp));
-                        addingData((GroupAdapter) recyclerViews.get(1).getAdapter(),FBstatusArraySET,statusClicked);
+                        addingData((GroupAdapter) recyclerViews.get(1).getAdapter(), FBstatusArraySET, statusClicked);
                         break;
                     case "Lokasi":
                         lokasiClicked.clear();
                         lokasiClicked.addAll(new HashSet<>(temp));
-                        addingData((GroupAdapter) recyclerViews.get(2).getAdapter(),FBlokasiArraySET,lokasiClicked);
+                        addingData((GroupAdapter) recyclerViews.get(2).getAdapter(), FBlokasiArraySET, lokasiClicked);
                         break;
                     case "Kebutuhan":
                         kebutuhanClicked.clear();
                         kebutuhanClicked.addAll(new HashSet<>(temp));
-                        addingData((GroupAdapter) recyclerViews.get(3).getAdapter(),FBkebutuhanArraySET,kebutuhanClicked);
+                        addingData((GroupAdapter) recyclerViews.get(3).getAdapter(), FBkebutuhanArraySET, kebutuhanClicked);
                         break;
                     case "Jenis":
                         jenisClicked.clear();
                         jenisClicked.addAll(new HashSet<>(temp));
-                        addingData((GroupAdapter) recyclerViews.get(4).getAdapter(),FBjenisArraySET,jenisClicked);
+                        addingData((GroupAdapter) recyclerViews.get(4).getAdapter(), FBjenisArraySET, jenisClicked);
                         break;
                 }
 
@@ -207,7 +290,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 penanda = "Group";
-                updateSeeAll(btmSheetViewGroup,allAdapterGroup,penanda,FBgroupArraySET,groupClicked);
+                updateSeeAll(btmSheetViewGroup, allAdapterGroup, penanda, FBgroupArraySET, groupClicked);
                 btmSheetDialogGroup.show();
             }
         });
@@ -215,7 +298,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 penanda = "Status";
-                updateSeeAll(btmSheetViewGroup,allAdapterGroup,penanda,FBstatusArraySET,statusClicked);
+                updateSeeAll(btmSheetViewGroup, allAdapterGroup, penanda, FBstatusArraySET, statusClicked);
                 btmSheetDialogGroup.show();
             }
         });
@@ -223,7 +306,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 penanda = "Lokasi";
-                updateSeeAll(btmSheetViewGroup,allAdapterGroup,penanda,FBlokasiArraySET,lokasiClicked);
+                updateSeeAll(btmSheetViewGroup, allAdapterGroup, penanda, FBlokasiArraySET, lokasiClicked);
                 btmSheetDialogGroup.show();
             }
         });
@@ -231,7 +314,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 penanda = "Kebutuhan";
-                updateSeeAll(btmSheetViewGroup,allAdapterGroup,penanda,FBkebutuhanArraySET,kebutuhanClicked);
+                updateSeeAll(btmSheetViewGroup, allAdapterGroup, penanda, FBkebutuhanArraySET, kebutuhanClicked);
                 btmSheetDialogGroup.show();
             }
         });
@@ -239,33 +322,16 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 penanda = "Jenis";
-                updateSeeAll(btmSheetViewGroup,allAdapterGroup,penanda,FBjenisArraySET,jenisClicked);
+                updateSeeAll(btmSheetViewGroup, allAdapterGroup, penanda, FBjenisArraySET, jenisClicked);
                 btmSheetDialogGroup.show();
             }
         });
-
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        Context ctx = this;
-        Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
-        map = findViewById(R.id.map);
-        map.setTileSource(TileSourceFactory.MAPNIK);
-
-        map.setBuiltInZoomControls(true);
-        map.setMultiTouchControls(true);
-        map.setClickable(true);
-
-
-
-        //mylocation maker
-        MyLocationNewOverlay mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(ctx),map);
-        mLocationOverlay.enableMyLocation();
-        map.getOverlays().add(mLocationOverlay);
-
-        IMapController mapController = map.getController();
-        mapController.setZoom(17);
-        GeoPoint startPoint = new GeoPoint(-7.795425625273463, 110.36488798392885);
-        mapController.setCenter(startPoint);
+        findViewById(R.id.location).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getLocation(ctx);
+            }
+        });
 
         //Firebase References and Data StringSets
         FirebaseDatabase firebaseDatabase;
@@ -279,7 +345,7 @@ public class MainActivity extends AppCompatActivity{
         //Search Recyclerview
         SearchAdapter searchAdapter;
         searchRecyclerView = findViewById(R.id.searchRecyclerView);
-        searchAdapter = new SearchAdapter(this,perusahaanArrayListFiltered);
+        searchAdapter = new SearchAdapter(this, perusahaanArrayListFiltered);
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         searchRecyclerView.setAdapter(searchAdapter);
 
@@ -294,16 +360,18 @@ public class MainActivity extends AppCompatActivity{
                 searchAdapter.notifyDataSetChanged();
                 String searchWord = newQuery;
                 perusahaanArrayListFiltered.clear();
-                for (Perusahaan perusahaan : perusahaanArrayList){
-                    if(perusahaan.getNama().toLowerCase(Locale.ROOT).contains(searchWord.toLowerCase(Locale.ROOT))
-                            && (groupClicked.size()==0 || groupClicked.contains(perusahaan.getGroup()))
-                            && (statusClicked.size()==0 || statusClicked.contains(perusahaan.getStatus()))
-                            && (lokasiClicked.size()==0 || lokasiClicked.contains(perusahaan.getTempat()))
-                            && (kebutuhanClicked.size()==0 || kebutuhanClicked.contains(perusahaan.getKebutuhan()))
-                            && (jenisClicked.size()==0 || jenisClicked.contains(perusahaan.getJenis()))){
+                for (Perusahaan perusahaan : perusahaanArrayList) {
+                    if (perusahaan.getNama().toLowerCase(Locale.ROOT).contains(searchWord.toLowerCase(Locale.ROOT))
+                            && (groupClicked.size() == 0 || groupClicked.contains(perusahaan.getGroup()))
+                            && (statusClicked.size() == 0 || statusClicked.contains(perusahaan.getStatus()))
+                            && (lokasiClicked.size() == 0 || lokasiClicked.contains(perusahaan.getTempat()))
+                            && (kebutuhanClicked.size() == 0 || kebutuhanClicked.contains(perusahaan.getKebutuhan()))
+                            && (jenisClicked.size() == 0 || jenisClicked.contains(perusahaan.getJenis()))) {
                         perusahaanArrayListFiltered.add(perusahaan);
                     }
-                    if(perusahaanArrayListFiltered.size() == 5){break;}
+                    if (perusahaanArrayListFiltered.size() == 5) {
+                        break;
+                    }
                 }
                 searchRecyclerView.setVisibility(View.VISIBLE);
             }
@@ -312,10 +380,10 @@ public class MainActivity extends AppCompatActivity{
         searchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if (b){
-                perusahaanArrayListFiltered.clear();
-                }else{
-                perusahaanArrayListFiltered.clear();
+                if (b) {
+                    perusahaanArrayListFiltered.clear();
+                } else {
+                    perusahaanArrayListFiltered.clear();
                 }
             }
         });
@@ -363,14 +431,14 @@ public class MainActivity extends AppCompatActivity{
                 FBjenisArraySET.clear();
                 perusahaanArrayList.clear();
                 //Grab data
-                for (DataSnapshot FBdata : snapshot.getChildren()){
+                for (DataSnapshot FBdata : snapshot.getChildren()) {
                     String dilayani = FBdata.child("dilayani").getValue().toString();
                     String group = FBdata.child("group").getValue().toString();
                     String jenis = FBdata.child("jenis").getValue().toString();
                     String kebutuhan = FBdata.child("kebutuhan").getValue().toString();
                     Float lang = Float.parseFloat(FBdata.child("koor_latitude").getValue().toString());
-                    Float longi =Float.parseFloat(FBdata.child("koor_longitude").getValue().toString());
-                    GeoPoint point = new GeoPoint(lang,longi);
+                    Float longi = Float.parseFloat(FBdata.child("koor_longitude").getValue().toString());
+                    GeoPoint point = new GeoPoint(lang, longi);
                     String lokasi = FBdata.child("lokasi").getValue().toString();
                     String nama = FBdata.child("nama").getValue().toString();
                     String pelayanan = FBdata.child("pelayanan").getValue().toString();
@@ -382,19 +450,19 @@ public class MainActivity extends AppCompatActivity{
                     FBlokasiArraySET.add(lokasi);
                     FBkebutuhanArraySET.add(kebutuhan);
                     FBjenisArraySET.add(jenis);
-                    perusahaanArrayList.add(new Perusahaan(dilayani,group,jenis,kebutuhan,point,lokasi,nama,pelayanan,penyalur,status,tipeCustomer));
+                    perusahaanArrayList.add(new Perusahaan(dilayani, group, jenis, kebutuhan, point, lokasi, nama, pelayanan, penyalur, status, tipeCustomer));
                 }
                 //Adding Data to List Data
-                addingData((GroupAdapter) recyclerViews.get(0).getAdapter(),FBgroupArraySET,groupClicked);
-                addingData((GroupAdapter) recyclerViews.get(1).getAdapter(),FBstatusArraySET,statusClicked);
-                addingData((GroupAdapter) recyclerViews.get(2).getAdapter(),FBlokasiArraySET,lokasiClicked);
-                addingData((GroupAdapter) recyclerViews.get(3).getAdapter(),FBkebutuhanArraySET,kebutuhanClicked);
-                addingData((GroupAdapter) recyclerViews.get(4).getAdapter(),FBjenisArraySET,jenisClicked);
+                addingData((GroupAdapter) recyclerViews.get(0).getAdapter(), FBgroupArraySET, groupClicked);
+                addingData((GroupAdapter) recyclerViews.get(1).getAdapter(), FBstatusArraySET, statusClicked);
+                addingData((GroupAdapter) recyclerViews.get(2).getAdapter(), FBlokasiArraySET, lokasiClicked);
+                addingData((GroupAdapter) recyclerViews.get(3).getAdapter(), FBkebutuhanArraySET, kebutuhanClicked);
+                addingData((GroupAdapter) recyclerViews.get(4).getAdapter(), FBjenisArraySET, jenisClicked);
 
                 //Adding marker
                 addData();
                 //Notify adapter, onDataChange works asynchronously
-                if(searchAdapter != null){
+                if (searchAdapter != null) {
                     searchAdapter.notifyDataSetChanged();
                 }
             }
@@ -419,7 +487,7 @@ public class MainActivity extends AppCompatActivity{
                     @Override
                     public void onVisibilityChanged(boolean isOpen) {
                         // some code depending on keyboard visiblity status
-                        if (!isOpen){
+                        if (!isOpen) {
                             searchRecyclerView.setVisibility(View.INVISIBLE);
                         }
                     }
@@ -427,41 +495,119 @@ public class MainActivity extends AppCompatActivity{
 
 
     }
-    private void addData(){
-        map.getOverlays().clear();
-        markers.clear();
-        if (groupClicked.size()+jenisClicked.size()+statusClicked.size()
-                +lokasiClicked.size()+kebutuhanClicked.size() == 0){
-            for (Perusahaan perusahaan : perusahaanArrayList){
-                createMarker(perusahaan);}
-        }
-        else {
-            for (Perusahaan perusahaan : perusahaanArrayList){
-                if ((groupClicked.size()==0 || groupClicked.contains(perusahaan.getGroup())) &&
-                        (statusClicked.size()==0 || statusClicked.contains(perusahaan.getStatus())) &&
-                        (lokasiClicked.size()==0 || lokasiClicked.contains(perusahaan.getTempat())) &&
-                        (kebutuhanClicked.size()==0 || kebutuhanClicked.contains(perusahaan.getKebutuhan())) &&
-                        (jenisClicked.size()==0 || jenisClicked.contains(perusahaan.getJenis()))
-                ){
-                    createMarker(perusahaan);
+
+    private void getLocation(Context ctx) {
+        if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                    REQUEST_CODE);
+
+        } else {
+            // already permission granted
+            // get location here
+            fusedLocationProviderClient.getLastLocation().addOnSuccessListener(MainActivity.this, location -> {
+                if (location != null) {
+                    currentLatitude = location.getLatitude();
+                    currentLongitude = location.getLongitude();
+                    GeoPoint currentLoc = new GeoPoint(currentLatitude,currentLongitude);
+                    markerCurrent.setPosition(currentLoc);
+                    mapController.setCenter(currentLoc);
+                    mapController.setZoom(17);
                 }
-            }
-        }
-        for (int i=0;i < markers.size();i++){
-            map.getOverlays().add(markers.get(i));
+            });
         }
     }
 
-    private void createMarker(Perusahaan perusahaan){
+//    private void getLocation() {
+//
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//            fusedLocationProviderClient.getCurrentLocation(LocationServices);
+////            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE);
+//
+//        }
+//
+//        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) this);}
+
+//    private void addData() {
+//        map.getOverlays().clear();
+//        markers.clear();
+//        if (groupClicked.size() + jenisClicked.size() + statusClicked.size()
+//                + lokasiClicked.size() + kebutuhanClicked.size() == 0) {
+//            for (Perusahaan perusahaan : perusahaanArrayList) {
+//                createMarker(perusahaan);
+//            }
+//        } else {
+//            for (Perusahaan perusahaan : perusahaanArrayList) {
+//                if ((groupClicked.size() == 0 || groupClicked.contains(perusahaan.getGroup())) &&
+//                        (statusClicked.size() == 0 || statusClicked.contains(perusahaan.getStatus())) &&
+//                        (lokasiClicked.size() == 0 || lokasiClicked.contains(perusahaan.getTempat())) &&
+//                        (kebutuhanClicked.size() == 0 || kebutuhanClicked.contains(perusahaan.getKebutuhan())) &&
+//                        (jenisClicked.size() == 0 || jenisClicked.contains(perusahaan.getJenis()))
+//                ) {
+//                    createMarker(perusahaan);
+//                }
+//            }
+//        }
+//        for (int i = 0; i < markers.size(); i++) {
+//            map.getOverlays().add(markers.get(i));
+//        }
+//    }
+    private void updateMarker(){
+        perusahaanArrayListFiltered.clear();
+        for (int i = 0; i < markers.size(); i++) {
+            if (!((groupClicked.size() == 0 || groupClicked.contains(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getGroup())) &&
+                    (statusClicked.size() == 0 || statusClicked.contains(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getStatus())) &&
+                    (lokasiClicked.size() == 0 || lokasiClicked.contains(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getTempat())) &&
+                    (kebutuhanClicked.size() == 0 || kebutuhanClicked.contains(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getKebutuhan())) &&
+                    (jenisClicked.size() == 0 || jenisClicked.contains(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getJenis()))
+            )) {markers.get(i).setIcon(getResources().getDrawable(R.drawable.location_off));}
+            else {markers.get(i).setIcon(getResources().getDrawable(R.drawable.ic_baseline_location_on_24)); perusahaanArrayListFiltered.add(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan());}}
+    }
+    private void addData() {
+            map.getOverlays().clear();
+            map.getOverlays().add(markerCurrent);
+            for (Perusahaan perusahaan : perusahaanArrayList) {
+                createMarker(perusahaan);
+            }
+//        for (int i = 0; i < markers.size(); i++) {
+//            map.getOverlays().add(markers.get(i));
+//        }
+
+//        else {
+//            for (int i = 0; i < markers.size(); i++) {
+//                if (!((groupClicked.size() == 0 || groupClicked.contains(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getGroup())) &&
+//                        (statusClicked.size() == 0 || statusClicked.contains(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getStatus())) &&
+//                        (lokasiClicked.size() == 0 || lokasiClicked.contains(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getTempat())) &&
+//                        (kebutuhanClicked.size() == 0 || kebutuhanClicked.contains(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getKebutuhan())) &&
+//                        (jenisClicked.size() == 0 || jenisClicked.contains(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getJenis()))
+//                )) {markers.get(i).setIcon(getResources().getDrawable(R.drawable.location_off));}
+//                else {markers.get(i).setIcon(getResources().getDrawable(R.drawable.ic_baseline_location_on_24));}
+//            }
+//        }
+    }
+
+//    private void createMarker(Perusahaan perusahaan) {
+//        Marker marker = new Marker(map);
+//        marker.setPosition(perusahaan.getLocation());
+//        InfoWindow infoWindow = new ClickableInfo(R.layout.clickable_bubble, map, perusahaan);
+//        marker.setInfoWindow(infoWindow);
+//        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
+//        marker.setIcon(getResources().getDrawable(R.drawable.ic_baseline_location_on_24));
+//        markers.add(marker);
+//    }
+    private void createMarker(Perusahaan perusahaan) {
         Marker marker = new Marker(map);
         marker.setPosition(perusahaan.getLocation());
-        InfoWindow infoWindow = new ClickableInfo(R.layout.clickable_bubble, map,perusahaan);
+        InfoWindow infoWindow = new ClickableInfo(R.layout.clickable_bubble, map, perusahaan);
         marker.setInfoWindow(infoWindow);
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
         marker.setIcon(getResources().getDrawable(R.drawable.ic_baseline_location_on_24));
         markers.add(marker);
+        map.getOverlays().add(marker);
     }
-    public void createRV(View view, int id, HashSet<String> group){
+
+    public void createRV(View view, int id, HashSet<String> group) {
         RecyclerView recyclerView = view.findViewById(id);
         GroupAdapter groupAdapter = new GroupAdapter(recyclerView.getContext(), new ArrayList<>(), group);
         recyclerView.setAdapter(groupAdapter);
@@ -471,7 +617,8 @@ public class MainActivity extends AppCompatActivity{
         recyclerView.setLayoutManager(layoutManager);
         recyclerViews.add(recyclerView);
     }
-    public void updateSeeAll(View btmSheetViewGroup,allAdapter allAdapterGroup, String penanda, Set<String> set, HashSet<String> grouped){
+
+    public void updateSeeAll(View btmSheetViewGroup, allAdapter allAdapterGroup, String penanda, Set<String> set, HashSet<String> grouped) {
         temp.clear();
         temp.addAll(grouped);
         TextView namaFilter = btmSheetViewGroup.findViewById(R.id.nama);
@@ -479,23 +626,24 @@ public class MainActivity extends AppCompatActivity{
         allAdapterGroup.setListData(new ArrayList<>(set));
         allAdapterGroup.notifyDataSetChanged();
     }
-    private void addingData(GroupAdapter groupAdapters, Set<String> set, HashSet<String> grouped){
+
+    private void addingData(GroupAdapter groupAdapters, Set<String> set, HashSet<String> grouped) {
         List<String> listData = new ArrayList<>();
         int batas = grouped.size();
         final int batasan = 4;
-        if (batas >= batasan){
+        if (batas >= batasan) {
             listData.addAll(grouped);
-        }
-        else {
+        } else {
             listData.addAll(grouped);
             ArrayList<String> tempData = new ArrayList<>(set);
-            int i = 0 ;
-            while (listData.size() < 4){
-                if (i == tempData.size()){
+            int i = 0;
+            while (listData.size() < 4) {
+                if (i == tempData.size()) {
                     break;
                 }
-                if (!listData.contains(tempData.get(i))){
-                    listData.add(tempData.get(i));}
+                if (!listData.contains(tempData.get(i))) {
+                    listData.add(tempData.get(i));
+                }
                 i++;
             }
         }

@@ -22,16 +22,18 @@ public class ClickableInfo extends InfoWindow {
 
     @Override
     public void onOpen(Object item) {
-        showIngfo(this.getView());
+        showIngfo(MainActivity.ViewPerusahaan);
     }
-    public void showIngfo(View view){
-        BottomSheetDialog btmSheetDialog = new BottomSheetDialog(
-                view.getContext(), R.style.BottomSheetDialogTheme);
 
-        View btmSheetView = LayoutInflater.from(view.getContext().getApplicationContext())
-                .inflate(R.layout.info_perusahaan, (FrameLayout) view.findViewById(R.id.sheets2));
+    public Perusahaan getPerusahaan() {
+        return perusahaan;
+    }
 
-        FrameLayout btmView = (FrameLayout) btmSheetView.findViewById(R.id.sheets2);
+    public void showIngfo(View btmView){
+//        BottomSheetDialog btmSheetDialog = new BottomSheetDialog(
+//                view.getContext(), R.style.BottomSheetDialogTheme);
+
+
         //Setter Text BTM sheet
         TextView tv1 = btmView.findViewById(R.id.namaPerusahaan);
         tv1.setText(perusahaan.nama);
@@ -58,10 +60,10 @@ public class ClickableInfo extends InfoWindow {
         TextView tv11 = btmView.findViewById(R.id.txtTipe);
         tv11.setText(perusahaan.tipeCustomer);
 
-        BottomSheetBehavior.from(btmView).setState(BottomSheetBehavior.STATE_EXPANDED);
+        BottomSheetBehavior.from(MainActivity.btmView).setState(BottomSheetBehavior.STATE_EXPANDED);
         MainActivity.map.getController().setZoom(19);
-        btmSheetDialog.setContentView(btmSheetView);
-        btmSheetDialog.show();
+        MainActivity.dialogPerusahaan.setContentView(btmView);
+        MainActivity.dialogPerusahaan.show();
     }
 
     @Override

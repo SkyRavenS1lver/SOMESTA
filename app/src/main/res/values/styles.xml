@@ -15,5 +15,10 @@
         <item name="android:background">@drawable/filter_btn</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
-
+    <style name="Theme.App" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="android:tint">@color/white</item>
+    </style>
 </resources>

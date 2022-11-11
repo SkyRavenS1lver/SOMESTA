@@ -42,8 +42,6 @@ public class allAdapter extends RecyclerView.Adapter<allAdapter.HolderData> {
     public void onBindViewHolder(@NonNull HolderData holder, int position) {
         holder.group.setText(listData.get(position));
         String name = holder.group.getText().toString();
-        System.out.println(name);
-        System.out.println(grouped.contains(name));
         holder.group.setChecked(grouped.contains(name));
         holder.group.setOnClickListener(new View.OnClickListener() {
             @Override
