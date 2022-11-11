@@ -50,6 +50,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             @Override
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), String.valueOf(dataPerusahaan.getNama()), Toast.LENGTH_SHORT).show();
+                MainActivity.searchView.setSearchText(String.valueOf(dataPerusahaan.getNama()));
                 IMapController mapController = MainActivity.map.getController();
                 GeoPoint jogja = new GeoPoint(dataPerusahaan.getLocation());
                 mapController.setCenter(jogja);

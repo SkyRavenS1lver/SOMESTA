@@ -105,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
     public static View ViewPerusahaan;
     public static FrameLayout btmView;
 
+    public static FloatingSearchView searchView;
+
 
     //Semua data perusahaan disimpan di array ini
     private ArrayList<Perusahaan> perusahaanArrayList = new ArrayList<>();
@@ -350,7 +352,7 @@ public class MainActivity extends AppCompatActivity {
         searchRecyclerView.setAdapter(searchAdapter);
 
         //Search Bar
-        FloatingSearchView searchView = findViewById(R.id.searchView);
+        searchView = findViewById(R.id.searchView);
 //        searchView.setIconified(false);
         searchView.clearFocus();
 
@@ -387,6 +389,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
 
 //        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 //            @Override
