@@ -16,10 +16,12 @@
         android:id="@+id/textResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Result:"
+        android:layout_margin="25dp"
+        android:text="List berdasarkan filter:"
+        android:textSize="@dimen/title"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="25dp"/>
+        app:layout_constraintTop_toTopOf="parent" />
     <TextView
         android:id="@+id/Response"
         android:layout_width="match_parent"
@@ -27,6 +29,7 @@
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textResult"
+        android:textSize="@dimen/title"
         android:layout_margin="25dp"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/filterResult"
