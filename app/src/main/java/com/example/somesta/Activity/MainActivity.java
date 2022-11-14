@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -158,9 +159,9 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this, R.style.BottomSheetDialogTheme);
 
         View btmSheetView = LayoutInflater.from(getApplicationContext())
-                .inflate(R.layout.btm_sheet, (FrameLayout) findViewById(R.id.sheets));
+                .inflate(R.layout.btm_sheet, (LinearLayout) findViewById(R.id.linearLayoutFilter));
 
-        FrameLayout btmView = (FrameLayout) btmSheetView.findViewById(R.id.sheets);
+//        FrameLayout btmView = (FrameLayout) btmSheetView.findViewById(R.id.sheets);
 
 //        BottomSheetBehavior.from(btmView).setState(BottomSheetBehavior.STATE_COLLAPSED);
         btmSheetDialog.setContentView(btmSheetView);
@@ -364,11 +365,7 @@ public class MainActivity extends AppCompatActivity {
                 perusahaanArrayListFiltered.clear();
                 for (Perusahaan perusahaan : perusahaanArrayList) {
                     if (perusahaan.getNama().toLowerCase(Locale.ROOT).contains(searchWord.toLowerCase(Locale.ROOT))
-                            && (groupClicked.size() == 0 || groupClicked.contains(perusahaan.getGroup()))
-                            && (statusClicked.size() == 0 || statusClicked.contains(perusahaan.getStatus()))
-                            && (lokasiClicked.size() == 0 || lokasiClicked.contains(perusahaan.getTempat()))
-                            && (kebutuhanClicked.size() == 0 || kebutuhanClicked.contains(perusahaan.getKebutuhan()))
-                            && (jenisClicked.size() == 0 || jenisClicked.contains(perusahaan.getJenis()))) {
+                            ) {
                         perusahaanArrayListFiltered.add(perusahaan);
                     }
                     if (perusahaanArrayListFiltered.size() == 5) {

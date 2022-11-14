@@ -72,6 +72,7 @@
         <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/drawable-v24/bg_style_floatingsearchview.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1965" />
         <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/drawable/current_loc_marker.xml" value="0.1965" />
+        <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/drawable/filter_btn.xml" value="0.133" />
         <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/drawable/groupingbg.xml" value="0.1415" />
         <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/drawable/groupingshapeactive.xml" value="0.1415" />
         <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/drawable/groupingshapenot.xml" value="0.1415" />
@@ -80,6 +81,7 @@
         <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/drawable/result_bg.xml" value="0.1965" />
         <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/layout/btm_sheet.xml" value="0.25" />
+        <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/layout/clickable_bubble.xml" value="0.2916666666666667" />
         <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/layout/filter_data.xml" value="0.5" />
         <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/layout/filter_result.xml" value="0.240625" />
         <entry key="..\:/AndroidStudioProjects/PAD/SOMESTA/app/src/main/res/layout/fragment_bookmark.xml" value="0.28888888888888886" />

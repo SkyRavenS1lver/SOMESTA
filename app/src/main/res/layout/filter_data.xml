@@ -9,4 +9,7 @@
     android:paddingHorizontal="11dp"
     style="@style/ToggleStyle"
     android:layout_margin="5dp"
+    android:maxLines="1"
+    android:ellipsize="end"
+    android:textSize="@dimen/other"
     />
