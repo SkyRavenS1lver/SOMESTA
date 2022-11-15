@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">SOMESTA</string>
+    <string name="Response_OK">List berdasarkan filter:</string>
+    <string name="Response_None">Mohon Maaf tidak ada Perusahaan yang sesuai</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 

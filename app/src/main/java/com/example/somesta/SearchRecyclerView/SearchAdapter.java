@@ -45,7 +45,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         final Perusahaan dataPerusahaan = values.get(position);
         holder.textViewNamaPerusahaan.setText(String.valueOf(dataPerusahaan.getNama()));
         holder.textViewLokasiPerusahaan.setText(String.valueOf(dataPerusahaan.getTempat()));
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -60,7 +60,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/buttonFiltering"
-                android:layout_marginBottom="60dp">
+                android:layout_marginBottom="68dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -257,7 +257,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="40dp"
                 android:layout_marginVertical="10dp"
-                android:layout_weight="9"
                 android:text="Terapkan Filter"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"

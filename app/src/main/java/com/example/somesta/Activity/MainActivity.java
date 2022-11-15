@@ -2,6 +2,7 @@ package com.example.somesta.Activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.MediaRouteButton;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.LocationListener;
@@ -56,6 +57,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
+import org.mapsforge.map.rendertheme.renderinstruction.Line;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     public static IMapController mapController;
     public static BottomSheetDialog viewListDialog;
     Marker markerCurrent;
-    ExtendedFloatingActionButton viewList;
+    private ExtendedFloatingActionButton viewList;
     private String penanda;
     protected LocationManager locationManager;
     protected LocationListener locationListener;
@@ -159,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this, R.style.BottomSheetDialogTheme);
 
         View btmSheetView = LayoutInflater.from(getApplicationContext())
-                .inflate(R.layout.btm_sheet, (LinearLayout) findViewById(R.id.linearLayoutFilter));
+                .inflate(R.layout.btm_sheet, (LinearLayout) btmSheetDialog.findViewById(R.id.linearLayoutFilter));
 
 //        FrameLayout btmView = (FrameLayout) btmSheetView.findViewById(R.id.sheets);
 
@@ -170,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         viewListDialog = new BottomSheetDialog(
                 MainActivity.this, R.style.BottomSheetDialogTheme);
         View viewListDialogView = LayoutInflater.from(getApplicationContext())
-                .inflate(R.layout.filter_result, (FrameLayout) findViewById(R.id.sheets2));
+                .inflate(R.layout.filter_result, (LinearLayout) findViewById(R.id.sheets2));
         viewListDialog.setContentView(viewListDialogView);
         RecyclerView recyclerViewResult = viewListDialogView.findViewById(R.id.filterResult);
         recyclerViewResult.setLayoutManager(new LinearLayoutManager(btmSheetDialog.getContext()));
@@ -212,15 +214,21 @@ public class MainActivity extends AppCompatActivity {
         btmSheetView.findViewById(R.id.buttonFiltering).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Resetting Recycler View
+                addingData((GroupAdapter) recyclerViews.get(0).getAdapter(), FBgroupArraySET, groupClicked);
+                addingData((GroupAdapter) recyclerViews.get(1).getAdapter(), FBstatusArraySET, statusClicked);
+                addingData((GroupAdapter) recyclerViews.get(2).getAdapter(), FBlokasiArraySET, lokasiClicked);
+                addingData((GroupAdapter) recyclerViews.get(3).getAdapter(), FBkebutuhanArraySET, kebutuhanClicked);
+                addingData((GroupAdapter) recyclerViews.get(4).getAdapter(), FBjenisArraySET, jenisClicked);
                 updateMarker();
                 //View List
                 if(perusahaanArrayListFiltered.size() == 0){
-                    ((TextView)viewListDialogView.findViewById(R.id.Response)).setText("Mohon Maaf tidak ada Perusahaan yang sesuai");
+                    ((TextView)viewListDialogView.findViewById(R.id.textResult)).setText(getResources().getString(R.string.Response_None));
                 }
-                else {((TextView)viewListDialogView.findViewById(R.id.Response)).setText("");}
+                else {((TextView)viewListDialogView.findViewById(R.id.textResult)).setText(getResources().getString(R.string.Response_OK));}
                 if(groupClicked.size()+statusClicked.size()+lokasiClicked.size()+kebutuhanClicked.size()+jenisClicked.size()!=0){viewList.setVisibility(View.VISIBLE);}
                 else {viewList.setVisibility(View.INVISIBLE);}
-                adapterResult.setListData(perusahaanArrayListFiltered);
+                adapterResult.setListData(new ArrayList<>(perusahaanArrayListFiltered));
                 adapterResult.notifyDataSetChanged();
                 btmSheetDialog.dismiss();
             }
@@ -231,9 +239,9 @@ public class MainActivity extends AppCompatActivity {
         BottomSheetDialog btmSheetDialogGroup = new BottomSheetDialog(
                 MainActivity.this, R.style.BottomSheetDialogTheme);
         View btmSheetViewGroup = LayoutInflater.from(getApplicationContext())
-                .inflate(R.layout.see_all_layout, (FrameLayout) findViewById(R.id.sheets2));
+                .inflate(R.layout.see_all_layout, (LinearLayout) btmSheetDialogGroup.findViewById(R.id.linearLayoutFilter));
 
-        FrameLayout btmViewGroup = (FrameLayout) btmSheetViewGroup.findViewById(R.id.sheets2);
+//        FrameLayout btmViewGroup = (FrameLayout) btmSheetViewGroup.findViewById(R.id.sheets2);
 //        BottomSheetBehavior.from(btmViewGroup).setState(BottomSheetBehavior.STATE_EXPANDED);
         btmSheetDialogGroup.setContentView(btmSheetViewGroup);
         RecyclerView recyclerViewGroup = btmSheetViewGroup.findViewById(R.id.allRv);
