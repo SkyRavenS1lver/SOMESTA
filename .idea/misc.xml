@@ -3,16 +3,26 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/APK/Android Project/SOMESTA/app/src/main/res/layout/activity_login.xml" value="0.22826086956521738" />
+        <entry key="..\:/APK/Android Project/SOMESTA/app/src/main/res/layout/btm_sheet.xml" value="0.11302083333333333" />
         <entry key="..\:/Android Project/Hasil Clone/New/SOMESTA/app/src/main/res/drawable/ic_baseline_location_on_24.xml" value="0.1375" />
         <entry key="..\:/Android Project/Hasil Clone/New/SOMESTA/app/src/main/res/layout/activity_main.xml" value="0.12360688956433637" />
         <entry key="..\:/Android Project/Hasil Clone/New/SOMESTA/app/src/main/res/menu/bottom_nav_menu.xml" value="0.23333333333333334" />
         <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/btm_sheet_bg.xml" value="0.2265" />
+        <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/groupingshapeactive.xml" value="0.1375" />
+        <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/groupingshapenot.xml" value="0.1375" />
         <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/ic_bookmark_icon.xml" value="0.124" />
         <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/ic_bookmark_icon_selected.xml" value="0.124" />
         <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/iconchange.xml" value="0.2265" />
         <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/item_iconchange.xml" value="0.2265" />
+        <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/login_bg.xml" value="0.1375" />
+        <entry key="..\:/Android Project/SOMESTA/app/src/main/res/drawable/login_submit_button.xml" value="0.1375" />
+        <entry key="..\:/Android Project/SOMESTA/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/Android Project/SOMESTA/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Android Project/SOMESTA/app/src/main/res/layout/btm_sheet.xml" value="0.22826086956521738" />
         <entry key="..\:/Android Project/SOMESTA/app/src/main/res/layout/btm_sheet_layout.xml" value="0.2076923076923077" />
+        <entry key="..\:/Android Project/SOMESTA/app/src/main/res/layout/filter_data.xml" value="0.22826086956521738" />
+        <entry key="..\:/Android Project/SOMESTA/app/src/main/res/layout/fragment_home.xml" value="0.22826086956521738" />
         <entry key="..\:/Android Project/SOMESTA/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Android Project/clone8-11/SOMESTA/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
         <entry key="..\:/Android Project/clone8-11/SOMESTA/app/src/main/res/layout/btm_sheet.xml" value="0.22826086956521738" />
