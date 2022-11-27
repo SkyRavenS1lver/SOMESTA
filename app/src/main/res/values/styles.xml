@@ -2,7 +2,7 @@
 <resources>
     <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
-        
+
     </style>
     <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
@@ -24,5 +24,15 @@
     <style name="checkBoxStyle" parent="Base.Theme.AppCompat">
         <item name="colorAccent">@color/pert_green</item>
         <item name="android:textColorSecondary">@color/pert_gray</item>
+    </style>
+    <style name="loginBox" parent="Base.Theme.AppCompat">
+        <item name="android:textColorHint">@color/pert_gray</item>
+        <item name="android:background">@drawable/login_bg</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="loginButton" parent="Base.Theme.AppCompat">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/login_submit_button</item>
+        <item name="backgroundTint">@color/pert_red_light</item>
     </style>
 </resources>

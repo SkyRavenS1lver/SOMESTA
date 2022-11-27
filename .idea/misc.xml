@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/APK/Android Project/SOMESTA/app/src/main/res/drawable/login_bg.xml" value="0.119" />
+        <entry key="..\:/APK/Android Project/SOMESTA/app/src/main/res/drawable/login_submit_button.xml" value="0.119" />
         <entry key="..\:/APK/Android Project/SOMESTA/app/src/main/res/layout/activity_login.xml" value="0.22826086956521738" />
         <entry key="..\:/APK/Android Project/SOMESTA/app/src/main/res/layout/btm_sheet.xml" value="0.11302083333333333" />
         <entry key="..\:/Android Project/Hasil Clone/New/SOMESTA/app/src/main/res/drawable/ic_baseline_location_on_24.xml" value="0.1375" />
