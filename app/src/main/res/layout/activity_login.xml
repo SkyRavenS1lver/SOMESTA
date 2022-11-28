@@ -22,11 +22,11 @@
             android:textSize="@dimen/loginPart"
             android:layout_marginBottom="@dimen/loginElemenMar"/>
         <EditText
-            android:id="@+id/loginUsername"
+            android:id="@+id/loginEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/login_bg"
-            android:hint="Username"
+            android:hint="Email"
             android:textSize="@dimen/description"
             android:paddingVertical="@dimen/loginEtVerPad"
             android:paddingHorizontal="@dimen/loginEtHorPad"

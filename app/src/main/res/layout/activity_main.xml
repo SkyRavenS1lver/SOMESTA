@@ -8,34 +8,51 @@
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/filter"
+        android:id="@+id/settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
         android:backgroundTint="@color/white"
         android:elevation="100dp"
-        android:src="@drawable/filter_icon"
+        android:src="@drawable/ic_baseline_remove_circle_outline_40"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:maxImageSize="25dp"
+        app:maxImageSize="35dp"
         app:tint="@color/dark_gray"
         android:layout_marginBottom="20dp"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/white"
+        android:elevation="100dp"
+        android:src="@drawable/filter_icon"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toTopOf="@+id/settings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="25dp"
+        app:tint="@color/dark_gray" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
         android:backgroundTint="@color/pert_blue_light"
         android:elevation="100dp"
         android:src="@drawable/ic_baseline_my_location_24"
         app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/filter"
         app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="35dp"
-        app:tint="@color/white"
-        android:layout_marginBottom="100dp"/>
+        app:tint="@color/white" />
+
+
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/viewList"
         android:gravity="center"
