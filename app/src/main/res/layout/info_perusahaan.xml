@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sheets2"
     android:layout_width="match_parent"
+    android:background="@drawable/btm_sheet_bg"
     android:layout_height="match_parent">
-    <FrameLayout
-        android:id="@+id/sheets2"
-        android:layout_width="match_parent"
-        android:layout_height="1000dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        android:background="@drawable/btm_sheet_bg">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -41,11 +37,12 @@
                         android:textSize="@dimen/description"
                         android:textStyle="bold" />
                 </LinearLayout>
-                <ScrollView
+                <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scrollbarThumbVertical="@null"
-                    android:scrollbarThumbHorizontal="@null">
+                    android:scrollbarThumbHorizontal="@null"
+                    android:paddingBottom="@dimen/btmSheetX">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -315,8 +312,8 @@
 
 
                     </LinearLayout>
-                </ScrollView>
+                </androidx.core.widget.NestedScrollView>
             </LinearLayout>
         </LinearLayout>
-    </FrameLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</LinearLayout>

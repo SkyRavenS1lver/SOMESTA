@@ -60,7 +60,7 @@ public class ClickableInfo extends InfoWindow {
         TextView tv11 = btmView.findViewById(R.id.txtTipe);
         tv11.setText(perusahaan.tipeCustomer);
 
-        BottomSheetBehavior.from(MainActivity.btmView).setState(BottomSheetBehavior.STATE_EXPANDED);
+//        BottomSheetBehavior.from(MainActivity.btmView).setState(BottomSheetBehavior.STATE_EXPANDED);
         MainActivity.map.getController().setZoom(19);
         MainActivity.dialogPerusahaan.setContentView(btmView);
         MainActivity.dialogPerusahaan.show();

@@ -161,8 +161,8 @@ public class MainActivity extends AppCompatActivity {
         dialogPerusahaan = new BottomSheetDialog(
                 this, R.style.BottomSheetDialogTheme);
         ViewPerusahaan = LayoutInflater.from(this)
-                .inflate(R.layout.info_perusahaan, (FrameLayout) dialogPerusahaan.findViewById(R.id.sheets2));
-        btmView = (FrameLayout) ViewPerusahaan.findViewById(R.id.sheets2);
+                .inflate(R.layout.info_perusahaan, (LinearLayout) dialogPerusahaan.findViewById(R.id.sheets2));
+//        btmView = (FrameLayout) ViewPerusahaan.findViewById(R.id.sheets2);
         Context ctx = this;
 
         //Creating Current Location
