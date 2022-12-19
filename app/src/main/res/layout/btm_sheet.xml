@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/btm_sheet_bg"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/btm_sheet_bg"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <LinearLayout
         android:id="@+id/linearLayoutFilter"
         android:layout_width="match_parent"
@@ -258,6 +258,7 @@
                 android:layout_marginHorizontal="40dp"
                 android:layout_marginVertical="10dp"
                 android:text="Terapkan Filter"
+                android:textSize="@dimen/other"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -266,4 +267,4 @@
 
     </LinearLayout>
 
-        </LinearLayout>
+</LinearLayout>

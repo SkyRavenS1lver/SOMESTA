@@ -298,7 +298,7 @@
                                 android:text="Tipe Customer: "
                                 android:textColor="@color/black"
                                 android:textStyle="bold"
-                                android:textSize="16sp"
+                                android:textSize="@dimen/description"
                                 android:layout_marginTop="@dimen/elemenY"
                                 android:layout_weight="2"
                                 />

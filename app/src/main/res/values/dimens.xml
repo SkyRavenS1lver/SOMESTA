@@ -1,6 +1,16 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="title">60px</dimen>
+    <dimen name="loginPartTopMar">150px</dimen>
     <dimen name="description">50px</dimen>
     <dimen name="other">40px</dimen>
+    <dimen name="loginPart">100px</dimen>
+    <dimen name="loginEtVerPad">30px</dimen>
+    <dimen name="loginEtHorPad">75px</dimen>
+    <dimen name="loginPartMar">125px</dimen>
+    <dimen name="loginElemenMar">40px</dimen>
+    <dimen name="loginButtonHorMar">150px</dimen>
+
+
+
 </resources>

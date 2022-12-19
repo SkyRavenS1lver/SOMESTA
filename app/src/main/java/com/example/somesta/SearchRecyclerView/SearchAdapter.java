@@ -23,6 +23,7 @@ import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder>{
 
@@ -55,6 +56,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 GeoPoint jogja = new GeoPoint(dataPerusahaan.getLocation());
                 mapController.setCenter(jogja);
                 mapController.setZoom(19);
+                //Clear Marker Logic
+//                HashSet<String> a =  new HashSet<>(Model.groupClicked);
+//                HashSet<String> b =  new HashSet<>(Model.statusClicked);
+//                HashSet<String> c =  new HashSet<>(Model.jenisClicked);
+//                HashSet<String> d =  new HashSet<>(Model.kebutuhanClicked);
+//                HashSet<String> e =  new HashSet<>(Model.lokasiClicked);
                 Model.groupClicked.clear();
                 Model.statusClicked.clear();
                 Model.jenisClicked.clear();
@@ -63,6 +70,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 Model.getPerusahaanArrayListFiltered().clear();
                 MainActivity.filterResets.performClick();
                 clearData();
+//                Model.groupClicked = new HashSet<>(a);
+//                Model.statusClicked= new HashSet<>(b);
+//                Model.jenisClicked= new HashSet<>(c);
+//                Model.kebutuhanClicked= new HashSet<>(d);
+//                Model.lokasiClicked= new HashSet<>(e);
             }
         });
     }
