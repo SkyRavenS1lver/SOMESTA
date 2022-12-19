@@ -20,6 +20,7 @@
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorOnSurface">@color/white</item>
         <item name="android:tint">@color/white</item>
+        <item name="android:fontFamily">sans-serif</item>
     </style>
     <style name="checkBoxStyle" parent="Base.Theme.AppCompat">
         <item name="colorAccent">@color/pert_green</item>

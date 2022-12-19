@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.somesta.Activity.MainActivity;
 import com.example.somesta.Marker.Perusahaan;
 import com.example.somesta.R;
+import com.example.somesta.StaticData.Model;
 import com.j256.ormlite.stmt.query.In;
 
 import org.osmdroid.api.IMapController;
@@ -54,6 +55,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 GeoPoint jogja = new GeoPoint(dataPerusahaan.getLocation());
                 mapController.setCenter(jogja);
                 mapController.setZoom(19);
+                Model.groupClicked.clear();
+                Model.statusClicked.clear();
+                Model.jenisClicked.clear();
+                Model.kebutuhanClicked.clear();
+                Model.lokasiClicked.clear();
+                Model.getPerusahaanArrayListFiltered().clear();
+                MainActivity.filterResets.performClick();
                 clearData();
             }
         });
