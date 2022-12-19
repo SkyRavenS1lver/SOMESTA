@@ -114,13 +114,16 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton settings;
 
-    public static FloatingSearchView searchView;
+    public static FloatingSearchView searchView, seeAllSearchView;
 
 
     //Semua data perusahaan disimpan di array ini
     public static ArrayList<Perusahaan> perusahaanArrayList = new ArrayList<>();
     //Array untuk menyimpan data yang ter-filter untuk searchView
     public static ArrayList<Perusahaan> perusahaanArrayListFiltered = new ArrayList<>();
+    //Array untuk temporary search
+    public static ArrayList<String> searchTemporary = new ArrayList<>();
+
 
 
     @Override
@@ -270,7 +273,6 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this, R.style.BottomSheetDialogTheme);
         View btmSheetViewGroup = LayoutInflater.from(getApplicationContext())
                 .inflate(R.layout.see_all_layout, (LinearLayout) btmSheetDialogGroup.findViewById(R.id.linearLayoutFilter));
-
 //        FrameLayout btmViewGroup = (FrameLayout) btmSheetViewGroup.findViewById(R.id.sheets2);
 //        BottomSheetBehavior.from(btmViewGroup).setState(BottomSheetBehavior.STATE_EXPANDED);
         btmSheetDialogGroup.setContentView(btmSheetViewGroup);
@@ -278,6 +280,56 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewGroup.setLayoutManager(new LinearLayoutManager(btmSheetViewGroup.getContext()));
         allAdapter allAdapterGroup = new allAdapter(btmSheetViewGroup.getContext(), new ArrayList<>(), temp);
         recyclerViewGroup.setAdapter(allAdapterGroup);
+        seeAllSearchView = btmSheetDialogGroup.findViewById(R.id.searchView);
+        seeAllSearchView.clearFocus();
+
+        seeAllSearchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    searchTemporary.clear();
+                } else {
+                    searchTemporary.clear();
+                }
+            }
+        });
+        seeAllSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
+            @Override
+            public void onSearchTextChanged(String oldQuery, String newQuery) {
+                //Progress
+                ArrayList<String> listData = new ArrayList<>();
+                if (penanda.equals("Group")) {
+                    listData = new ArrayList<>(FBgroupArraySET);
+                }
+                if (penanda.equals("Status")) {
+                    listData = new ArrayList<>(FBstatusArraySET);
+//                        allAdapterGroup.setListData(new ArrayList<>(FBstatusArraySET));
+                }
+                if (penanda.equals("Lokasi")) {
+                    listData = new ArrayList<>(FBlokasiArraySET);
+//                        allAdapterGroup.setListData(new ArrayList<>(FBlokasiArraySET));
+                }
+                if (penanda.equals("Kebutuhan")) {
+                    listData = new ArrayList<>(FBkebutuhanArraySET);
+//                        allAdapterGroup.setListData(new ArrayList<>(FBkebutuhanArraySET));
+                }
+                if (penanda.equals("Jenis")) {
+                    listData = new ArrayList<>(FBjenisArraySET);
+//                        allAdapterGroup.setListData(new ArrayList<>(FBjenisArraySET));
+                }
+                if (newQuery.isEmpty() || oldQuery.isEmpty()) {allAdapterGroup.setListData(listData);}
+                else {allAdapterGroup.setListData(searchTemporary);}
+                    allAdapterGroup.notifyDataSetChanged();
+                    String searchWord = newQuery;
+                    searchTemporary.clear();
+                    for (String filters : listData) {
+                        if (filters.toLowerCase(Locale.ROOT).contains(searchWord.toLowerCase(Locale.ROOT))
+                        ) {
+                            searchTemporary.add(filters);
+                        }
+                    }
+                }
+        });
 
         btmSheetViewGroup.findViewById(R.id.filterReset).setOnClickListener(new View.OnClickListener() {
             @Override

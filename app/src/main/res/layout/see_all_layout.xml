@@ -57,6 +57,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <com.arlib.floatingsearchview.FloatingSearchView
+                    android:id="@+id/searchView"
+                    android:layout_width="match_parent"
+                    android:layout_height="53dp"
+                    app:floatingSearch_searchHint="Search..."
+                    app:floatingSearch_showSearchKey="false"
+                    app:floatingSearch_leftActionMode="noLeftAction"
+                    android:layout_marginTop="25dp"
+                    />
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/allRv"
                     android:layout_width="match_parent"
