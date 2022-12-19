@@ -620,12 +620,14 @@ public class MainActivity extends AppCompatActivity {
             // get location here
             fusedLocationProviderClient.getLastLocation().addOnSuccessListener(MainActivity.this, location -> {
                 if (location != null) {
+                    map.getOverlays().remove(markerCurrent);
                     currentLatitude = location.getLatitude();
                     currentLongitude = location.getLongitude();
                     GeoPoint currentLoc = new GeoPoint(currentLatitude,currentLongitude);
                     markerCurrent.setPosition(currentLoc);
-                    mapController.setCenter(currentLoc);
+                    map.getOverlays().add(markerCurrent);
                     mapController.setZoom(17);
+                    mapController.setCenter(currentLoc);
                 }
             });
         }
@@ -678,7 +680,9 @@ public class MainActivity extends AppCompatActivity {
     }
     private void addData() {
         map.getOverlays().clear();
-        map.getOverlays().add(markerCurrent);
+        getLocation(this);
+//        map.getOverlays().add(markerCurrent);
+//        map.getOverlays().remove(markerCurrent);
         markers.clear();
         for (Perusahaan perusahaan : perusahaanArrayList) {
             createMarker(perusahaan);
