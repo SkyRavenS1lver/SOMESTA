@@ -84,7 +84,7 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
     private long mLastClickTime = 0;
     private boolean keyboardVisibility = false;
-    private boolean recVisibility = false;
+    public static boolean recVisibility = false;
     public static Button filterResets;
     public static IMapController mapController;
     public static BottomSheetDialog viewListDialog;

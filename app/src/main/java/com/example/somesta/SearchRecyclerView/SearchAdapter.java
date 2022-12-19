@@ -54,6 +54,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 MainActivity.searchView.setSearchText(String.valueOf(dataPerusahaan.getNama()));
                 IMapController mapController = MainActivity.map.getController();
                 GeoPoint jogja = new GeoPoint(dataPerusahaan.getLocation());
+                MainActivity.recVisibility = false;
                 mapController.setZoom(19);
                 mapController.setCenter(jogja);
                 //Clear Marker Logic

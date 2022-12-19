@@ -34,6 +34,7 @@ import java.util.concurrent.Executors;
 
 public class LoginActivity extends AppCompatActivity {
     private long mLastClickTime = 0;
+    private boolean available = true;
     private boolean keyboardVisibility = false;
     private EditText email;
     private EditText password;
@@ -114,6 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                     password.setBackground(getResources().getDrawable(R.drawable.loginbgwrong));
                 }
                 else {
+                    available = false;
                     ExecutorService service = Executors.newSingleThreadExecutor();
                     service.execute(new Runnable() {
                         @Override
@@ -124,8 +126,10 @@ public class LoginActivity extends AppCompatActivity {
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                Toast.makeText(LoginActivity.this, "Berhasil login", Toast.LENGTH_SHORT).show();
-                                                startActivity(intent);
+                                                if (!available){
+                                                    available = true;
+                                                    Toast.makeText(LoginActivity.this, "Berhasil login", Toast.LENGTH_SHORT).show();
+                                                    startActivity(intent);}
                                             }
                                         });
 //                                    Toast.makeText(LoginActivity.this, "Berhasil login", Toast.LENGTH_SHORT).show();
@@ -139,7 +143,10 @@ public class LoginActivity extends AppCompatActivity {
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            Toast.makeText(LoginActivity.this, "Email / Password salah", Toast.LENGTH_SHORT).show();
+                                            if (!available) {
+                                                available = true;
+                                                Toast.makeText(LoginActivity.this, "Email / Password salah", Toast.LENGTH_SHORT).show();
+                                            }
                                         }
                                     });
                                 }
