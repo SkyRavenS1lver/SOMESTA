@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.somesta.Activity.MainActivity;
 import com.example.somesta.Marker.Perusahaan;
 import com.example.somesta.R;
-import com.example.somesta.StaticData.Model;
+
 import com.j256.ormlite.stmt.query.In;
 
 import org.osmdroid.api.IMapController;
@@ -57,24 +57,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 mapController.setCenter(jogja);
                 mapController.setZoom(19);
                 //Clear Marker Logic
-//                HashSet<String> a =  new HashSet<>(Model.groupClicked);
-//                HashSet<String> b =  new HashSet<>(Model.statusClicked);
-//                HashSet<String> c =  new HashSet<>(Model.jenisClicked);
-//                HashSet<String> d =  new HashSet<>(Model.kebutuhanClicked);
-//                HashSet<String> e =  new HashSet<>(Model.lokasiClicked);
-                Model.groupClicked.clear();
-                Model.statusClicked.clear();
-                Model.jenisClicked.clear();
-                Model.kebutuhanClicked.clear();
-                Model.lokasiClicked.clear();
-                Model.getPerusahaanArrayListFiltered().clear();
+                MainActivity.groupClicked.clear();
+                MainActivity.statusClicked.clear();
+                MainActivity.jenisClicked.clear();
+                MainActivity.kebutuhanClicked.clear();
+                MainActivity.lokasiClicked.clear();
+                MainActivity.perusahaanArrayListFiltered.clear();
                 MainActivity.filterResets.performClick();
                 clearData();
-//                Model.groupClicked = new HashSet<>(a);
-//                Model.statusClicked= new HashSet<>(b);
-//                Model.jenisClicked= new HashSet<>(c);
-//                Model.kebutuhanClicked= new HashSet<>(d);
-//                Model.lokasiClicked= new HashSet<>(e);
             }
         });
     }

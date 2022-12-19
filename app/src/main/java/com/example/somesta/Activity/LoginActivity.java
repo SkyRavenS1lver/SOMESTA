@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -29,6 +30,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class LoginActivity extends AppCompatActivity {
+    private long mLastClickTime = 0;
 
     private EditText email;
     private EditText password;
@@ -89,6 +91,10 @@ public class LoginActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 String typedEmail = String.valueOf(email.getText());
                 String typedPass = String.valueOf(password.getText());
                 String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
