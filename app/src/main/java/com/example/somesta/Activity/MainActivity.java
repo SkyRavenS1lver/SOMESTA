@@ -84,6 +84,7 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
     private long mLastClickTime = 0;
     private boolean keyboardVisibility = false;
+    private boolean recVisibility = false;
     public static Button filterResets;
     public static IMapController mapController;
     public static BottomSheetDialog viewListDialog;
@@ -466,6 +467,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
                 }
+                recVisibility = true;
                 searchRecyclerView.setVisibility(View.VISIBLE);
             }
         });
@@ -582,6 +584,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onVisibilityChanged(boolean isOpen) {
                         // some code depending on keyboard visiblity status
                         if (!isOpen) {
+                            recVisibility = isOpen;
                             searchRecyclerView.setVisibility(View.INVISIBLE);
                         }
                     }
@@ -597,7 +600,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (!keyboardVisibility){
+        if (!keyboardVisibility && !recVisibility){
             if (SystemClock.elapsedRealtime() - mLastClickTime < 2000){
                 finishAffinity();
                 finish();
@@ -605,6 +608,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this,"Ketuk Sekali Lagi untuk Keluar Dari Aplikasi",Toast.LENGTH_SHORT).show();
             mLastClickTime = SystemClock.elapsedRealtime();
         }
+        else if (!keyboardVisibility && recVisibility){searchRecyclerView.setVisibility(View.INVISIBLE);recVisibility = false;}
         else {super.onBackPressed();}
     }
 
