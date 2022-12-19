@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,7 @@ import com.example.somesta.databinding.ActivityMainBinding;
 import com.example.somesta.seeAll.allAdapter;
 
 import com.example.somesta.utility.GroupAdapter;
+import com.example.somesta.utility.KeyboardUtils;
 import com.example.somesta.utility.ResultAdapter;
 
 import com.google.android.flexbox.FlexDirection;
@@ -80,6 +82,8 @@ import java.util.Locale;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
+    private long mLastClickTime = 0;
+    private boolean keyboardVisibility = false;
     public static Button filterResets;
     public static IMapController mapController;
     public static BottomSheetDialog viewListDialog;
@@ -296,7 +300,6 @@ public class MainActivity extends AppCompatActivity {
         seeAllSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
             @Override
             public void onSearchTextChanged(String oldQuery, String newQuery) {
-                //Progress
                 ArrayList<String> listData = new ArrayList<>();
                 if (penanda.equals("Group")) {
                     listData = new ArrayList<>(FBgroupArraySET);
@@ -584,6 +587,25 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+        KeyboardUtils.addKeyboardToggleListener(this, new KeyboardUtils.SoftKeyboardToggleListener() {
+            @Override
+            public void onToggleSoftKeyboard(boolean isVisible) {
+                keyboardVisibility = isVisible;
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!keyboardVisibility){
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 2000){
+                finishAffinity();
+                finish();
+            }
+            Toast.makeText(this,"Ketuk Sekali Lagi untuk Keluar Dari Aplikasi",Toast.LENGTH_SHORT).show();
+            mLastClickTime = SystemClock.elapsedRealtime();
+        }
+        else {super.onBackPressed();}
     }
 
     private void getLocation(Context ctx) {

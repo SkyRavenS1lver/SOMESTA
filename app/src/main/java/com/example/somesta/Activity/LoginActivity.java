@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -18,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.somesta.R;
+import com.example.somesta.utility.KeyboardUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,7 +34,7 @@ import java.util.concurrent.Executors;
 
 public class LoginActivity extends AppCompatActivity {
     private long mLastClickTime = 0;
-
+    private boolean keyboardVisibility = false;
     private EditText email;
     private EditText password;
     private Button submit;
@@ -143,7 +146,6 @@ public class LoginActivity extends AppCompatActivity {
                             });
                         }
                     });
-
                 }
 
 //                if (typedEmail.equals("test") && typedPass.equals("test")){
@@ -152,6 +154,12 @@ public class LoginActivity extends AppCompatActivity {
 //                }else{
 //                    Toast.makeText(LoginActivity.this, "Login Error!", Toast.LENGTH_SHORT).show();
 //                }
+            }
+        });
+        KeyboardUtils.addKeyboardToggleListener(this, new KeyboardUtils.SoftKeyboardToggleListener() {
+            @Override
+            public void onToggleSoftKeyboard(boolean isVisible) {
+                keyboardVisibility = isVisible;
             }
         });
     }
@@ -166,35 +174,27 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
-    public static boolean emptyChecker(EditText[] editTexts, Activity activity) {
-        /**
-         * checking input field for empty or not
-         */
-        int totalLength = 0;
-        for (int i = 0; i < editTexts.length; i++) {
-            EditText editText = editTexts[i];
-            if (editText.getText().toString().trim().equals("")) {
-                Toast.makeText(activity, "Hola Mi Amigos", Toast.LENGTH_SHORT).show();
-                break;
-            } else {
-                if (editText.getTag().toString().toLowerCase().equals("email".toLowerCase())) {
-                    String email = editText.getText().toString().trim();
-                    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-                    if (!email.matches(emailPattern)) {
-                        Toast.makeText(activity, "Hola", Toast.LENGTH_SHORT).show();
-                        break;
-                    } else {
-                        totalLength++;
-                    }
-                } else {
-                    totalLength++;
+
+    @Override
+    public void onBackPressed() {
+        if (!keyboardVisibility){
+            AlertDialog.Builder alert = new AlertDialog.Builder(LoginActivity.this);
+            alert.setTitle("Perhatian");
+            alert.setMessage("Apakah anda ingin keluar dari aplikasi?");
+            alert.setPositiveButton("Keluar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    finishAffinity();
+                    finish();
                 }
-
-            }
+            });
+            alert.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                }
+            });
+            alert.show();
         }
-        //true means all okay
-        //false means at least one is empty
-        return totalLength == editTexts.length;
+        else {super.onBackPressed();}
     }
-
 }
