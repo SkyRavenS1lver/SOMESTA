@@ -48,6 +48,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.HolderData
         holder.clickable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                MainActivity.mapController.setZoom(17);
                 MainActivity.mapController.setCenter(perusahaan.getLocation());
                 MainActivity.viewListDialog.dismiss();
             }
