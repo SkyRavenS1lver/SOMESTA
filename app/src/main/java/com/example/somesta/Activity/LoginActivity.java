@@ -135,19 +135,23 @@ public class LoginActivity extends AppCompatActivity {
 //                                    Toast.makeText(LoginActivity.this, "Berhasil login", Toast.LENGTH_SHORT).show();
 //                                    startActivity(intent);
                                 }
-                            });
-
-                            mAuth.signInWithEmailAndPassword(typedEmail, typedPass).addOnFailureListener(new OnFailureListener() {
+                            }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
                                             if (!available) {
-                                                available = true;
-                                                Toast.makeText(LoginActivity.this, "Email / Password salah", Toast.LENGTH_SHORT).show();
+                                            if (e.toString().equals("com.google.firebase.FirebaseNetworkException: A network error (such as timeout, interrupted connection or unreachable host) has occurred."))
+                                            {Toast.makeText(LoginActivity.this, "Tidak Ada Koneksi Internet", Toast.LENGTH_LONG).show();}
+                                            if (e.toString().equals("com.google.firebase.auth.FirebaseAuthInvalidCredentialsException: The password is invalid or the user does not have a password."))
+                                            {password.setError("Password Salah!");
+                                                password.setBackground(getResources().getDrawable(R.drawable.loginbgwrong));}
+                                            if(e.toString().equals("com.google.firebase.auth.FirebaseAuthInvalidUserException: There is no user record corresponding to this identifier. The user may have been deleted.")) {
+                                                email.setError("Email Salah!");
+                                                email.setBackground(getResources().getDrawable(R.drawable.loginbgwrong));
                                             }
-                                        }
+                                        }available = true;}
                                     });
                                 }
                             });
