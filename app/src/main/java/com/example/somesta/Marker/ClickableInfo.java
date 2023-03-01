@@ -38,7 +38,7 @@ public class ClickableInfo extends InfoWindow {
         TextView tv1 = btmView.findViewById(R.id.namaPerusahaan);
         tv1.setText(perusahaan.nama);
         TextView tv2 = btmView.findViewById(R.id.txtDilayani);
-        tv2.setText(perusahaan.dilayani);
+        tv2.setText(perusahaan.kompetitor);
         TextView tv3 = btmView.findViewById(R.id.txtGroup);
         tv3.setText(perusahaan.group);
         TextView tv4 = btmView.findViewById(R.id.txtJenis);
@@ -52,13 +52,15 @@ public class ClickableInfo extends InfoWindow {
         TextView tv7 = btmView.findViewById(R.id.txtLokasi);
         tv7.setText(perusahaan.tempat);
         TextView tv8 = btmView.findViewById(R.id.txtPelayanan);
-        tv8.setText(perusahaan.pelayanan);
+        tv8.setText(perusahaan.layanan);
         TextView tv9 = btmView.findViewById(R.id.txtPenyalur);
         tv9.setText(perusahaan.penyalur);
         TextView tv10 = btmView.findViewById(R.id.txtStatus);
         tv10.setText(perusahaan.status);
         TextView tv11 = btmView.findViewById(R.id.txtTipe);
         tv11.setText(perusahaan.tipeCustomer);
+        TextView tv12 = btmView.findViewById(R.id.marketShare);
+        tv12.setText(perusahaan.market_share);
 
         BottomSheetBehavior.from(MainActivity.btmView).setState(BottomSheetBehavior.STATE_EXPANDED);
         MainActivity.map.getController().setZoom(19);

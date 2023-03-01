@@ -3,6 +3,7 @@
     <string name="Response_OK">List berdasarkan filter:</string>
     <string name="Response_None">Mohon Maaf tidak ada Perusahaan yang sesuai</string>
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="rupiah"> Rp </string>
 
 
 </resources>

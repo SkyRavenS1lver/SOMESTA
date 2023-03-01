@@ -78,7 +78,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/elemenY"
                             android:layout_weight="1"
-                            android:text="Group"
+                            android:text="Group/Holding"
                             android:textColor="@color/black"
                             android:textSize="@dimen/description"
                             android:textStyle="bold" />
@@ -103,41 +103,7 @@
                         android:scrollbars="none"
                         android:layout_marginBottom="10dp"/>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginVertical="10dp">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/elemenY"
-                            android:layout_weight="1"
-                            android:text="Status"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/description"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/allStatus"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/elemenY"
-                            android:layout_weight="1"
-                            android:gravity="end"
-                            android:text="Lihat Semua"
-                            android:textColor="@color/btmnavbg"
-                            android:textSize="@dimen/other"
-                            android:textStyle="bold"/>
-                    </LinearLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvStatus"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:scrollbars="none"
-                        android:layout_marginBottom="10dp"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -175,43 +141,6 @@
                         android:scrollbars="none"
                         android:layout_marginBottom="10dp"/>
 
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginVertical="10dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/elemenY"
-                            android:layout_weight="1"
-                            android:text="Kebutuhan per bulan"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/description"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/allKebutuhan"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/elemenY"
-                            android:layout_weight="1"
-                            android:gravity="end"
-                            android:text="Lihat Semua"
-                            android:textColor="@color/btmnavbg"
-                            android:textSize="@dimen/other"
-                            android:textStyle="bold"/>
-                    </LinearLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvKebutuhan"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:scrollbars="none"
-                        android:layout_marginBottom="10dp"/>
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -239,6 +168,7 @@
                             android:textColor="@color/btmnavbg"
                             android:textSize="@dimen/other"
                             android:textStyle="bold"/>
+
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -247,7 +177,210 @@
                         android:layout_height="wrap_content"
                         android:scrollbars="none"
                         android:layout_marginBottom="10dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginVertical="10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/elemenY"
+                            android:layout_weight="1"
+                            android:text="Status"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/description"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none"
+                        android:layout_marginBottom="10dp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginVertical="10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/elemenY"
+                            android:layout_weight="1"
+                            android:text="Kebutuhan Total per Bulan"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/description"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            style="@style/BoxContainer">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/rupiah"
+                                android:textSize="@dimen/other"
+                                style="@style/TextBoxFilter"/>
+                            <EditText
+                                android:id="@+id/hargaMinimum"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:hint="Minimum"
+                                android:paddingHorizontal="5dp"
+                                android:textSize="@dimen/other"
+                                style="@style/InputBoxNUM"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="15dp"
+                            style="@style/BoxContainer">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/rupiah"
+                                android:textSize="@dimen/other"
+                                style="@style/TextBoxFilter"/>
+                            <EditText
+                                android:id="@+id/hargaMaximum"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:hint="Maksimal"
+                                android:paddingHorizontal="5dp"
+                                android:textSize="@dimen/other"
+                                style="@style/InputBoxNUM"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginVertical="10dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/elemenY"
+                            android:layout_weight="1"
+                            android:text="Market Share: "
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/description"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            style="@style/BoxContainer">
+
+                            <EditText
+                                android:id="@+id/persenMinimum"
+                                android:layout_weight="1"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:hint="Minimum"
+                                android:paddingHorizontal="5dp"
+                                android:textSize="@dimen/other"
+                                style="@style/InputBoxNUM"/>
+                            <TextView
+                                android:layout_weight="8"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="%"
+                                android:textSize="@dimen/other"
+                                style="@style/TextBoxFilter"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="15dp"
+                            style="@style/BoxContainer">
+                            <EditText
+                                android:id="@+id/persenMaximum"
+                                android:layout_weight="1"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:hint="Maksimal"
+                                android:paddingHorizontal="5dp"
+                                android:textSize="@dimen/other"
+                                style="@style/InputBoxNUM"/>
+                            <TextView
+                                android:layout_weight="8"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="%"
+                                android:textSize="@dimen/other"
+                                style="@style/TextBoxFilter"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginVertical="10dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/elemenY"
+                            android:layout_weight="1"
+                            android:text="Layanan: "
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/description"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvLayanan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none"
+                        android:layout_marginBottom="10dp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginVertical="10dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/elemenY"
+                            android:layout_weight="1"
+                            android:text="Tipe Customer: "
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/description"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvTipe"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none"
+                        android:layout_marginBottom="10dp"/>
                 </LinearLayout>
+
             </androidx.core.widget.NestedScrollView>
 
             <Button
