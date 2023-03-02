@@ -15,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
@@ -82,6 +83,20 @@ import java.util.Locale;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
+    public static TextView reset;
+    public static double kebutuhanMin;
+    public static double kebutuhanMax;
+    public static double persenMin;
+    public static double persenMax;
+    String hMin;
+    String hMax;
+    String pMin;
+    String pMax;
+    public static EditText ETKebutuhanMin;
+    public static EditText ETKebutuhanMax;
+    public static EditText ETpersenMin;
+    public static EditText ETpersenMax;
+
     private long mLastClickTime = 0;
     private boolean keyboardVisibility = false;
     public static boolean recVisibility = false;
@@ -89,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     public static IMapController mapController;
     public static BottomSheetDialog viewListDialog;
     Marker markerCurrent;
-    private ExtendedFloatingActionButton viewList;
+    public static ExtendedFloatingActionButton viewList;
     private String penanda;
     protected LocationManager locationManager;
     protected LocationListener locationListener;
@@ -102,7 +117,10 @@ public class MainActivity extends AppCompatActivity {
     public static HashSet<String> temp = new HashSet<>();
     public static HashSet<String> statusClicked = new HashSet<>();
     public static HashSet<String> jenisClicked = new HashSet<>();
-    public static HashSet<String> kebutuhanClicked = new HashSet<>();
+//    public static HashSet<String> kebutuhanClicked = new HashSet<>();
+    public static HashSet<String> layananClicked = new HashSet<>();
+    //    public HashSet<Double> marketShareFilter = new HashSet<>();
+    public static HashSet<String> tipeCustClicked = new HashSet<>();
     public static HashSet<String> lokasiClicked = new HashSet<>();
     public static ArrayList<Marker> markers = new ArrayList<>();
     ArrayList<OverlayItem> overlayItemArrayList = new ArrayList<>();
@@ -113,6 +131,9 @@ public class MainActivity extends AppCompatActivity {
     Set<String> FBlokasiArraySET;
     Set<String> FBkebutuhanArraySET;
     Set<String> FBgroupArraySET;
+    Set<String> FBlayananArraySET;
+    Set<String> FBmarketShareArraySET;
+    Set<String> FBtipeCustArraySET;
     public static BottomSheetDialog dialogPerusahaan;
     public static View ViewPerusahaan;
     public static FrameLayout btmView;
@@ -160,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         viewList = findViewById(R.id.viewList);
-        viewList.setVisibility(View.INVISIBLE);
+        viewList.setVisibility(View.GONE);
 
         //Marker Onclick sheet dialog
         dialogPerusahaan = new BottomSheetDialog(
@@ -205,6 +226,10 @@ public class MainActivity extends AppCompatActivity {
 //        BottomSheetBehavior.from(btmView).setState(BottomSheetBehavior.STATE_COLLAPSED);
         btmSheetDialog.setContentView(btmSheetView);
 
+        ETKebutuhanMin = btmSheetView.findViewById(R.id.hargaMinimum);
+        ETKebutuhanMax = btmSheetView.findViewById(R.id.hargaMaximum);
+        ETpersenMin = btmSheetView.findViewById(R.id.persenMinimum);
+        ETpersenMax = btmSheetView.findViewById(R.id.persenMaximum);
         //ViewListDialog
         viewListDialog = new BottomSheetDialog(
                 MainActivity.this, R.style.BottomSheetDialogTheme);
@@ -226,17 +251,21 @@ public class MainActivity extends AppCompatActivity {
         createRV(btmSheetView, R.id.rvGroup, groupClicked);
         createRV(btmSheetView, R.id.rvStatus, statusClicked);
         createRV(btmSheetView, R.id.rvLokasi, lokasiClicked);
-        createRV(btmSheetView, R.id.rvKebutuhan, kebutuhanClicked);
         createRV(btmSheetView, R.id.rvJenis, jenisClicked);
-        TextView reset = btmSheetView.findViewById(R.id.filterReset);
+        createRV(btmSheetView, R.id.rvLayanan, layananClicked);
+        createRV(btmSheetView, R.id.rvTipe, tipeCustClicked);
+
+
+        reset = btmSheetView.findViewById(R.id.filterReset);
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                groupClicked.clear();
-                statusClicked.clear();
-                jenisClicked.clear();
-                kebutuhanClicked.clear();
-                lokasiClicked.clear();
+                clearAllData();
+//                groupClicked.clear();
+//                statusClicked.clear();
+//                jenisClicked.clear();
+//                kebutuhanClicked.clear();
+//                lokasiClicked.clear();
                 for (int i = 0; i < recyclerViews.size(); i++) {
                     RecyclerView recyclerView = recyclerViews.get(i);
                     for (int k = 0; k < recyclerView.getChildCount(); k++) {
@@ -244,6 +273,11 @@ public class MainActivity extends AppCompatActivity {
                         holder.group.setChecked(false);
                     }
                 }
+
+                ETKebutuhanMin.setText("");
+                ETKebutuhanMax.setText("");
+                ETpersenMin.setText("");
+                ETpersenMax.setText("");
             }
         });
         //Making the filter button
@@ -253,19 +287,30 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Resetting Recycler View
-                addingData((GroupAdapter) recyclerViews.get(0).getAdapter(), FBgroupArraySET, groupClicked);
-                addingData((GroupAdapter) recyclerViews.get(1).getAdapter(), FBstatusArraySET, statusClicked);
-                addingData((GroupAdapter) recyclerViews.get(2).getAdapter(), FBlokasiArraySET, lokasiClicked);
-                addingData((GroupAdapter) recyclerViews.get(3).getAdapter(), FBkebutuhanArraySET, kebutuhanClicked);
-                addingData((GroupAdapter) recyclerViews.get(4).getAdapter(), FBjenisArraySET, jenisClicked);
+                addAllProcess();
+                hMin = ((EditText)btmSheetView.findViewById(R.id.hargaMinimum)).getText().toString();
+                hMax = ((EditText)btmSheetView.findViewById(R.id.hargaMaximum)).getText().toString();
+                pMin = ((EditText)btmSheetView.findViewById(R.id.persenMinimum)).getText().toString();
+                pMax = ((EditText)btmSheetView.findViewById(R.id.persenMaximum)).getText().toString();
+                if (hMin.equals("")){kebutuhanMin = 0;}else {kebutuhanMin = Double.parseDouble(hMin);}
+                if (hMax.equals("")){kebutuhanMax = 999999999999d;}else {kebutuhanMax = Double.parseDouble(hMax);}
+                if (pMin.equals("")){persenMin = 0;}else {persenMin = Double.parseDouble(pMin);}
+                if (pMax.equals("")){persenMax = 100000;}else { persenMax = Double.parseDouble(pMax);}
+//                addingData((GroupAdapter) recyclerViews.get(0).getAdapter(), FBgroupArraySET, groupClicked);
+//                addingData((GroupAdapter) recyclerViews.get(1).getAdapter(), FBstatusArraySET, statusClicked);
+//                addingData((GroupAdapter) recyclerViews.get(2).getAdapter(), FBlokasiArraySET, lokasiClicked);
+//                addingData((GroupAdapter) recyclerViews.get(3).getAdapter(), FBkebutuhanArraySET, kebutuhanClicked);
+//                addingData((GroupAdapter) recyclerViews.get(4).getAdapter(), FBjenisArraySET, jenisClicked);
                 updateMarker();
                 //View List
                 if(perusahaanArrayListFiltered.size() == 0){
                     ((TextView)viewListDialogView.findViewById(R.id.textResult)).setText(getResources().getString(R.string.Response_None));
                 }
                 else {((TextView)viewListDialogView.findViewById(R.id.textResult)).setText(getResources().getString(R.string.Response_OK));}
-                if(groupClicked.size()+statusClicked.size()+lokasiClicked.size()+kebutuhanClicked.size()+jenisClicked.size()!=0){viewList.setVisibility(View.VISIBLE);}
-                else {viewList.setVisibility(View.INVISIBLE);}
+                if(groupClicked.size()+statusClicked.size()+lokasiClicked.size()+layananClicked.size()+jenisClicked.size()+tipeCustClicked.size()!=0 ||
+                        (!(pMin.equals("") && pMax.equals("") && hMin.equals("")&& hMax.equals(""))))
+                {viewList.setVisibility(View.VISIBLE);}
+                else {viewList.setVisibility(View.GONE);}
                 adapterResult.setListData(new ArrayList<>(perusahaanArrayListFiltered));
                 adapterResult.notifyDataSetChanged();
                 btmSheetDialog.dismiss();
@@ -302,21 +347,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSearchTextChanged(String oldQuery, String newQuery) {
                 ArrayList<String> listData = new ArrayList<>();
-                if (penanda.equals("Group")) {
+                if (penanda.equals("Group/Holding")) {
                     listData = new ArrayList<>(FBgroupArraySET);
                 }
-                if (penanda.equals("Status")) {
-                    listData = new ArrayList<>(FBstatusArraySET);
-//                        allAdapterGroup.setListData(new ArrayList<>(FBstatusArraySET));
-                }
+//                if (penanda.equals("Status")) {
+//                    listData = new ArrayList<>(FBstatusArraySET);
+////                        allAdapterGroup.setListData(new ArrayList<>(FBstatusArraySET));
+//                }
                 if (penanda.equals("Lokasi")) {
                     listData = new ArrayList<>(FBlokasiArraySET);
 //                        allAdapterGroup.setListData(new ArrayList<>(FBlokasiArraySET));
                 }
-                if (penanda.equals("Kebutuhan")) {
-                    listData = new ArrayList<>(FBkebutuhanArraySET);
-//                        allAdapterGroup.setListData(new ArrayList<>(FBkebutuhanArraySET));
-                }
+//                if (penanda.equals("Kebutuhan")) {
+//                    listData = new ArrayList<>(FBkebutuhanArraySET);
+////                        allAdapterGroup.setListData(new ArrayList<>(FBkebutuhanArraySET));
+//                }
                 if (penanda.equals("Jenis")) {
                     listData = new ArrayList<>(FBjenisArraySET);
 //                        allAdapterGroup.setListData(new ArrayList<>(FBjenisArraySET));
@@ -350,7 +395,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 switch (penanda) {
-                    case "Group":
+                    case "Group/Holding":
                         groupClicked.clear();
                         groupClicked.addAll(new HashSet<>(temp));
                         addingData((GroupAdapter) recyclerViews.get(0).getAdapter(), FBgroupArraySET, groupClicked);
@@ -365,15 +410,25 @@ public class MainActivity extends AppCompatActivity {
                         lokasiClicked.addAll(new HashSet<>(temp));
                         addingData((GroupAdapter) recyclerViews.get(2).getAdapter(), FBlokasiArraySET, lokasiClicked);
                         break;
-                    case "Kebutuhan":
-                        kebutuhanClicked.clear();
-                        kebutuhanClicked.addAll(new HashSet<>(temp));
-                        addingData((GroupAdapter) recyclerViews.get(3).getAdapter(), FBkebutuhanArraySET, kebutuhanClicked);
-                        break;
+//                    case "Kebutuhan":
+//                        kebutuhanClicked.clear();
+//                        kebutuhanClicked.addAll(new HashSet<>(temp));
+//                        addingData((GroupAdapter) recyclerViews.get(3).getAdapter(), FBkebutuhanArraySET, kebutuhanClicked);
+//                        break;
                     case "Jenis":
                         jenisClicked.clear();
                         jenisClicked.addAll(new HashSet<>(temp));
-                        addingData((GroupAdapter) recyclerViews.get(4).getAdapter(), FBjenisArraySET, jenisClicked);
+                        addingData((GroupAdapter) recyclerViews.get(3).getAdapter(), FBjenisArraySET, jenisClicked);
+                        break;
+                    case "Layanan":
+                        layananClicked.clear();
+                        layananClicked.addAll(new HashSet<>(temp));
+                        addingData((GroupAdapter) recyclerViews.get(4).getAdapter(), FBlayananArraySET, layananClicked);
+                        break;
+                    case "Tipe Customer":
+                        layananClicked.clear();
+                        layananClicked.addAll(new HashSet<>(temp));
+                        addingData((GroupAdapter) recyclerViews.get(5).getAdapter(), FBtipeCustArraySET, tipeCustClicked);
                         break;
                 }
 
@@ -386,19 +441,19 @@ public class MainActivity extends AppCompatActivity {
         btmSheetView.findViewById(R.id.allGroup).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                penanda = "Group";
+                penanda = "Group/Holding";
                 updateSeeAll(btmSheetViewGroup, allAdapterGroup, penanda, FBgroupArraySET, groupClicked);
                 btmSheetDialogGroup.show();
             }
         });
-        btmSheetView.findViewById(R.id.allStatus).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                penanda = "Status";
-                updateSeeAll(btmSheetViewGroup, allAdapterGroup, penanda, FBstatusArraySET, statusClicked);
-                btmSheetDialogGroup.show();
-            }
-        });
+//        btmSheetView.findViewById(R.id.allStatus).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                penanda = "Status";
+//                updateSeeAll(btmSheetViewGroup, allAdapterGroup, penanda, FBstatusArraySET, statusClicked);
+//                btmSheetDialogGroup.show();
+//            }
+//        });
         btmSheetView.findViewById(R.id.allLokasi).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -407,14 +462,14 @@ public class MainActivity extends AppCompatActivity {
                 btmSheetDialogGroup.show();
             }
         });
-        btmSheetView.findViewById(R.id.allKebutuhan).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                penanda = "Kebutuhan";
-                updateSeeAll(btmSheetViewGroup, allAdapterGroup, penanda, FBkebutuhanArraySET, kebutuhanClicked);
-                btmSheetDialogGroup.show();
-            }
-        });
+//        btmSheetView.findViewById(R.id.allKebutuhan).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                penanda = "Kebutuhan";
+//                updateSeeAll(btmSheetViewGroup, allAdapterGroup, penanda, FBkebutuhanArraySET, kebutuhanClicked);
+//                btmSheetDialogGroup.show();
+//            }
+//        });
         btmSheetView.findViewById(R.id.allJenis).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -434,10 +489,14 @@ public class MainActivity extends AppCompatActivity {
         FirebaseDatabase firebaseDatabase;
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("dbCustomer");
         FBgroupArraySET = new HashSet<String>(); //removes duplicated strings
-        FBstatusArraySET = new HashSet<String>(); //removes duplicated strings
+//        FBstatusArraySET = new HashSet<String>(); //removes duplicated strings
         FBlokasiArraySET = new HashSet<String>(); //removes duplicated strings
-        FBkebutuhanArraySET = new HashSet<String>(); //removes duplicated strings
+//        FBkebutuhanArraySET = new HashSet<String>(); //removes duplicated strings
         FBjenisArraySET = new HashSet<String>(); //removes duplicated strings
+        FBstatusArraySET = new HashSet<String>(new ArrayList<String>(Arrays.asList(new String[]{"Aktif","Inaktif"}))); //removes duplicated strings
+        FBtipeCustArraySET = new HashSet<String>(new ArrayList<String>(Arrays.asList(new String[]{"Direct","Indirect"}))); //removes duplicated strings
+        FBlayananArraySET = new HashSet<String>(new ArrayList<String>(Arrays.asList(new String[]{"LOCO","FRANCO","VHS","FMS"}))); //removes duplicated strings
+
 
         //Search Recyclerview
         SearchAdapter searchAdapter;
@@ -520,15 +579,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //resets all arrays on every update
-                FBgroupArraySET.clear();
-                FBstatusArraySET.clear();
-                FBlokasiArraySET.clear();
-                FBkebutuhanArraySET.clear();
-                FBjenisArraySET.clear();
-                perusahaanArrayList.clear();
+                clearAllDataSets();
+//                FBgroupArraySET.clear();
+//                FBstatusArraySET.clear();
+//                FBlokasiArraySET.clear();
+//                FBkebutuhanArraySET.clear();
+//                FBjenisArraySET.clear();
+//                perusahaanArrayList.clear();
                 //Grab data
                 for (DataSnapshot FBdata : snapshot.getChildren()) {
-                    String dilayani = FBdata.child("dilayani").getValue().toString();
+                    String kompetitor = FBdata.child("kompetitor").getValue().toString();
                     String group = FBdata.child("group").getValue().toString();
                     String jenis = FBdata.child("jenis").getValue().toString();
                     String kebutuhan = FBdata.child("kebutuhan").getValue().toString();
@@ -537,23 +597,25 @@ public class MainActivity extends AppCompatActivity {
                     GeoPoint point = new GeoPoint(lang, longi);
                     String lokasi = FBdata.child("lokasi").getValue().toString();
                     String nama = FBdata.child("nama").getValue().toString();
-                    String pelayanan = FBdata.child("pelayanan").getValue().toString();
+                    String layanan = FBdata.child("layanan").getValue().toString();
                     String penyalur = FBdata.child("penyalur").getValue().toString();
                     String status = FBdata.child("status").getValue().toString();
                     String tipeCustomer = FBdata.child("tipe_customer").getValue().toString();
+                    String marketShare = FBdata.child("market_share").getValue().toString();
                     FBgroupArraySET.add(group);
-                    FBstatusArraySET.add(status);
+//                    FBstatusArraySET.add(status);
                     FBlokasiArraySET.add(lokasi);
-                    FBkebutuhanArraySET.add(kebutuhan);
+//                    FBkebutuhanArraySET.add(kebutuhan);
                     FBjenisArraySET.add(jenis);
-                    perusahaanArrayList.add(new Perusahaan(dilayani, group, jenis, kebutuhan, point, lokasi, nama, pelayanan, penyalur, status, tipeCustomer));
+                    perusahaanArrayList.add(new Perusahaan(kompetitor, group, jenis, kebutuhan, point, lokasi, nama, layanan, penyalur, status, tipeCustomer,marketShare));
                 }
                 //Adding Data to List Data
-                addingData((GroupAdapter) recyclerViews.get(0).getAdapter(), FBgroupArraySET, groupClicked);
-                addingData((GroupAdapter) recyclerViews.get(1).getAdapter(), FBstatusArraySET, statusClicked);
-                addingData((GroupAdapter) recyclerViews.get(2).getAdapter(), FBlokasiArraySET, lokasiClicked);
-                addingData((GroupAdapter) recyclerViews.get(3).getAdapter(), FBkebutuhanArraySET, kebutuhanClicked);
-                addingData((GroupAdapter) recyclerViews.get(4).getAdapter(), FBjenisArraySET, jenisClicked);
+                addAllProcess();
+//                addingData((GroupAdapter) recyclerViews.get(0).getAdapter(), FBgroupArraySET, groupClicked);
+//                addingData((GroupAdapter) recyclerViews.get(1).getAdapter(), FBstatusArraySET, statusClicked);
+//                addingData((GroupAdapter) recyclerViews.get(2).getAdapter(), FBlokasiArraySET, lokasiClicked);
+//                addingData((GroupAdapter) recyclerViews.get(3).getAdapter(), FBkebutuhanArraySET, kebutuhanClicked);
+//                addingData((GroupAdapter) recyclerViews.get(4).getAdapter(), FBjenisArraySET, jenisClicked);
 
                 //Adding marker
                 addData();
@@ -596,6 +658,37 @@ public class MainActivity extends AppCompatActivity {
                 keyboardVisibility = isVisible;
             }
         });
+    }
+
+    private void clearAllDataSets() {
+        FBgroupArraySET.clear();
+        FBlokasiArraySET.clear();
+        FBjenisArraySET.clear();
+        perusahaanArrayList.clear();
+    }
+
+    private void addAllProcess() {
+        addingData((GroupAdapter) recyclerViews.get(0).getAdapter(), FBgroupArraySET, groupClicked);
+        addingData((GroupAdapter) recyclerViews.get(1).getAdapter(), FBstatusArraySET, statusClicked);
+        addingData((GroupAdapter) recyclerViews.get(2).getAdapter(), FBlokasiArraySET, lokasiClicked);
+        addingData((GroupAdapter) recyclerViews.get(3).getAdapter(), FBjenisArraySET, jenisClicked);
+        addingData((GroupAdapter) recyclerViews.get(4).getAdapter(), FBlayananArraySET, layananClicked);
+        addingData((GroupAdapter) recyclerViews.get(5).getAdapter(), FBtipeCustArraySET, tipeCustClicked);
+    }
+
+    private void clearAllData() {
+        groupClicked.clear();
+        statusClicked.clear();
+        jenisClicked.clear();
+//        kebutuhanClicked.clear();
+        lokasiClicked.clear();
+//        marketShareFilter.clear();
+        layananClicked.clear();
+        tipeCustClicked.clear();
+        kebutuhanMin =0d;
+        kebutuhanMax = 999999999999d;
+        persenMin = 0;
+        persenMax = 100;
     }
 
     @Override
@@ -674,14 +767,21 @@ public class MainActivity extends AppCompatActivity {
     private void updateMarker(){
         perusahaanArrayListFiltered.clear();
         for (int i = 0; i < markers.size(); i++) {
-            if (!((groupClicked.size() == 0 || groupClicked.contains(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getGroup())) &&
+            double kebutuhan = Double.parseDouble(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getKebutuhan());
+            double persen = Double.parseDouble(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getMarket_share());
+            if (!(kebutuhan <=kebutuhanMax && kebutuhan >= kebutuhanMin && persen <=persenMax && persen >= persenMin &&
+                    (groupClicked.size() == 0 || groupClicked.contains(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getGroup())) &&
                     (statusClicked.size() == 0 || statusClicked.contains(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getStatus())) &&
                     (lokasiClicked.size() == 0 || lokasiClicked.contains(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getTempat())) &&
-                    (kebutuhanClicked.size() == 0 || kebutuhanClicked.contains(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getKebutuhan())) &&
-                    (jenisClicked.size() == 0 || jenisClicked.contains(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getJenis()))
-            )) {markers.get(i).setIcon(getResources().getDrawable(R.drawable.location_off));}
+                    (layananClicked.size() == 0 || layananClicked.contains(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getKebutuhan())) &&
+                    (jenisClicked.size() == 0 || jenisClicked.contains(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getJenis()) && (tipeCustClicked.size() == 0 || tipeCustClicked.contains(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan().getJenis())))))
+            {markers.get(i).setIcon(getResources().getDrawable(R.drawable.location_off));}
             else {markers.get(i).setIcon(getResources().getDrawable(R.drawable.ic_baseline_location_on_24)); perusahaanArrayListFiltered.add(((ClickableInfo)markers.get(i).getInfoWindow()).getPerusahaan());}}
     }
+    public void updatesMarkers(){
+        for (int i = 0; i < this.markers.size(); i++) {
+            this.markers.get(i).setIcon(getDrawable(R.drawable.ic_baseline_location_on_24));
+    }}
     private void addData() {
         map.getOverlays().clear();
         getLocation(this);
@@ -691,8 +791,6 @@ public class MainActivity extends AppCompatActivity {
         for (Perusahaan perusahaan : perusahaanArrayList) {
             createMarker(perusahaan);
         }
-        System.out.println("Sudah Terlaksana");
-        System.out.println(markers.size());
 //        for (int i = 0; i < markers.size(); i++) {
 //            map.getOverlays().add(markers.get(i));
 //        }

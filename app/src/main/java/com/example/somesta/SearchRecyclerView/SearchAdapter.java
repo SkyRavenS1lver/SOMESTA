@@ -1,4 +1,5 @@
 package com.example.somesta.SearchRecyclerView;
+import static androidx.core.content.ContextCompat.getDrawable;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -29,7 +30,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     private final ArrayList<Perusahaan> values;
     private final LayoutInflater inflater;
-
     public SearchAdapter(Context context, ArrayList<Perusahaan> values) {
         this.values = values;
         this.inflater = LayoutInflater.from(context);
@@ -61,10 +61,29 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 MainActivity.groupClicked.clear();
                 MainActivity.statusClicked.clear();
                 MainActivity.jenisClicked.clear();
-                MainActivity.kebutuhanClicked.clear();
+//        kebutuhanClicked.clear();
                 MainActivity.lokasiClicked.clear();
+//        marketShareFilter.clear();
+                MainActivity.layananClicked.clear();
+                MainActivity.tipeCustClicked.clear();
+                MainActivity.kebutuhanMin =0d;
+                MainActivity.kebutuhanMax = 999999999999d;
+                MainActivity.persenMin = 0;
+                MainActivity.persenMax = 100;
+//                MainActivity.groupClicked.clear();
+//                MainActivity.statusClicked.clear();
+//                MainActivity.jenisClicked.clear();
+////                MainActivity.kebutuhanClicked.clear();
+//                MainActivity.lokasiClicked.clear();
                 MainActivity.perusahaanArrayListFiltered.clear();
                 MainActivity.filterResets.performClick();
+                for (int i = 0; i < MainActivity.markers.size(); i++) {
+                MainActivity.markers.get(i).setIcon(getDrawable(MainActivity.map.getContext(), R.drawable.ic_baseline_location_on_24));}
+                MainActivity.viewList.setVisibility(View.GONE);
+                MainActivity.ETKebutuhanMin.setText("");
+                MainActivity.ETKebutuhanMax.setText("");
+                MainActivity.ETpersenMin.setText("");
+                MainActivity.ETpersenMax.setText("");
                 clearData();
             }
         });

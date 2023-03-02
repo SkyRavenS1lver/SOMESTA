@@ -35,4 +35,16 @@
         <item name="android:background">@drawable/login_submit_button</item>
         <item name="backgroundTint">@color/pert_blue_light</item>
     </style>
+    <style name="BoxContainer">
+        <item name="android:background">@drawable/boxcontainer</item>
+    </style>
+    <style name="InputBoxNUM">
+        <item name="android:textColor">@color/pert_dark</item>
+        <item name="android:textSize">@dimen/description</item>
+        <item name="android:inputType">numberDecimal</item>
+        <item name="android:background">@drawable/inputboxcontainer</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:textColorHint">#868686</item>
+    </style>
+
 </resources>
