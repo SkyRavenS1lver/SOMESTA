@@ -180,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
                 alert.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        clearAllData();
                         FirebaseAuth.getInstance().signOut();
                         Toast.makeText(MainActivity.this, "Berhasil Logout", Toast.LENGTH_SHORT).show();
                         finish();
