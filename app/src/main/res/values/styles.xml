@@ -33,7 +33,7 @@
     <style name="loginButton" parent="Base.Theme.AppCompat">
         <item name="android:textColor">@color/white</item>
         <item name="android:background">@drawable/login_submit_button</item>
-        <item name="backgroundTint">@color/pert_blue_light</item>
+        <item name="backgroundTint">@color/pert_green</item>
     </style>
     <style name="BoxContainer">
         <item name="android:background">@drawable/boxcontainer</item>

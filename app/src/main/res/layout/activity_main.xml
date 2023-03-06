@@ -36,6 +36,23 @@
         app:maxImageSize="25dp"
         app:tint="@color/pert_blue_light" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/informasi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="100dp"
+        android:backgroundTint="@color/white"
+        android:elevation="100dp"
+        android:src="@drawable/ic_baseline_info_24"
+        app:fabSize="normal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="70dp"
+        app:tint="@color/pert_green"
+        android:visibility="gone"
+        />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/location"
@@ -107,6 +124,7 @@
         />
 
     <RelativeLayout
+        android:id="@+id/searchContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/searchView"

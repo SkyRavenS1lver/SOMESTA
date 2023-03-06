@@ -70,11 +70,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 MainActivity.kebutuhanMax = 999999999999d;
                 MainActivity.persenMin = 0;
                 MainActivity.persenMax = 100;
-//                MainActivity.groupClicked.clear();
-//                MainActivity.statusClicked.clear();
-//                MainActivity.jenisClicked.clear();
-////                MainActivity.kebutuhanClicked.clear();
-//                MainActivity.lokasiClicked.clear();
+                MainActivity.showInfo.setVisibility(View.GONE);
+                MainActivity.jumlahMarketShare = 0;
+                MainActivity.jumlahKebutuhan = 0;
                 MainActivity.perusahaanArrayListFiltered.clear();
                 MainActivity.filterResets.performClick();
                 for (int i = 0; i < MainActivity.markers.size(); i++) {

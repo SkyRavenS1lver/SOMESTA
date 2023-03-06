@@ -147,7 +147,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Kebutuhan Total per Bulan: "
+                                android:text="Kebutuhan Total per Bulan (KL): "
                                 android:textColor="@color/black"
                                 android:textStyle="bold"
                                 android:textSize="@dimen/description"
@@ -316,7 +316,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Market Share: "
+                                android:text="Market Share (%): "
                                 android:textColor="@color/black"
                                 android:textStyle="bold"
                                 android:textSize="@dimen/description"
