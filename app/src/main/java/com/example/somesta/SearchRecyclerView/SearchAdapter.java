@@ -50,29 +50,17 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Set Lokasi Ke marker dari perusahaan yang dipilih
                 Toast.makeText(view.getContext(), String.valueOf(dataPerusahaan.getNama()), Toast.LENGTH_SHORT).show();
                 MainActivity.searchView.setSearchText(String.valueOf(dataPerusahaan.getNama()));
                 IMapController mapController = MainActivity.map.getController();
-                GeoPoint jogja = new GeoPoint(dataPerusahaan.getLocation());
+                GeoPoint location = new GeoPoint(dataPerusahaan.getLocation());
                 MainActivity.recVisibility = false;
                 mapController.setZoom(19);
-                mapController.setCenter(jogja);
-                //Clear Marker Logic
-                MainActivity.groupClicked.clear();
-                MainActivity.statusClicked.clear();
-                MainActivity.jenisClicked.clear();
-//        kebutuhanClicked.clear();
-                MainActivity.lokasiClicked.clear();
-//        marketShareFilter.clear();
-                MainActivity.layananClicked.clear();
-                MainActivity.tipeCustClicked.clear();
-                MainActivity.kebutuhanMin =0d;
-                MainActivity.kebutuhanMax = 999999999999d;
-                MainActivity.persenMin = 0;
-                MainActivity.persenMax = 100;
+                mapController.setCenter(location);
+                //Clear semua kemungkinan fitur filter yang ada
+                MainActivity.clearAllData();
                 MainActivity.showInfo.setVisibility(View.GONE);
-                MainActivity.jumlahMarketShare = 0;
-                MainActivity.jumlahKebutuhan = 0;
                 MainActivity.perusahaanArrayListFiltered.clear();
                 MainActivity.filterResets.performClick();
                 for (int i = 0; i < MainActivity.markers.size(); i++) {

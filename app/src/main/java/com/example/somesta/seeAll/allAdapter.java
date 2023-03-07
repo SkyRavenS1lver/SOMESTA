@@ -44,10 +44,11 @@ public class allAdapter extends RecyclerView.Adapter<allAdapter.HolderData> {
 
     @Override
     public void onBindViewHolder(@NonNull HolderData holder, int position) {
-//        holder.group.setText(listData.get(position));
         holder.group_text.setText(listData.get(position));
         String name = holder.group_text.getText().toString();
+        //Melakukan cek apakah button terdapat di filter list
         holder.group.setChecked(grouped.contains(name));
+        // Penambahan dan penghapusan tombol ke dalam filter jika user menekan tombol tersebut
         holder.group_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

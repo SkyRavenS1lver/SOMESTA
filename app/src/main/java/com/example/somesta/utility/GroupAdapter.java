@@ -40,11 +40,8 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.HolderData> 
         holder.group.setTextOff(listData.get(position));
         holder.group.setTextOn(listData.get(position));
         String name = holder.group.getText().toString();
-        if (grouped.contains(name)
-        )
-        {holder.group.setChecked(true);}
+        if (grouped.contains(name)) {holder.group.setChecked(true);}
         else {holder.group.setChecked(false);}
-//        if (this.tipe.contains(name)){holder.group.setChecked(true);}
         holder.group.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

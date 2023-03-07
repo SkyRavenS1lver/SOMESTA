@@ -224,20 +224,23 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             style="@style/BoxContainer">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/rupiah"
-                                android:textSize="@dimen/other"
-                                style="@style/TextBoxFilter"/>
+
                             <EditText
                                 android:id="@+id/hargaMinimum"
+                                android:layout_weight="1"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:hint="Minimum"
                                 android:paddingHorizontal="5dp"
                                 android:textSize="@dimen/other"
                                 style="@style/InputBoxNUM"/>
+                            <TextView
+                                android:layout_weight="8"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="KL"
+                                android:textSize="@dimen/other"
+                                style="@style/TextBoxFilter"/>
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -245,13 +248,8 @@
                             android:orientation="horizontal"
                             android:layout_marginTop="15dp"
                             style="@style/BoxContainer">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/rupiah"
-                                android:textSize="@dimen/other"
-                                style="@style/TextBoxFilter"/>
                             <EditText
+                                android:layout_weight="1"
                                 android:id="@+id/hargaMaximum"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -259,6 +257,13 @@
                                 android:paddingHorizontal="5dp"
                                 android:textSize="@dimen/other"
                                 style="@style/InputBoxNUM"/>
+                            <TextView
+                                android:layout_weight="8"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="KL"
+                                android:textSize="@dimen/other"
+                                style="@style/TextBoxFilter"/>
                         </LinearLayout>
                     </LinearLayout>
 

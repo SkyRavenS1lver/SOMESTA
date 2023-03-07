@@ -30,10 +30,6 @@ public class ClickableInfo extends InfoWindow {
     }
 
     public void showIngfo(View btmView){
-//        BottomSheetDialog btmSheetDialog = new BottomSheetDialog(
-//                view.getContext(), R.style.BottomSheetDialogTheme);
-
-
         //Setter Text BTM sheet
         TextView tv1 = btmView.findViewById(R.id.namaPerusahaan);
         tv1.setText(perusahaan.nama);
@@ -61,8 +57,6 @@ public class ClickableInfo extends InfoWindow {
         tv11.setText(perusahaan.tipeCustomer);
         TextView tv12 = btmView.findViewById(R.id.marketShare);
         tv12.setText(perusahaan.market_share);
-
-//        BottomSheetBehavior.from(MainActivity.btmView).setState(BottomSheetBehavior.STATE_EXPANDED);
         MainActivity.map.getController().setZoom(19);
         MainActivity.dialogPerusahaan.setContentView(btmView);
         MainActivity.dialogPerusahaan.show();
@@ -70,6 +64,5 @@ public class ClickableInfo extends InfoWindow {
 
     @Override
     public void onClose() {
-
     }
 }

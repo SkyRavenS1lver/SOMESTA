@@ -54,54 +54,24 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
 
-//        Boolean viewed = false;
-//        password.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
-//                    if(motionEvent.getRawX() >= password.getRight() - password.getTotalPaddingRight()) {
-//                        // your action for drawable click event
-//                        if(viewed){password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);}
-//                        else{password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);}
-//                    }
-//                }
-//                return true;
-//            }
-//        });
-
-//        username.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                if (charSequence.length() > 0){
-//                    username.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0);
-//                }
-//                else {username.setCompoundDrawablesWithIntrinsicBounds(0,0, com.arlib.floatingsearchview.R.drawable.ic_arrow_back_black_24dp,0);}
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//
-//            }
-//        });
-
-
-
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-
+        // Login button logic
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // cek terakhir kali di klik, supaya proses yang berjalan hanya 1 saja. Waktu terhitung dalam milisecond
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 3000){
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                String typedEmail = String.valueOf(email.getText());
+                //Mendapatkan data dari input
+                String typedEmail = String.valueOf(email.getText()).trim();
                 String typedPass = String.valueOf(password.getText());
-                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+                //Pola abc@abc.abc, tidak bisa dengan email yang lebih dari 1 dot (.)
+//                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+                String emailPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                        + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+                // cek apakah input sudah terisi dan sesuai pola email
                 if (TextUtils.isEmpty(email.getText())){
                     email.setError("Email Tidak Boleh Kosong!");
                     email.setBackground(getResources().getDrawable(R.drawable.loginbgwrong));
@@ -115,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                     password.setBackground(getResources().getDrawable(R.drawable.loginbgwrong));
                 }
                 else {
+                    // Proses login menggunakan firebase Authentication
                     available = false;
                     ExecutorService service = Executors.newSingleThreadExecutor();
                     service.execute(new Runnable() {
@@ -132,8 +103,6 @@ public class LoginActivity extends AppCompatActivity {
                                                     startActivity(intent);}
                                             }
                                         });
-//                                    Toast.makeText(LoginActivity.this, "Berhasil login", Toast.LENGTH_SHORT).show();
-//                                    startActivity(intent);
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -158,15 +127,9 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     });
                 }
-
-//                if (typedEmail.equals("test") && typedPass.equals("test")){
-//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                    startActivity(intent);
-//                }else{
-//                    Toast.makeText(LoginActivity.this, "Login Error!", Toast.LENGTH_SHORT).show();
-//                }
             }
         });
+        // Utility untuk cek kondisi keyboard smartphone
         KeyboardUtils.addKeyboardToggleListener(this, new KeyboardUtils.SoftKeyboardToggleListener() {
             @Override
             public void onToggleSoftKeyboard(boolean isVisible) {
@@ -180,12 +143,14 @@ public class LoginActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            Toast.makeText(this, "Already logged in.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Sudah Login.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
         }
     }
 
+    //Cek jika kita menekan tombol back dan keyboard sedang tidak terlihat,
+    // maka akan muncul popup konfirmasi keluar aplikasi
     @Override
     public void onBackPressed() {
         if (!keyboardVisibility){
@@ -195,6 +160,7 @@ public class LoginActivity extends AppCompatActivity {
             alert.setPositiveButton("Keluar", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
+
                     finishAffinity();
                     finish();
                 }
