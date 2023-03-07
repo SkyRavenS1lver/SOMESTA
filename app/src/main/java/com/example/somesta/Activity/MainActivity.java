@@ -7,6 +7,7 @@ import android.app.MediaRouteButton;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ import com.example.somesta.databinding.ActivityMainBinding;
 import com.example.somesta.seeAll.allAdapter;
 
 import com.example.somesta.utility.CustomAlert;
+import com.example.somesta.utility.DotProgressBar;
 import com.example.somesta.utility.GroupAdapter;
 import com.example.somesta.utility.KeyboardUtils;
 import com.example.somesta.utility.ResultAdapter;
@@ -278,6 +280,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.show();
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 //Resetting Recycler View
                 addAllProcess();
                 hMin = ((EditText)btmSheetView.findViewById(R.id.hargaMinimum)).getText().toString();
@@ -296,7 +299,10 @@ public class MainActivity extends AppCompatActivity {
                     ((TextView)viewListDialogView.findViewById(R.id.textResult)).setText(getResources().getString(R.string.Response_None));
                     showInfo.setVisibility(View.GONE);
                 }
-                else {((TextView)viewListDialogView.findViewById(R.id.textResult)).setText(getResources().getString(R.string.Response_OK));showInfo.setVisibility(View.VISIBLE);}
+                else {((TextView)viewListDialogView.findViewById(R.id.textResult)).setText(getResources().getString(R.string.Response_OK));
+                    showInfo.setVisibility(View.VISIBLE);
+                    mapController.setZoom(5);
+                    mapController.setCenter(new GeoPoint(0.7893,118));}
                 if(groupClicked.size()+statusClicked.size()+lokasiClicked.size()+layananClicked.size()+jenisClicked.size()+tipeCustClicked.size()!=0 ||
                         (!(pMin.equals("") && pMax.equals("") && hMin.equals("")&& hMax.equals(""))))
                 {viewList.setVisibility(View.VISIBLE);}
@@ -481,6 +487,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dialog.show();
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 //resets all arrays on every update
                 clearAllDataSets();
                 //Grab data
@@ -608,6 +615,7 @@ public class MainActivity extends AppCompatActivity {
     }
     // Fungsi yang digunakan untuk mendapatkan lokasi saat ini dari pengguna
     private void getLocation(Context ctx) {
+        dialog.show();
         if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
@@ -622,6 +630,7 @@ public class MainActivity extends AppCompatActivity {
                     map.getOverlays().add(markerCurrent);
                     mapController.setZoom(17);
                     mapController.setCenter(currentLoc);
+                    dialog.dismiss();
                 }
             });
         }
@@ -715,8 +724,9 @@ public class MainActivity extends AppCompatActivity {
     }
     public void makeLoading(){
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        LayoutInflater inflater = MainActivity.this.getLayoutInflater();
-        builder.setView(inflater.inflate(R.layout.loading_bar, null));
+        View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.loading_bar,null);
+        builder.setView(view);
+        ((DotProgressBar)view.findViewById(R.id.dotProgressBar)).startAnimation();
         builder.setCancelable(false);
         dialog = builder.create();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);

@@ -4,31 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
+    android:background="#00FFFFFF"
     >
-
-    <View
-        android:layout_gravity="fill"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
     <ProgressBar
         android:id="@+id/progressBar"
-        style="?android:attr/progressBackgroundTint"
+        style="?android:attr/progressBarStyleSmall"
+        android:background="@android:color/transparent"
+        android:progressBackgroundTint="@android:color/transparent"
         android:indeterminate="true"
         android:indeterminateTintMode="src_atop"
         android:indeterminateTint="@color/pert_blue_light"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:background="@android:color/transparent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -37,19 +31,23 @@
         app:layout_constraintTop_toBottomOf="@id/progressBar"
         >
         <TextView
+            android:background="@android:color/transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:text="Loading"
+            android:textStyle="bold"
             android:textColor="@color/white"
-            android:textSize="40dp"
+            android:textSize="30dp"
             />
         <com.example.somesta.utility.DotProgressBar
             android:id="@+id/dotProgressBar"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="1dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:background="@android:color/transparent"
             />
 
     </LinearLayout>

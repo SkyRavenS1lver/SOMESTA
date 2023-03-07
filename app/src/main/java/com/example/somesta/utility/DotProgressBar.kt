@@ -71,6 +71,7 @@ class DotProgressBar : FrameLayout {
         primaryAnimator?.repeatCount = ValueAnimator.INFINITE
         primaryAnimator?.duration = animationDuration.toLong()
         primaryAnimator?.interpolator = LinearInterpolator()
+        startAnimation()
     }
 
     private fun getScaleAnimator(view: View): Animator {

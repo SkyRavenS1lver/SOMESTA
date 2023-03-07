@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Editable;
@@ -23,6 +24,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.somesta.R;
+import com.example.somesta.utility.DotProgressBar;
 import com.example.somesta.utility.KeyboardUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -92,6 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                     // Proses login menggunakan firebase Authentication
                     available = false;
                     dialog.show();
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                     ExecutorService service = Executors.newSingleThreadExecutor();
                     service.execute(new Runnable() {
                         @Override
@@ -182,8 +185,9 @@ public class LoginActivity extends AppCompatActivity {
     }
     public void makeLoading(){
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-        LayoutInflater inflater = LoginActivity.this.getLayoutInflater();
-        builder.setView(inflater.inflate(R.layout.loading_bar, null));
+        View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.loading_bar,null);
+        builder.setView(view);
+        ((DotProgressBar)view.findViewById(R.id.dotProgressBar)).startAnimation();
         builder.setCancelable(false);
         dialog = builder.create();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
