@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,8 +14,10 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -33,6 +36,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class LoginActivity extends AppCompatActivity {
+    public static AlertDialog dialog;
     private long mLastClickTime = 0;
     private boolean available = true;
     private boolean keyboardVisibility = false;
@@ -45,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        makeLoading();
         email = findViewById(R.id.loginEmail);
         password = findViewById(R.id.loginPassword);
         submit = findViewById(R.id.loginSubmit);
@@ -87,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                 else {
                     // Proses login menggunakan firebase Authentication
                     available = false;
+                    dialog.show();
                     ExecutorService service = Executors.newSingleThreadExecutor();
                     service.execute(new Runnable() {
                         @Override
@@ -98,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                                             @Override
                                             public void run() {
                                                 if (!available){
+                                                    dialog.dismiss();
                                                     available = true;
                                                     Toast.makeText(LoginActivity.this, "Berhasil login", Toast.LENGTH_SHORT).show();
                                                     startActivity(intent);}
@@ -120,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 email.setError("Email Salah!");
                                                 email.setBackground(getResources().getDrawable(R.drawable.loginbgwrong));
                                             }
-                                        }available = true;}
+                                        }available = true;dialog.dismiss();}
                                     });
                                 }
                             });
@@ -173,5 +179,13 @@ public class LoginActivity extends AppCompatActivity {
             alert.show();
         }
         else {super.onBackPressed();}
+    }
+    public void makeLoading(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        LayoutInflater inflater = LoginActivity.this.getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.loading_bar, null));
+        builder.setCancelable(false);
+        dialog = builder.create();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 }

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="black">#FF000000</color>
 
     <color name="white">#FFFFFFFF</color>
     <color name="btmnavbg">#ADC52D</color>
+    <color name="purples">#FF6200EE</color>
+
 
     <!--Pertamina Colors/pert-->
     <color name="btmfloat">#101410</color>

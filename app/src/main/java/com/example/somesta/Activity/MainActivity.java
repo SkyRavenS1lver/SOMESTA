@@ -14,6 +14,7 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -85,6 +86,7 @@ import java.util.Set;
 import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity {
+    AlertDialog dialog;
     public static TextView reset;
     public static double kebutuhanMin, kebutuhanMax, persenMin, persenMax;
     public static int jumlahKebutuhan = 0, jumlahMarketShare = 0;
@@ -140,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        makeLoading();
         //Logika button informasi
         showInfo = findViewById(R.id.informasi);
         showInfo.setOnClickListener(new View.OnClickListener() {
@@ -274,6 +277,7 @@ public class MainActivity extends AppCompatActivity {
         filterResets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dialog.show();
                 //Resetting Recycler View
                 addAllProcess();
                 hMin = ((EditText)btmSheetView.findViewById(R.id.hargaMinimum)).getText().toString();
@@ -300,6 +304,7 @@ public class MainActivity extends AppCompatActivity {
                 adapterResult.setListData(new ArrayList<>(perusahaanArrayListFiltered));
                 adapterResult.notifyDataSetChanged();
                 btmSheetDialog.dismiss();
+                dialog.dismiss();
             }
         });
 
@@ -475,6 +480,7 @@ public class MainActivity extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dialog.show();
                 //resets all arrays on every update
                 clearAllDataSets();
                 //Grab data
@@ -505,11 +511,13 @@ public class MainActivity extends AppCompatActivity {
                 addData();
                 //Notify adapter, onDataChange works asynchronously
                 if (searchAdapter != null) {searchAdapter.notifyDataSetChanged();}
+                dialog.dismiss();
             }
             // Jika penarikan data gagal
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(MainActivity.this, "Gagal Mendapatkan Data Terbaru", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
         });
 
@@ -704,5 +712,13 @@ public class MainActivity extends AppCompatActivity {
         }
         groupAdapters.setListData(listData);
         groupAdapters.notifyDataSetChanged();
+    }
+    public void makeLoading(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        LayoutInflater inflater = MainActivity.this.getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.loading_bar, null));
+        builder.setCancelable(false);
+        dialog = builder.create();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 }
