@@ -300,9 +300,7 @@ public class MainActivity extends AppCompatActivity {
                     showInfo.setVisibility(View.GONE);
                 }
                 else {((TextView)viewListDialogView.findViewById(R.id.textResult)).setText(getResources().getString(R.string.Response_OK));
-                    showInfo.setVisibility(View.VISIBLE);
-                    mapController.setZoom(5);
-                    mapController.setCenter(new GeoPoint(0.7893,118));}
+                    showInfo.setVisibility(View.VISIBLE);}
                 if(groupClicked.size()+statusClicked.size()+lokasiClicked.size()+layananClicked.size()+jenisClicked.size()+tipeCustClicked.size()!=0 ||
                         (!(pMin.equals("") && pMax.equals("") && hMin.equals("")&& hMax.equals(""))))
                 {viewList.setVisibility(View.VISIBLE);}
@@ -311,6 +309,7 @@ public class MainActivity extends AppCompatActivity {
                 adapterResult.notifyDataSetChanged();
                 btmSheetDialog.dismiss();
                 dialog.dismiss();
+                map.invalidate();
             }
         });
 
