@@ -300,7 +300,9 @@ public class MainActivity extends AppCompatActivity {
                     showInfo.setVisibility(View.GONE);
                 }
                 else {((TextView)viewListDialogView.findViewById(R.id.textResult)).setText(getResources().getString(R.string.Response_OK));
-                    showInfo.setVisibility(View.VISIBLE);}
+                    showInfo.setVisibility(View.VISIBLE);
+                    mapController.setZoom(5);
+                    mapController.setCenter(new GeoPoint(0.7893,118));}
                 if(groupClicked.size()+statusClicked.size()+lokasiClicked.size()+layananClicked.size()+jenisClicked.size()+tipeCustClicked.size()!=0 ||
                         (!(pMin.equals("") && pMax.equals("") && hMin.equals("")&& hMax.equals(""))))
                 {viewList.setVisibility(View.VISIBLE);}
@@ -615,6 +617,7 @@ public class MainActivity extends AppCompatActivity {
     // Fungsi yang digunakan untuk mendapatkan lokasi saat ini dari pengguna
     private void getLocation(Context ctx) {
         dialog.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
