@@ -1,24 +1,24 @@
 # SOMESTA Customer Viewer
 
-## Whats this app do?
-Aplikasi android untuk melihat lokasi customer perusahaan PT. Pertamina di indonesia.
+## Apa itu SOMESTA?
+Aplikasi android untuk melihat pin lokasi dan informasi customer (perusahaan) PT. Pertamina di indonesia.
 
-## List of app's features
-- Menampilkan Pin yang menunjukan lokasi customer pada map
-- Mencari perusahaan dan menampilkan lokasinya
-- Filter untuk Map
-- Informasi, berisi legenda map dan informasi lainnya
-- Bookmark
-- Notifikasi bila ada data baru yang masuk
+## Fitur aplikasi
+- Menampilkan marker untuk menunjukan lokasi customer pada map.
+- Mencari perusahaan dan menampilkan lokasinya.
+- Filter untuk Map.
+- Menampilkan informasi customer sesuai marker yang di klik.
+- Sistem login & logout.
+- Update marker dan informasi perusahaan *hampir secara realtime.
+- Menampilkan total kebutuhan & market share pada perusahaan yang ter-filter.
 
+## SOMESTA development team (former)
+- Project Manager: Andhika
+- System Analyst: Revan & Andhika
+- Lead Concept & Designer: Andhika & Rangga
+- Lead Android Programmer: Revan
+- Lead Web Frontend & Backend Developer: Rangga
+- Lead SysAdmin & Backend: Andhika
 
-## The Teams Role
-- Project Manager: Nope
-- System Analyst: Revanol & Nope
-- Lead Concept & Designer: Nope, Sekipper
-- Lead Android Programmer: Revanol
-- Lead Web Frontend & Backend Developer: Sekiper
-- Lead SysAdmin ngawur & Backend abal abal: Nope
-
-## Concept Design Screenshot(s)
-![Img 1](screenshots/img1.png)
+## Tampilan SOMESTA
+![Img 1](screenshots/img2.png)
